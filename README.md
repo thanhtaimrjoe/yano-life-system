@@ -116,9 +116,9 @@ Focus on patterns, not perfection.
 
 Initial logs were created from first gym comeback session:
 
-- `01-daily/2026/2026-04-23.md`
-- `02-gym/2026/2026-04-23-day1.md`
-- `03-meals/2026/2026-04-23.md`
+- `01-daily/2026/2026-05-11.md`
+- `02-gym/2026/2026-05-11-day1.md`
+- `03-meals/2026/2026-05-11.md`
 
 ## Suggested Mobile Capture Format
 

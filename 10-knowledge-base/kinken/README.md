@@ -1,203 +1,156 @@
-# KINKEN Project Knowledge Hub
+# KINKEN - Document & Product Search Platform (LIXIL)
 
-**Last updated**: 2026-04-29  
+> **Source**: Real project worked on as a QA Engineer for a Japanese client.  
+> **Purpose**: Preserve all knowledge, specifications, architecture decisions, and design rationale for learning and BrSE practice.
+
+**Last updated**: 2026-05-16  
 **Project status**: SPRINT 25 (PROD Release Preparation)  
-**My role**: QA Engineer → Transitioning to Fresher BrSE
+**Scale**: ~13 million documents + ~8.8 million product records + ~1.7 million QA records  
+**Target response time**: ~3 seconds
 
 ---
 
-## 📖 Quick Navigation
+## 📌 Purpose in yano-life-system
 
-### 🎯 Start Here
+This folder contains the complete documentation from the **KINKEN** project (the largest project worked on so far).
 
-| If you want to... | Go to... |
-|-------------------|----------|
-| Understand project purpose | [01_project/inception.md](01_project/inception.md) |
-| Learn technical stack | [02_architecture/tech_stack.md](02_architecture/tech_stack.md) |
-| Prepare for BrSE interview | [05_interview/playbook.md](05_interview/playbook.md) |
-| Check sprint progress | [04_progress/sprint_tracking.md](04_progress/sprint_tracking.md) |
-| Look up technical terms | [05_interview/glossary.md](05_interview/glossary.md) |
+Main objectives:
+- Preserve real-world knowledge from a large-scale production system
+- Serve as reference material when building **mini-kinken**
+- Support BrSE interview preparation and skill development
+- Act as a centralized knowledge base after archiving the original Claude-Yano9920 repository
 
 ---
 
-## 📁 Folder Structure
+## 🎯 Quick Navigation
+
+### Where to start?
+
+| If you want to...                      | Recommended file                                      |
+|----------------------------------------|-------------------------------------------------------|
+| Understand project purpose & context   | [01_project/inception.md](01_project/inception.md)    |
+| Learn the overall technical architecture | [02_architecture/tech_stack.md](02_architecture/tech_stack.md) |
+| Prepare for BrSE interviews            | [05_interview/playbook.md](05_interview/playbook.md)  |
+| Review project progress & decisions    | [04_progress/sprint_tracking.md](04_progress/sprint_tracking.md) |
+| Look up technical terms (JP/EN/VI)     | [05_interview/glossary.md](05_interview/glossary.md)  |
+
+---
+
+## 📁 Documentation Structure
 
 ```
 kinken/
-├── 01_project/          # Project context & team process
-├── 02_architecture/     # Technical architecture & design
-├── 03_features/         # Product features & functionality
-├── 04_progress/         # Sprint tracking & milestones
-├── 05_interview/        # BrSE interview preparation
-├── CLAUDE.md            # AI context file
-└── README.md            # This file
+├── 01_project/          # Project context, goals, and team processes
+├── 02_architecture/     # Technical architecture, data flow, authentication, deployment
+├── 03_features/         # Product features, search APIs, and Elasticsearch details
+├── 04_progress/         # Sprint history and key decisions (Sprint 9 → 25)
+├── 05_interview/        # BrSE interview preparation materials
+└── workflow_*.md        # AI-assisted documentation update workflows
 ```
 
----
+### Folder Details
 
-## 01_project/ — Project Context
+**01_project/** — Project Context
+- `inception.md`: Project purpose, scope, stakeholders, and timeline
+- `working_agreement.md`: Team workflow, PR rules, and communication norms
+- `system_overview.md`: System positioning, API surfaces, and team roles
 
-| File | Description |
-|------|-------------|
-| [inception.md](01_project/inception.md) | Project purpose, scope, stakeholders, timeline |
-| [working_agreement.md](01_project/working_agreement.md) | Team workflow, PR rules, communication norms |
-| [system_overview.md](01_project/system_overview.md) | System positioning, API surfaces, my role |
+**02_architecture/** — Technical Architecture
+- `tech_stack.md`: Final technology stack and non-functional requirements
+- `data_flow.md`: Data pipeline from PIM → CSV → Database → Elasticsearch → API → UI
+- `auth_model.md`: Multi-tier authentication model (Azure/EntraID, EAA, MyLIXIL)
+- `doc_delivery.md`: Document delivery mechanism using Cloud Run + CDN/LB
 
-**When to read**: Start here to understand "Why KINKEN exists" and "How the team works".
+**03_features/** — Product Features
+- `search_apis.md`: Comparison between UI API and Search Platform API
+- `function_design.md`: Pickup Mode, Limited Mode, Product & Document search
+- `elasticsearch.md`: Hybrid search, RRF, kuromoji tokenizer, and aggregations
 
----
+**04_progress/** — Sprint Tracking
+- `sprint_tracking.md`: Sprint history with case studies (Sprint 9–25)
+- `milestones.md`: Key decisions and project timeline
 
-## 02_architecture/ — Technical Architecture
-
-| File | Description |
-|------|-------------|
-| [tech_stack.md](02_architecture/tech_stack.md) | Final tech stack, NFRs, scale baseline |
-| [data_flow.md](02_architecture/data_flow.md) | Data pipeline: PIM → CSV → DB → ES → API → UI |
-| [auth_model.md](02_architecture/auth_model.md) | Authentication for different user types |
-| [doc_delivery.md](02_architecture/doc_delivery.md) | CloudRun-based document delivery via CDN/LB |
-
-**When to read**: When you need to understand "How KINKEN is built" technically.
-
----
-
-## 03_features/ — Product Features
-
-| File | Description |
-|------|-------------|
-| [search_apis.md](03_features/search_apis.md) | UI API vs Search Platform API comparison |
-| [function_design.md](03_features/function_design.md) | Product/Document search, Pickup/Limited mode |
-| [elasticsearch.md](03_features/elasticsearch.md) | ES concepts, aggregations, hybrid search |
-
-**When to read**: When you need to understand "What KINKEN does" from a product perspective.
-
----
-
-## 04_progress/ — Sprint Tracking
-
-| File | Description |
-|------|-------------|
-| [sprint_tracking.md](04_progress/sprint_tracking.md) | Sprint history (SPRINT 9-25) with case studies |
-| [milestones.md](04_progress/milestones.md) | Key decisions, timeline, QA/BrSE milestones |
-
-**When to read**: When you need to understand "What happened during the project" and "What decisions were made".
-
-**Note**: Sprint tracking will be updated as new sprint reports come in.
-
----
-
-## 05_interview/ — BrSE Interview Prep
-
-| File | Description |
-|------|-------------|
-| [playbook.md](05_interview/playbook.md) | Interview Q&A, elevator pitch, tips |
-| [case_studies.md](05_interview/case_studies.md) | 5 detailed case studies with talking points |
-| [glossary.md](05_interview/glossary.md) | Technical terms (JP/EN/VI) |
-
-**When to read**: When preparing for BrSE interviews.
+**05_interview/** — BrSE Interview Preparation
+- `playbook.md`: Interview questions, answers, and tips
+- `case_studies.md`: 5 detailed case studies with talking points
+- `glossary.md`: Technical glossary (Japanese / English / Vietnamese)
 
 ---
 
 ## 🎯 Recommended Reading Order
 
-### For New Team Members
+### For understanding the project
+1. `01_project/inception.md`
+2. `01_project/system_overview.md`
+3. `02_architecture/tech_stack.md`
+4. `02_architecture/data_flow.md`
+5. `03_features/function_design.md`
 
-1. [01_project/inception.md](01_project/inception.md) — Understand project purpose
-2. [01_project/system_overview.md](01_project/system_overview.md) — Understand system positioning
-3. [02_architecture/tech_stack.md](02_architecture/tech_stack.md) — Learn technical stack
-4. [02_architecture/data_flow.md](02_architecture/data_flow.md) — Understand data pipeline
-5. [03_features/function_design.md](03_features/function_design.md) — Learn product features
+### For BrSE interview preparation
+1. `05_interview/playbook.md`
+2. `05_interview/case_studies.md`
+3. `04_progress/milestones.md`
+4. `05_interview/glossary.md`
+5. `01_project/working_agreement.md`
 
-### For BrSE Interview Prep
-
-1. [05_interview/playbook.md](05_interview/playbook.md) — Read interview Q&A
-2. [05_interview/case_studies.md](05_interview/case_studies.md) — Study case studies
-3. [04_progress/milestones.md](04_progress/milestones.md) — Review key decisions
-4. [05_interview/glossary.md](05_interview/glossary.md) — Memorize technical terms
-5. [01_project/working_agreement.md](01_project/working_agreement.md) — Understand team process
-
-### For Technical Deep Dive
-
-1. [02_architecture/tech_stack.md](02_architecture/tech_stack.md) — Overall architecture
-2. [03_features/elasticsearch.md](03_features/elasticsearch.md) — Search engine details
-3. [03_features/search_apis.md](03_features/search_apis.md) — API design
-4. [02_architecture/auth_model.md](02_architecture/auth_model.md) — Security model
-5. [02_architecture/doc_delivery.md](02_architecture/doc_delivery.md) — Document delivery
+### For technical deep dive
+1. `02_architecture/tech_stack.md`
+2. `03_features/elasticsearch.md`
+3. `03_features/search_apis.md`
+4. `02_architecture/auth_model.md`
+5. `02_architecture/doc_delivery.md`
 
 ---
 
 ## 🔄 Update Workflow
 
-### When you receive a new Sprint Output Summary Report:
+When receiving a new Sprint Output Summary Report:
 
-1. **Identify topic**: ETL, Search, API, Auth, etc.
-2. **Update relevant file**:
-   - ETL content → [02_architecture/data_flow.md](02_architecture/data_flow.md)
-   - Search content → [03_features/elasticsearch.md](03_features/elasticsearch.md)
-   - API content → [03_features/search_apis.md](03_features/search_apis.md)
-   - Sprint progress → [04_progress/sprint_tracking.md](04_progress/sprint_tracking.md)
-   - New decision → [04_progress/milestones.md](04_progress/milestones.md)
-   - New term → [05_interview/glossary.md](05_interview/glossary.md)
-
-3. **Update this README** if structure changes
-
-See [workflow_kinken_update_protocol.md](workflow_kinken_update_protocol.md) for detailed workflow.
+1. Identify the topic (ETL, Search, API, Auth, etc.)
+2. Update the relevant file:
+   - ETL-related content → `02_architecture/data_flow.md`
+   - Search-related content → `03_features/elasticsearch.md`
+   - API-related content → `03_features/search_apis.md`
+   - Sprint progress → `04_progress/sprint_tracking.md`
+   - New decisions → `04_progress/milestones.md`
+   - New terms → `05_interview/glossary.md`
+3. Update this README if the structure changes
 
 ---
 
 ## 📊 Project Stats
 
-| Metric | Value |
-|--------|-------|
-| Documents | ~13 million |
-| Product records | ~8.8 million |
-| QA records | ~1.7 million |
-| Target response time | ~3 seconds |
-| Current sprint | SPRINT 25 (PROD prep) |
-| Tech stack | Python/FastAPI, React/Next.js, Elasticsearch, Databricks |
+| Metric                    | Value                    |
+|---------------------------|--------------------------|
+| Documents                 | ~13 million              |
+| Product records           | ~8.8 million             |
+| QA records                | ~1.7 million             |
+| Target response time      | ~3 seconds               |
+| Current sprint            | SPRINT 25 (PROD prep)    |
+| Tech stack                | Python/FastAPI, React/Next.js, Elasticsearch, Databricks, GCP |
 
 ---
 
 ## 🎓 Key Concepts
 
-| Concept | Quick Explanation | Learn More |
-|---------|-------------------|------------|
-| **Hybrid Search** | Morphological + Semantic search with RRF | [03_features/elasticsearch.md](03_features/elasticsearch.md) |
-| **Pickup Mode** | Show matching products above search results | [03_features/function_design.md](03_features/function_design.md) |
-| **Limited Mode** | Guide users to product-filtered view | [03_features/function_design.md](03_features/function_design.md) |
-| **Two API Layers** | UI API (simple) + Search Platform API (flexible) | [03_features/search_apis.md](03_features/search_apis.md) |
-| **Multi-tier Auth** | Azure/EntraID, EAA, MyLIXIL | [02_architecture/auth_model.md](02_architecture/auth_model.md) |
-
----
-
-## 🚀 Quick Links
-
-| Resource | Link |
-|----------|------|
-| Project inception | [01_project/inception.md](01_project/inception.md) |
-| Technical glossary | [05_interview/glossary.md](05_interview/glossary.md) |
-| Interview playbook | [05_interview/playbook.md](05_interview/playbook.md) |
-| Sprint tracking | [04_progress/sprint_tracking.md](04_progress/sprint_tracking.md) |
-| Case studies | [05_interview/case_studies.md](05_interview/case_studies.md) |
+| Concept            | Quick Explanation                                      | Learn more in                              |
+|--------------------|--------------------------------------------------------|--------------------------------------------|
+| **Hybrid Search**  | Combination of morphological + semantic search with RRF | `03_features/elasticsearch.md`             |
+| **Pickup Mode**    | Display matching products above search results         | `03_features/function_design.md`           |
+| **Limited Mode**   | Guide users to filtered product view                   | `03_features/function_design.md`           |
+| **Two API Layers** | UI API (simple) + Search Platform API (flexible)       | `03_features/search_apis.md`               |
+| **Multi-tier Auth**| Azure/EntraID, EAA, MyLIXIL                            | `02_architecture/auth_model.md`            |
 
 ---
 
 ## 📝 Notes
 
-- **Language**: Documents are in Vietnamese with technical terms in English/Japanese
-- **Audience**: QA Engineer transitioning to BrSE role
-- **Purpose**: Interview preparation + knowledge retention
-- **Maintenance**: Updated as new sprint reports come in
+- All content in this folder was **migrated from `Claude-Yano9920/projects/kinken/`** on 2026-05-16.
+- The primary purpose is **learning and reference**, not full system re-implementation.
+- When updating, prioritize editing the original files in their respective folders first.
+- This documentation serves as a knowledge base for building **mini-kinken** and preparing for Fresher BrSE interviews.
 
 ---
 
-## 🔗 Related Projects
-
-| Project | Status | Workspace |
-|---------|--------|-----------|
-| KINKEN | Active (SPRINT 25) | This folder |
-| WORKLOG | Interview prep | `/projects/worklog/` |
-| Japanese Study | Personal | `/projects/japanese-study/` |
-
----
-
-**For questions or updates, refer to [CLAUDE.md](CLAUDE.md) for AI context.**
+**Original Author**: Tài (Yano)  
+**Intended Use**: BrSE skill development • mini-kinken implementation • Interview preparation

@@ -46,6 +46,9 @@ Rules:
 - Weekly review is where patterns and recommendations go.
 - Unknown fields should remain blank, not guessed.
 - Avoid creating new folders unless current structure cannot fit request.
+- Use `knowledge/` as canonical root for durable knowledge.
+- Prefer single source of truth over duplicate notes.
+- Keep structural changes logical and reversible where possible.
 
 ## Folder Rules
 
@@ -56,6 +59,8 @@ Rules:
 03-meals/            Meal logs by year
 04-weekly-review/   Weekly reviews
 99-templates/        Reusable templates
+knowledge/           Durable AI-managed knowledge layer
+workspace/           Temporary AI scratch space, not permanent knowledge
 ```
 
 ### 00-profile
@@ -129,6 +134,42 @@ File path:
 04-weekly-review/YYYY-W##.md
 ```
 
+### knowledge/
+Use as permanent Knowledge Layer.
+
+Canonical structure:
+
+```text
+knowledge/
+├── 00_SYSTEM/
+├── 01_JAPANESE/
+├── 02_AI_TOOLS/
+├── 03_PRODUCTIVITY/
+├── 04_SOFTWARE_DEVELOPMENT/
+├── 05_PERSONAL_DEVELOPMENT/
+├── 06_PROJECTS/
+└── 99_ARCHIVE/
+```
+
+Rules:
+- `knowledge/00_SYSTEM/` contains operating rules for AI.
+- Put durable knowledge here, not in life-tracking folders.
+- Before creating new knowledge notes, search existing files first.
+- Normalize rough notes into clear markdown structure.
+- Refactor duplicates into one canonical file when possible.
+- Add lightweight links between related notes when useful.
+- Move stale or superseded material to `knowledge/99_ARCHIVE/`.
+- Keep project-specific documentation under `knowledge/06_PROJECTS/`.
+
+### workspace/
+Use only for temporary local files dropped for AI reading.
+
+Rules:
+- Not part of permanent repo knowledge.
+- Should remain git-ignored.
+- Do not treat files here as source of truth.
+- Extract durable content into canonical folders if needed.
+
 ## Update Workflow
 
 When user asks to add logs from chat text:
@@ -145,6 +186,16 @@ When user asks to add logs from chat text:
 5. Preserve facts exactly.
 6. Put uncertainty as `(not logged)` or `Ambiguous:`.
 7. Do not estimate health/nutrition numbers unless user provides them.
+
+When user asks to add or reorganize knowledge:
+
+1. Identify target domain under `knowledge/`.
+2. Search existing canonical note first.
+3. Update or move existing file before creating duplicate.
+4. Normalize formatting and naming.
+5. Preserve meaning of source material.
+6. Link related notes if useful.
+7. Archive obsolete structure instead of deleting unique content.
 
 ## Gym Coaching Rules
 

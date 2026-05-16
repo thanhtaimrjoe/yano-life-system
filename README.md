@@ -35,17 +35,17 @@ When AI reviews gym logs, weekly patterns, or progress photos, it should follow 
 04-weekly-review/   Weekly summary and adjustment
 99-templates/        Reusable markdown templates
 ```
-
 ## 📚 Knowledge Base
 
-Ngoài việc theo dõi sức khỏe và thói quen, repo này còn đóng vai trò là **kho kiến thức** từ các dự án đã làm.
+In addition to health and habit tracking, this repository also serves as a centralized **knowledge base** for past projects.
 
-### Cấu trúc hiện tại
+### Current Structure
 
 ```text
 10-knowledge-base/
-├── kinken/          # Toàn bộ tài liệu từ dự án KINKEN (LIXIL) - dự án lớn nhất từng làm
-└── README.md        # Giới thiệu về Knowledge Base
+├── kinken/          # Complete documentation from the KINKEN project (LIXIL) — the largest project worked on so far
+└── README.md        # Overview of the Knowledge Base
+```
 
 ## Daily Workflow
 

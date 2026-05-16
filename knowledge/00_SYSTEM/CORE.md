@@ -62,6 +62,7 @@ Each durable knowledge note should aim for:
 - Keep headings concise and scannable.
 - Prefer short sections over long narrative blocks.
 - For project docs inherited from external sources, preserve existing names unless rename adds clear value.
+- Example: prefer `retrieval-strategies.md` over `notes.md`.
 
 ## 7) Lifecycle Rules
 
@@ -86,3 +87,5 @@ When uncertain, choose order:
 3. Structure consistency
 4. Ease of future maintenance
 5. Brevity
+
+If multiple options are acceptable, prefer option that reduces future ambiguity for another AI.

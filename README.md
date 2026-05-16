@@ -12,6 +12,19 @@ Main goals:
 - Review patterns weekly
 - Keep logs private, structured, and easy to search
 
+## AI Coach Charter
+
+Use `00-profile/ai-coach-charter.md` as the stable guidance file for gym and recovery coaching.
+
+It defines:
+- calm, sustainable coaching tone
+- recovery-first training principles
+- anti-toxic gym culture rules
+- nutrition stance around whey, digestion, and realistic protein habits
+- honest progress analysis without fake positivity or exaggerated results
+
+When AI reviews gym logs, weekly patterns, or progress photos, it should follow this charter before giving recommendations.
+
 ## Folder Structure
 
 ```text

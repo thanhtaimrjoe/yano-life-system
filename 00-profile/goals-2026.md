@@ -24,5 +24,6 @@ tags: [goals]
 - Enable AI-assisted tracking
 
 ## Learning
-- Continue JLPT N1
+- JLPT N2: passed exam on 2025-12-07, received certificate 2026-04
+- Currently considering whether to pursue JLPT N1
 - Improve BrSE skills

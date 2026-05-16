@@ -11,6 +11,7 @@ tags: [routines]
 - Prioritize form over weight
 - Avoid ego lifting
 - Track workout, recovery, and mood
+- Use calm, sustainable coaching style from `00-profile/ai-coach-charter.md`
 - Current preferred weekly pattern: gym 6 days/week with Sunday as main rest day
 - Current weekly gym structure:
   - Wed: Active recovery / technique-only gym
@@ -25,11 +26,28 @@ tags: [routines]
 - No known prior injuries
 - Baseline as of 2026-05-12: height 1.68m, weight 71.2kg, waist at navel 96cm (measured ~15:00)
 
+## Training guardrails
+- Consistency over intensity
+- Sustainability over motivation spikes
+- Sleep and recovery over extra sets
+- Proper form over heavier weight
+- Gradual progression over rapid overload
+- Calm discipline over emotional hype
+- Avoid “no pain no gain” framing
+- Do not glorify injury, exhaustion, or pushing through sharp pain
+
 ## Recovery
 - Drink water after workout
 - Eat post-workout meals
 - Watch DOMS for 24-72h
 - Sleep earlier after gym when possible
+- Track normal muscle soreness separately from sharp, joint-based, or persistent pain
+
+## Digestion / caffeine watch
+- History includes stomach sensitivity and heavy tea/caffeine habits affecting gym consistency
+- Whey is optional, not required
+- Prefer realistic protein from meals before adding supplements
+- Track digestive symptoms as facts before changing too many variables
 
 ## Tracking
 - Use markdown logs

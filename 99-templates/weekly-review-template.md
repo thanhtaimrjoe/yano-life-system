@@ -16,6 +16,19 @@ tags: [weekly-review]
 ## What failed
 - 
 
+## Movement / recovery signals
+- Posture:
+- Movement quality:
+- DOMS / recovery:
+- Pain watch:
+- Confidence change:
+
+## Honest summary
+- No-hype progress:
+- Main risk:
+- Keep doing:
+- Stop / reduce:
+
 ## Adjustments for next week
 - Training:
 - Nutrition:

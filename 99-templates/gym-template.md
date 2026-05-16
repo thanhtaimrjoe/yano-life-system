@@ -13,9 +13,9 @@ tags: [gym]
 - 
 
 ## Main lifts
-| Exercise | Set x Rep | Weight | RPE | Notes |
-|---|---|---:|---:|---|
-|  |  |  |  |  |
+| Exercise | Set x Rep | Weight | RPE | Tempo | Form cue | Notes |
+|---|---|---:|---:|---|---|---|
+|  |  |  |  |  |  |  |
 
 ## Accessories
 - 
@@ -23,4 +23,12 @@ tags: [gym]
 ## Recovery
 - Stretch:
 - Pain/discomfort:
+- Pain type: normal soreness / muscle fatigue / joint pain / sharp pain / persistent pain
+- DOMS watch 24-72h:
 - Next session adjustment:
+
+## Movement quality
+- Posture note:
+- Control / tempo:
+- Confidence change:
+- Form lesson:

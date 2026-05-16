@@ -15,7 +15,7 @@ key_mmc_wins: []
 tags: [gym]
 ---
 
-# Day X — [Focus / Tên buổi]
+# Day X — [Focus / Session Name]
 
 ## Session Summary
 - Overall vibe: 
@@ -46,7 +46,7 @@ tags: [gym]
 - What improved today (MMC / form / control): 
 - Form lesson / realization: 
 
-## AI Coaching Notes (for Codex)
+## AI Coaching Notes (for Codex / Main AI)
 - What worked well: 
 - Suggested adjustment for next session: 
 - Overall session insight: 

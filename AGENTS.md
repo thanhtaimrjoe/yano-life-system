@@ -53,24 +53,25 @@ Rules:
 ## Folder Rules
 
 ```text
-00-profile/          Personal identity, goals, routines
+00-profile/          Personal identity, goals, routines, preferences (personal only)
 01-daily/            Daily life logs by year
 02-gym/              Gym session logs by year
 03-meals/            Meal logs by year
 04-weekly-review/   Weekly reviews
-99-templates/        Reusable templates
-knowledge/           Durable AI-managed knowledge layer
+99-templates/        Reusable templates (structure only)
+knowledge/           Durable AI-managed knowledge layer (canonical data & principles)
 workspace/           Temporary AI scratch space, not permanent knowledge
 ```
 
 ### 00-profile
-Use for stable info:
+Use **only** for stable **personal** information:
 - identity
-- long-term goals
-- routines
+- long-term personal goals
+- personal routines & habits
 - preferences
-- health constraints user wants kept
+- health constraints the user wants kept private
 
+**Do not** store general reference data, machine lists, or AI rules here.
 Do not store daily events here.
 
 ### 01-daily
@@ -135,25 +136,35 @@ File path:
 ```
 
 ### knowledge/
-Use as permanent Knowledge Layer.
+Use as the permanent **Knowledge Layer** for durable, AI-queryable information.
+
+**Important distinction:**
+- `99-templates/` → Contains empty/reusable **templates** (structure only).
+- `knowledge/` → Contains actual **data, references, and principles** (filled information).
 
 Canonical structure:
 
 ```text
 knowledge/
-├── 00_SYSTEM/
+├── 00_SYSTEM/                 # AI operating rules & charters
 ├── 01_JAPANESE/
 ├── 02_AI_TOOLS/
 ├── 03_PRODUCTIVITY/
 ├── 04_SOFTWARE_DEVELOPMENT/
+├── 05_GYM/                    # Gym knowledge: glossary, machine data, programming principles
 ├── 05_PERSONAL_DEVELOPMENT/
 ├── 06_PROJECTS/
 └── 99_ARCHIVE/
 ```
 
+**Gym-related knowledge rules:**
+- Store actual gym machine information and references in `knowledge/05_GYM/` (e.g. `gym-machine-reference.md`).
+- Keep reusable templates in `99-templates/`.
+- `knowledge/05_GYM/` is the canonical source for AI when generating plans or processing machines.
+
 Rules:
-- `knowledge/00_SYSTEM/` contains operating rules for AI.
-- Put durable knowledge here, not in life-tracking folders.
+- `knowledge/00_SYSTEM/` contains operating rules for AI (e.g. ai-coach-charter.md).
+- Put durable knowledge here, not in life-tracking folders or 00-profile.
 - Before creating new knowledge notes, search existing files first.
 - Normalize rough notes into clear markdown structure.
 - Refactor duplicates into one canonical file when possible.
@@ -284,6 +295,8 @@ Current templates:
 - `gym-template.md`
 - `meal-template.md`
 - `weekly-review-template.md`
+- `gym-machine-template.md`
+- `gym-glossary.md`
 
 ## Git Rules
 

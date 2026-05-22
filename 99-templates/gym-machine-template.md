@@ -10,27 +10,7 @@ tags: [gym, machine]
 
 # [Machine Name]
 
-## Description
-Brief description of the machine and its main purpose.
-
-## Setup & Adjustments
-- Key setup points:
-- Common adjustments:
-- Recommended starting position:
-
-## Technique & Cues
-- Main form cues:
-- Mind-Muscle Connection tips:
-- Tempo recommendations:
-- Breathing:
-
-## Common Mistakes to Avoid
-- 
-
-## Progressions & Variations
-- Beginner friendly options:
-- Advanced variations:
-
-## Notes
-- Personal observations or specific settings that work well:
-- Recovery considerations:
+- **Target:** [Nhóm cơ chính hướng tới]
+- **Setup & Settings:** [Cấu hình/cài đặt của riêng bạn, ví dụ: Chiều cao ghế, vị trí chốt cáp]
+- **Execution & MMC Cues:** [1-2 cue kỹ thuật quan trọng nhất để cảm nhận cơ]
+- **My Failure Log & Warnings:** [Lỗi bù trừ thực tế đã từng mắc phải để AI nhắc nhở]

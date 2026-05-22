@@ -42,11 +42,13 @@ Example structure:
 ```
 初めまして、フイン・タイン・タイと申します。今年27歳です。
 FPT大学のソフトウェア工学専攻を卒業いたしました。
-大学卒業後の2022年、まずはJavaデベロッパーとして2ヶ月間試用期間を経験し、日本のプロジェクトにおけるドキュメント調査やIM-LogicDesignerのツールを使用した開発プロセスの調査を担当しました。
-その後、キャリアの方向性を広げるため、2025年の初めから半年間、System-EXEでオンサイトのITコミュニケーター（IT Comtor）として従事しました。主な業務は仕様書やQAシートの翻訳、デイリーミーティングへの参加、およびテスト検証業務です。
-その後、元の会社であるMORに戻り、ITテスターとIT Comtorを兼任する形で1年間勤務いたしました。ここでは、大規模プロジェクトのテスターとしてテストの全工程（自動テスト、パフォーマンス、セキュリティテストを除く）を担当しつつ、QAの立場から日本語でのメッセージによる顧客との仕様調整やバグ của khách hàng, confirm bug và clarify spec, đồng thời điều phối task cho dev.
-私の強みは、日本語能力試験N2の語学力に加え、大学で培った技術的背景（Flutterの小規模プロジェクト経験、卒業制作でのReactJSやReact Nativeの使用経験、基本的なSQLクエリやGitflowの知識など）と、テスターおよびコミュケーターとしての実務経験を併せ持っていることです。
-今回、技術的知識と日本語力を最大限に活かし、顧客と開発チームの架け橋となるBrSE（ブリッジシステムエンジニア）として成長したいと考え、御社のFresher BrSEポジションに応募いたしました。
+
+これまでのキャリアにおいて、Javaデベロッパーの経験に加え、日系IT企業にて約1.5年間、ITコミュニケーターおよびITテスターとして実務に携わってまいりました。特に直近のプロジェクトでは、仕様書の読解やQA業務、日越チーム間のコミュニケーション調整を主導し、品質保証と開発プロセスの円滑化に貢献しました。
+
+私の強みは、FPT大学で培った確かな技術知識（React/React Native, Database, Gitflow, SDLCなど）と、日本語力（JLPT N2）およびQAマインドセットを掛け合わせ、技術とビジネスの「架け橋」となれることです。
+
+今回、これまでの開発・翻訳・QAの経験を最大限に活かし、御社でブリッジシステムエンジニア（BrSE）としてプロジェクトの成功に貢献したいと考え、応募いたしました。
+
 本日はどうぞよろしくお願いいたします。
 ```
 
@@ -71,12 +73,12 @@ Example structure:
 ```
 Hello, my name is Huynh Thanh Tai. I am 27 years old.
 I graduated from FPT University, majoring in Software Engineering.
-After graduation, I worked as a Java Developer for a 2-month probationary period in 2022, where I was responsible for reading documentation, researching, and utilizing IM-LogicDesigner in a Japanese project.
-Later, to broaden my career paths, I spent 6 months from early to mid-2025 working onsite at System-EXE as an IT Comtor. My main responsibilities included translating specifications and Q&A sheets, participating in daily meetings, and assisting in testing and compiling evidence.
-Following that, I returned to my original company, MOR, where I worked for 1 year as a combination of an IT Tester and IT Comtor. In this role, I handled almost all manual testing activities for large projects (except automation, performance, and security testing) and communicated with Japanese clients via messages to confirm bugs and clarify specifications, while coordinating tasks with our Vietnamese development team.
-My key strengths are my JLPT N2 Japanese proficiency, combined with a solid technical foundation (including experience with Flutter in a small project, ReactJS and React Native in my graduation thesis, basic SQL database queries, and Gitflow), along with practical QA and Comtor experience.
-I want to transition into a BrSE role because it allows me to combine my Japanese language skills and technical background to bridge the gap between clients and development teams effectively.
-Thank you for your time today.
+
+Over the past two years, I have worked in various roles including Java Developer, IT Comtor, and IT Tester for Japanese projects. In my recent roles, I was responsible for translating specifications, coordinating communication between Japanese clients and local developers, and managing manual testing processes.
+
+My key strengths are the combination of a solid technical foundation (including Flutter, ReactJS, SQL, and Gitflow), JLPT N2 Japanese proficiency, and a strong QA mindset. This unique blend allows me to bridge the gap between technical requirements and smooth communication effectively.
+
+I am eager to leverage these skills as a Fresher BrSE at your company to contribute to the success of your projects. Thank you for your time today.
 ```
 
 ---
@@ -95,13 +97,13 @@ Cấu trúc gợi ý:
 **Your answer:**
 ```
 Xin chào anh/chị, tôi tên là Huỳnh Thanh Tài, năm nay 27 tuổi.
-Tôi đã tốt nghiệp trường Đại học FPT chuyên ngành Kỹ thuật phần mềm.
-Sau khi tốt nghiệp, tôi có làm thử việc Java Developer trong vòng 2 tháng vào nửa năm 2022. Trong thời gian này, tôi chủ yếu đọc tài liệu, nghiên cứu và sử dụng công cụ IM-LogicDesigner trong một dự án của Nhật Bản.
-Sau đó, để phát triển thêm các định hướng nghề nghiệp, tôi chuyển sang làm IT Comtor trong vòng 6 tháng từ đầu năm đến giữa năm 2025 dưới hình thức onsite tại công ty System-EXE. Công việc chính của tôi là dịch spec, dịch QA, tham gia test và chuẩn bị evidence, cũng như tham gia họp daily.
-Sau khoảng thời gian onsite đó, tôi quay trở lại công ty gốc là MOR để làm IT Tester kết hợp với IT Comtor trong vòng 1 năm qua. Tại đây, tôi đảm nhận toàn bộ công việc của một tester trong các dự án lớn (ngoại trừ automation, performance và security test), đồng thời trực tiếp giao tiếp qua tin nhắn với khách hàng Nhật để confirm bug, clarify spec và điều phối task cho đội phát triển Việt Nam khi tự log bug.
-Điểm mạnh lớn nhất của tôi là có bằng tiếng Nhật N2 kết hợp với nền tảng Technical vững chắc được đào tạo bài bản từ đại học FPT (tôi từng học Flutter làm dự án nhỏ, làm đồ án tốt nghiệp bằng ReactJS và React Native, nắm vững quy trình phát triển phần mềm SDLC, Gitflow và SQL query cơ bản) cùng với tư duy chất lượng (QA mindset).
-Tôi muốn ứng tuyển vị trí Fresher BrSE tại quý công ty vì đây là công việc tôi đã hướng tới từ thời đại học, nơi tôi có thể phát huy tối đa cả thế mạnh tiếng Nhật lẫn kỹ năng kỹ thuật của bản thân để làm cầu nối hiệu quả cho dự án.
-Cảm ơn anh/chị đã dành thời gian lắng nghe.
+Tôi tốt nghiệp chuyên ngành Kỹ thuật phần mềm tại trường Đại học FPT.
+
+Về kinh nghiệm làm việc, tôi đã có thời gian làm thử việc Java Developer, sau đó đảm nhận vai trò IT Comtor onsite và IT Tester kết hợp Comtor tại MOR trong khoảng 1.5 năm qua. Trong các dự án gần đây, tôi chịu trách nhiệm chính trong việc đọc hiểu/dịch tài liệu spec, xác nhận bug, làm rõ yêu cầu spec (clarify) trực tiếp với khách hàng Nhật Bản, đồng thời điều phối task cho đội phát triển Việt Nam.
+
+Điểm mạnh của tôi là sự kết hợp giữa nền tảng kỹ thuật vững chắc từ Đại học FPT (React, SQL, SDLC, Gitflow), chứng chỉ tiếng Nhật N2 và tư duy chất lượng (QA mindset) từ trải nghiệm làm tester thực chiến. 
+
+Tôi ứng tuyển vào vị trí Fresher BrSE với mục tiêu tận dụng tối đa thế mạnh tiếng Nhật và technical sẵn có để làm cầu nối hiệu quả, đảm bảo dự án vận hành trôi chảy. Rất cảm ơn anh/chị đã dành thời gian lắng nghe.
 ```
 
 ---

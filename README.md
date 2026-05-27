@@ -15,6 +15,26 @@ Main goals:
 - Review patterns weekly
 - Keep logs private, structured, and easy to search
 
+## 🚀 Yano Life Dashboard (Premium Interactive Web View)
+
+Bên cạnh việc chỉnh sửa trực tiếp các file Markdown, bạn có thể trải nghiệm giao diện **Web Dashboard Premium (Glassmorphism Dark Mode)** cực kỳ sống động và hiện đại để trực quan hóa toàn bộ hành trình của mình.
+
+### Các tính năng nổi bật:
+* **Tổng quan trực quan**: Chuỗi ngày ghi chép liên tục (streak), biểu đồ theo dõi giấc ngủ, mức năng lượng và tần suất đi gym hàng tuần.
+* **Gym Overload Tracker**: Chọn bất kỳ bài tập nào (Leg Press, Leg Extension, Chest Press...) từ danh sách để xem biểu đồ tăng tiến mức tạ & RPE theo thời gian.
+* **Timeline Chi tiết**: Bộ lọc và danh sách chi tiết các buổi tập Gym, nhật ký hàng ngày (Daily), bữa ăn (Meals) và báo cáo tuần (Weekly Review).
+* **Trình duyệt kiến thức**: Đọc các tài liệu hướng dẫn trong thư mục `knowledge/05_GYM/` được biên dịch trực tiếp sang giao diện HTML cực đẹp, tích hợp thanh tìm kiếm thông minh.
+* **Bảo mật tuyệt đối**: Chạy hoàn toàn dưới local (offline), không tải bất kỳ dữ liệu cá nhân nào lên server ngoài.
+
+### Hướng dẫn khởi chạy nhanh:
+Chỉ cần chạy lệnh sau tại thư mục gốc của repo:
+```bash
+node server.js
+```
+Sau đó mở trình duyệt và truy cập: **[http://localhost:3000](http://localhost:3000)**
+
+*(Lưu ý: Dữ liệu trên Web sẽ tự động biên dịch và cập nhật theo thời gian thực mỗi khi bạn ghi thêm file Markdown mới và F5 lại trang!)*
+
 ## AI Coach Charter
 
 Use `00-profile/ai-coach-charter.md` as the stable guidance file for gym and recovery coaching.

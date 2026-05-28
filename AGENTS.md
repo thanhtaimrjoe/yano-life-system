@@ -53,25 +53,25 @@ Rules:
 ## Folder Rules
 
 ```text
-00-profile/          Personal identity, goals, routines, preferences (personal only)
+00-profile/          Personal identity, goals, routines, preferences + AI context (user-context, soul, ai-agents, ai-tools)
 01-daily/            Daily life logs by year
 02-gym/              Gym session logs by year
 03-meals/            Meal logs by year
-04-weekly-review/   Weekly reviews
+04-weekly-review/   Weekly reviews + weekly training plans
+05-career-prep/      Career / interview prep work by year
 99-templates/        Reusable templates (structure only)
 knowledge/           Durable AI-managed knowledge layer (canonical data & principles)
-workspace/           Temporary AI scratch space, not permanent knowledge
+dashboard/           Local web dashboard (HTML/JS + build artifact data.json)
+workspace/           Gitignored scratch / log dir (cron output, AI intake). Not source of truth.
 ```
 
 ### 00-profile
-Use **only** for stable **personal** information:
-- identity
-- long-term personal goals
-- personal routines & habits
-- preferences
-- health constraints the user wants kept private
+Use for stable **personal information** + **AI behavior context**:
+- personal: identity, long-term goals, routines, preferences, health constraints
+  (`identity.md`, `goals-2026.md`, `routines.md`, `nutrition-guidelines.md`)
+- AI context: `user-context.md` (preferences), `soul.md` (persona), `ai-agents.md` (session startup), `ai-tools.md` (local tool/XLSX workflow)
 
-**Do not** store general reference data, machine lists, or AI rules here.
+**Do not** store general reference data, machine lists here (use `knowledge/05_GYM/` instead).
 Do not store daily events here.
 
 ### 01-daily
@@ -120,20 +120,37 @@ File path:
 ```
 
 ### 04-weekly-review
-Use for synthesis:
+Use for synthesis + weekly training plans:
 - gym count
 - sleep average
 - mood/stress trend
 - DOMS/recovery
-- what worked
-- what failed
+- what worked / what failed
 - next week adjustment
+- weekly training plan (separate file: `YYYY-W##-plan.md`)
 
-File path:
+File paths:
 
 ```text
-04-weekly-review/YYYY-W##.md
+04-weekly-review/YYYY-W##.md         # review
+04-weekly-review/YYYY-W##-plan.md    # training plan for that week
 ```
+
+### 05-career-prep
+Time-boxed career / interview prep work (BrSE prep, mock interviews, quizzes, CV).
+
+Top-level (inside `YYYY/`):
+- `SPRINT-PLAN-YYYY-MM-DD.md` — current active sprint plan
+- `MOCK-INTERVIEW-SCHEDULE.md`, `IMPROVEMENT-AREAS.md`, `KINKEN-KNOWLEDGE-BASE-CHECKLIST.md`
+- `archive/` — superseded plans (e.g. old MASTER-PLAN.md)
+
+Subfolders:
+- `daily/`, `weekly/`, `mock-interviews/`, `quizzes/`, `cv-materials/`
+
+Rules:
+- Career-prep daily logs go here, NOT in `01-daily/`.
+- Move superseded plans to `archive/` rather than leaving stale next to active plan.
+- Stable knowledge graduates to `knowledge/`.
 
 ### knowledge/
 Use as the permanent **Knowledge Layer** for durable, AI-queryable information.
@@ -142,20 +159,20 @@ Use as the permanent **Knowledge Layer** for durable, AI-queryable information.
 - `99-templates/` → Contains empty/reusable **templates** (structure only).
 - `knowledge/` → Contains actual **data, references, and principles** (filled information).
 
-Canonical structure:
+Canonical structure (active folders; others created on-demand per Knowledge-Organization.md):
 
 ```text
 knowledge/
 ├── 00_SYSTEM/                 # AI operating rules & charters
 ├── 01_JAPANESE/
-├── 02_AI_TOOLS/
 ├── 03_PRODUCTIVITY/
-├── 04_SOFTWARE_DEVELOPMENT/
 ├── 05_GYM/                    # Gym knowledge: glossary, machine data, programming principles
-├── 05_PERSONAL_DEVELOPMENT/
-├── 06_PROJECTS/
+├── 06_PROJECTS/               # kinken/, worklog/ — routing in 06_PROJECTS/README.md
 └── 99_ARCHIVE/
 ```
+
+Reserved slots (create folder + README only when first note arrives):
+- `02_AI_TOOLS/`, `04_SOFTWARE_DEVELOPMENT/`, `05_PERSONAL_DEVELOPMENT/`
 
 **Gym-related knowledge rules:**
 - Store actual gym machine information and references in `knowledge/05_GYM/` (e.g. `gym-machine-reference.md`).
@@ -291,12 +308,14 @@ Use files in:
 ```
 
 Current templates:
-- `daily-template.md`
-- `gym-template.md`
-- `meal-template.md`
-- `weekly-review-template.md`
-- `gym-machine-template.md`
-- `gym-glossary.md`
+- `daily-template.md` — for `01-daily/`
+- `gym-template.md` — for `02-gym/`
+- `gym-machine-template.md` — reference cho machine entry (knowledge), không phải log template
+- `meal-template.md` — for `03-meals/`
+- `weekly-review-template.md` — for `04-weekly-review/`
+- `career-prep-daily-template.md` — for `05-career-prep/YYYY/daily/`
+- `career-prep-weekly-template.md` — for `05-career-prep/YYYY/weekly/`
+- `mock-interview-template.md` — for `05-career-prep/YYYY/mock-interviews/`
 
 ## Git Rules
 
@@ -322,7 +341,7 @@ This repo now features a lightweight, zero-dependency **Yano Life Dashboard** lo
 ### Rules for Future AI Maintainers
 - **Zero-Dependency Constraint**: Do NOT install or introduce any external NPM packages (like `express`, `js-yaml`, etc.) to the project root. Keep the server native and clean to avoid bloated `node_modules` and ensure instant zero-setup start for the user.
 - **Frontmatter Preservation**: Always ensure any generated or updated markdown files adhere strictly to the YAML-like frontmatter block style (delimited by `---` at lines 1-11) so that `build-data.js` can parse it reliably.
-- **Gym Table Format**: Gym logs MUST keep the Markdown table headers (`Exercise | Machine / Setup | Sets x Reps | Weight | RPE | Tempo | Form Cue / MMC Focus | Notes / Feel | Key Learning`) consistent to preserve progressive overload tracking in the analytics view.
+- **Gym Table Format**: Gym logs MUST keep the Markdown table headers (`Exercise | Set x Rep | Weight | RPE | Notes`) consistent to preserve progressive overload tracking in the analytics view. Extra columns (Machine/Setup, Tempo, Form Cue, Key Learning) are optional — add them per-row khi cần, không reorder core 5.
 - **Extending the Web View**:
   - Update `dashboard/index.html` to add new tabs or widgets.
   - Add styles to `dashboard/style.css` matching the Cyberpunk dark glassmorphism system variables.

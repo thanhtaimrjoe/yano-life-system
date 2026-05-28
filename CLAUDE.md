@@ -50,23 +50,22 @@ Rules:
 ## Folder Rules
 
 ```text
-00-profile/          Personal identity, goals, routines
+00-profile/          Personal identity, goals, routines, AI context
 01-daily/            Daily life logs by year
 02-gym/              Gym session logs by year
 03-meals/            Meal logs by year
-04-weekly-review/   Weekly reviews
+04-weekly-review/   Weekly reviews + weekly training plans
 05-career-prep/      Career / interview prep work by year
 99-templates/        Reusable templates
 knowledge/           Long-term AI-managed knowledge base
+dashboard/           Local web dashboard (HTML/JS, build artifact: data.json)
+workspace/           Gitignored scratch/log dir (cron output, AI intake). Not source of truth.
 ```
 
 ### 00-profile
-Use for stable info:
-- identity
-- long-term goals
-- routines
-- preferences
-- health constraints user wants kept
+Use for stable personal info + AI behavior context:
+- identity, long-term goals, routines, preferences, health constraints (`identity.md`, `goals-2026.md`, `routines.md`, `nutrition-guidelines.md`)
+- AI-facing context: `user-context.md` (Yano preferences), `soul.md` (AI persona), `ai-agents.md` (session startup rules), `ai-tools.md` (local tool notes / XLSX workflow)
 
 Do not store daily events here.
 
@@ -135,20 +134,22 @@ File path:
 Use for time-boxed career/interview preparation work (BrSE prep, mock interviews, quizzes, CV materials, knowledge-base checklists).
 
 Top-level files inside `05-career-prep/YYYY/`:
-- `MASTER-PLAN.md` — plan that drives the prep cycle
+- `SPRINT-PLAN-YYYY-MM-DD.md` — current active prep sprint plan
 - `MOCK-INTERVIEW-SCHEDULE.md`, `IMPROVEMENT-AREAS.md`, `KINKEN-KNOWLEDGE-BASE-CHECKLIST.md`
 
 Subfolders:
 - `daily/YYYY-MM-DD.md` — daily prep log (separate from `01-daily/`)
-- `weekly/YYYY-MM-DD.md` — weekly prep review
+- `weekly/YYYY-MM-DD.md` — weekly prep review (placeholder, empty until first entry)
 - `mock-interviews/YYYY-MM-DD-session-N-prep.md`
 - `quizzes/quiz-NN-<topic>.md` and `quiz-NN-answers.md`
-- `cv-materials/`
+- `cv-materials/` — placeholder, empty until first CV draft
+- `archive/` — superseded plans (e.g. old MASTER-PLAN.md)
 
 Rules:
 - Career-prep daily logs go here, NOT in `01-daily/`.
 - Reusable knowledge extracted from prep (e.g. spec-reading techniques, JP grammar) should be moved to `knowledge/` once stable.
-- Use templates in `99-templates/career-prep-*`.
+- Use templates in `99-templates/career-prep-*` and `99-templates/mock-interview-template.md`.
+- When a plan is superseded, move it to `archive/` instead of leaving stale alongside active plan.
 
 ### knowledge
 Long-term AI-managed knowledge base. Governed by its own system docs — read those first before reorganizing or adding durable notes:
@@ -157,21 +158,24 @@ Long-term AI-managed knowledge base. Governed by its own system docs — read th
 - `knowledge/00_SYSTEM/Knowledge-Organization.md` — folder scope, naming, metadata, linking rules
 - `knowledge/00_SYSTEM/Workflows.md` — intake, normalization, retrieval, refactor procedures
 
-Domain folders (one canonical home per note):
+Active domain folders (one canonical home per note):
 - `00_SYSTEM/` — AI governance, do not put topic notes here
 - `01_JAPANESE/` — Japanese learning (grammar, vocab, study methods)
-- `02_AI_TOOLS/` — prompting, models, agent patterns
 - `03_PRODUCTIVITY/` — habits, systems, focus
-- `04_SOFTWARE_DEVELOPMENT/` — durable engineering notes
 - `05_GYM/` — gym reference (form cues, glossary, machine reference)
-- `05_PERSONAL_DEVELOPMENT/` — personal growth notes
-- `06_PROJECTS/` — project-bound material (e.g. `kinken/`)
+- `06_PROJECTS/` — project-bound material (`kinken/`, `worklog/`; routing in `06_PROJECTS/README.md`)
 - `99_ARCHIVE/` — obsolete-but-informative notes
+
+Reserved domain slots (created on-demand when first note exists, theo `Knowledge-Organization.md`):
+- `02_AI_TOOLS/` — prompting, models, agent patterns
+- `04_SOFTWARE_DEVELOPMENT/` — durable engineering notes
+- `05_PERSONAL_DEVELOPMENT/` — personal growth notes
 
 Rules:
 - Do not create new top-level domain folders without checking `Knowledge-Organization.md` first.
 - Ephemeral logs (daily/meals/gym) belong in `01-daily/`, `03-meals/`, `02-gym/`, NOT in `knowledge/`.
 - Career-prep working material lives in `05-career-prep/`; only graduate it to `knowledge/` when stable and reusable.
+- Project-specific notes (KINKEN/WorkLog) chỉ có một home: `knowledge/06_PROJECTS/<project>/`. Không split sang `notes/` hay nơi khác.
 
 ## Update Workflow
 
@@ -239,10 +243,14 @@ Use files in:
 ```
 
 Current templates:
-- `daily-template.md`
-- `gym-template.md`
-- `meal-template.md`
-- `weekly-review-template.md`
+- `daily-template.md` — for `01-daily/`
+- `gym-template.md` — for `02-gym/`
+- `gym-machine-template.md` — reference cho machine entry (knowledge), không phải log template
+- `meal-template.md` — for `03-meals/`
+- `weekly-review-template.md` — for `04-weekly-review/`
+- `career-prep-daily-template.md` — for `05-career-prep/YYYY/daily/`
+- `career-prep-weekly-template.md` — for `05-career-prep/YYYY/weekly/`
+- `mock-interview-template.md` — for `05-career-prep/YYYY/mock-interviews/`
 
 ## Git Rules
 
@@ -268,7 +276,7 @@ This repo now features a lightweight, zero-dependency **Yano Life Dashboard** lo
 ### Rules for Future AI Maintainers
 - **Zero-Dependency Constraint**: Do NOT install or introduce any external NPM packages (like `express`, `js-yaml`, etc.) to the project root. Keep the server native and clean to avoid bloated `node_modules` and ensure instant zero-setup start for the user.
 - **Frontmatter Preservation**: Always ensure any generated or updated markdown files adhere strictly to the YAML-like frontmatter block style (delimited by `---` at lines 1-11) so that `build-data.js` can parse it reliably.
-- **Gym Table Format**: Gym logs MUST keep the Markdown table headers (`Exercise | Machine / Setup | Sets x Reps | Weight | RPE | Tempo | Form Cue / MMC Focus | Notes / Feel | Key Learning`) consistent to preserve progressive overload tracking in the analytics view.
+- **Gym Table Format**: Gym logs MUST keep the Markdown table headers (`Exercise | Set x Rep | Weight | RPE | Notes`) consistent to preserve progressive overload tracking in the analytics view. Extra columns (Machine/Setup, Tempo, Form Cue, Key Learning) are optional — add them as the 5-col format becomes too lean, but don't reorder the core 5.
 - **Extending the Web View**:
   - Update `dashboard/index.html` to add new tabs or widgets.
   - Add styles to `dashboard/style.css` matching the Cyberpunk dark glassmorphism system variables.

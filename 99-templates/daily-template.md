@@ -1,11 +1,11 @@
 ---
 date: YYYY-MM-DD
-day: Mon
-sleep_hours: 0
-sleep_quality: 1-5
-energy: 1-5
-mood: 1-5
-stress: 1-5
+day:
+sleep_hours:
+sleep_quality:
+energy:
+mood:
+stress:
 body_weight_kg:
 tags: [daily]
 ---

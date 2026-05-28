@@ -1,213 +1,51 @@
 # Yano Life System
 
-Private markdown Second Brain for life tracking and durable knowledge.
+Private markdown second-brain cho Yano. Dùng 2 layers:
+- **Life Tracking** — gym, meals, sleep, mood, daily/weekly logs
+- **Knowledge** — durable notes, project knowledge, AI workflows
 
-## Purpose
+## Entry points cho AI
 
-This repo has 2 layers:
-- **Life Tracking Layer**: gym, meals, health, routines, stress, and weekly review
-- **Knowledge Layer**: durable notes, project knowledge, AI workflows, and reusable concepts
+Đọc theo thứ tự khi onboard:
 
-Main goals:
-- Build sustainable gym habit after long break
-- Track workout, meals, sleep, mood, stress, and recovery
-- Maintain an AI-native knowledge system under `knowledge/`
-- Review patterns weekly
-- Keep logs private, structured, and easy to search
+1. [`CLAUDE.md`](CLAUDE.md) — rules & workflow cho Claude Code
+2. [`AGENTS.md`](AGENTS.md) — rules cho Codex / other agents (sync với CLAUDE.md)
+3. [`AI-REPO-ONBOARDING.md`](AI-REPO-ONBOARDING.md) — Vietnamese context + coaching tone
+4. [`00-profile/`](00-profile/) — identity, goals, AI behavior context
+5. [`knowledge/00_SYSTEM/`](knowledge/00_SYSTEM/) — knowledge governance docs
 
-## 🚀 Yano Life Dashboard (Premium Interactive Web View)
-
-Bên cạnh việc chỉnh sửa trực tiếp các file Markdown, bạn có thể trải nghiệm giao diện **Web Dashboard Premium (Glassmorphism Dark Mode)** cực kỳ sống động và hiện đại để trực quan hóa toàn bộ hành trình của mình.
-
-### Các tính năng nổi bật:
-* **Tổng quan trực quan**: Chuỗi ngày ghi chép liên tục (streak), biểu đồ theo dõi giấc ngủ, mức năng lượng và tần suất đi gym hàng tuần.
-* **Gym Overload Tracker**: Chọn bất kỳ bài tập nào (Leg Press, Leg Extension, Chest Press...) từ danh sách để xem biểu đồ tăng tiến mức tạ & RPE theo thời gian.
-* **Timeline Chi tiết**: Bộ lọc và danh sách chi tiết các buổi tập Gym, nhật ký hàng ngày (Daily), bữa ăn (Meals) và báo cáo tuần (Weekly Review).
-* **Trình duyệt kiến thức**: Đọc các tài liệu hướng dẫn trong thư mục `knowledge/05_GYM/` được biên dịch trực tiếp sang giao diện HTML cực đẹp, tích hợp thanh tìm kiếm thông minh.
-* **Bảo mật tuyệt đối**: Chạy hoàn toàn dưới local (offline), không tải bất kỳ dữ liệu cá nhân nào lên server ngoài.
-
-### Hướng dẫn khởi chạy nhanh:
-Chỉ cần chạy lệnh sau tại thư mục gốc của repo:
-```bash
-node server.js
-```
-Sau đó mở trình duyệt và truy cập: **[http://localhost:3000](http://localhost:3000)**
-
-*(Lưu ý: Dữ liệu trên Web sẽ tự động biên dịch và cập nhật theo thời gian thực mỗi khi bạn ghi thêm file Markdown mới và F5 lại trang!)*
-
-## AI Coach Charter
-
-Use `00-profile/ai-coach-charter.md` as the stable guidance file for gym and recovery coaching.
-
-It defines:
-- calm, sustainable coaching tone
-- recovery-first training principles
-- anti-toxic gym culture rules
-- nutrition stance around whey, digestion, and realistic protein habits
-- honest progress analysis without fake positivity or exaggerated results
-
-When AI reviews gym logs, weekly patterns, or progress photos, it should follow this charter before giving recommendations.
-
-## Repository Structure
+## Folder map
 
 ```text
-Life Tracking Layer
-00-profile/          Personal context, goals, routines
-01-daily/            Daily logs by year
-02-gym/              Gym session logs by year
-03-meals/            Meal logs by year
-04-weekly-review/   Weekly summary and adjustment
+00-profile/          Personal identity, goals, routines + AI context
+01-daily/            Daily life logs (YYYY/YYYY-MM-DD.md)
+02-gym/              Gym session logs (YYYY/YYYY-MM-DD-dayX.md)
+03-meals/            Meal logs (YYYY/YYYY-MM-DD.md)
+04-weekly-review/    Weekly reviews + training plans (YYYY-W##.md, YYYY-W##-plan.md)
+05-career-prep/      Time-boxed BrSE/interview prep (YYYY/...)
 99-templates/        Reusable markdown templates
-
-Knowledge Layer
-knowledge/           AI-managed durable knowledge
-
-Temporary Workspace
-workspace/           Temporary local files for AI intake; ignored by git
+knowledge/           Durable knowledge layer (governed by 00_SYSTEM/)
+dashboard/           Local web dashboard (run via `node server.js`)
+workspace/           Gitignored scratch / cron logs (not source of truth)
 ```
 
-## Knowledge Layer
+## Quick reference: "log gì vào đâu?"
 
-`knowledge/` is the canonical root for long-lived knowledge.
+| User intent                  | Folder + template                                      |
+| ---------------------------- | ------------------------------------------------------ |
+| Daily summary                | `01-daily/YYYY/` + `99-templates/daily-template.md`    |
+| Gym session                  | `02-gym/YYYY/` + `99-templates/gym-template.md`        |
+| Meal log                     | `03-meals/YYYY/` + `99-templates/meal-template.md`     |
+| Weekly review                | `04-weekly-review/` + `weekly-review-template.md`      |
+| Career-prep daily            | `05-career-prep/YYYY/daily/` + `career-prep-daily-template.md` |
+| Mock interview prep          | `05-career-prep/YYYY/mock-interviews/` + `mock-interview-template.md` |
+| Durable knowledge note       | `knowledge/<domain>/` — đọc `knowledge/00_SYSTEM/Knowledge-Organization.md` trước |
+| Project working notes        | `knowledge/06_PROJECTS/<project>/working-notes.md`     |
 
-```text
-knowledge/
-├── 00_SYSTEM/                 AI operating rules and workflows
-├── 01_JAPANESE/               Japanese learning knowledge
-├── 02_AI_TOOLS/               AI tools, prompting, agent workflows
-├── 03_PRODUCTIVITY/           Productivity and execution systems
-├── 04_SOFTWARE_DEVELOPMENT/   Reusable software engineering knowledge
-├── 05_PERSONAL_DEVELOPMENT/   Mindset, communication, growth frameworks
-├── 06_PROJECTS/               Project-specific knowledge
-└── 99_ARCHIVE/                Inactive or superseded materials
-```
+## Dashboard
 
-Start with:
-- `knowledge/00_SYSTEM/CORE.md`
-- `knowledge/00_SYSTEM/Knowledge-Organization.md`
-- `knowledge/00_SYSTEM/Workflows.md`
+Run `node server.js` → `http://localhost:3000`. Zero-dependency Node server compiles markdown vào `dashboard/data.json` mỗi lần F5.
 
-Current project knowledge:
-- `knowledge/06_PROJECTS/kinken/`
+## Privacy
 
-## Life Tracking Workflow
-
-### 1. Daily log
-Create file:
-
-```text
-01-daily/YYYY/YYYY-MM-DD.md
-```
-
-Use:
-
-```text
-99-templates/daily-template.md
-```
-
-Track only key signals. Do not overfill.
-
-### 2. Gym log
-After each workout, create:
-
-```text
-02-gym/YYYY/YYYY-MM-DD-dayX.md
-```
-
-Use:
-
-```text
-99-templates/gym-template.md
-```
-
-Minimum required fields:
-- exercises
-- sets x reps
-- weight if known
-- fatigue/form notes
-- recovery notes
-
-### 3. Meal log
-Create:
-
-```text
-03-meals/YYYY/YYYY-MM-DD.md
-```
-
-Use:
-
-```text
-99-templates/meal-template.md
-```
-
-Estimate calories/protein only when available. Blank is okay.
-
-### 4. Weekly review
-Once per week, create:
-
-```text
-04-weekly-review/YYYY-W##.md
-```
-
-Use:
-
-```text
-99-templates/weekly-review-template.md
-```
-
-Focus on patterns, not perfection.
-
-## Logging Rules
-
-- Facts first, interpretation later.
-- Keep daily logs short.
-- Use weekly review for insights and adjustments.
-- Unknown data can stay blank.
-- Do not invent calories, protein, HR, body weight, or sleep numbers.
-- Sensitive data stays in this private repo only.
-
-## Common Tags
-
-```text
-[daily]
-[gym]
-[meals]
-[weekly-review]
-[recovery]
-[stress]
-[mood]
-[sleep]
-```
-
-## Current Starting Point
-
-Initial logs were created from first gym comeback session:
-
-- `01-daily/2026/2026-05-11.md`
-- `02-gym/2026/2026-05-11-day1.md`
-- `03-meals/2026/2026-05-11.md`
-
-## Suggested Mobile Capture Format
-
-When logging during gym on phone, use short lines:
-
-```text
-Gym log YYYY-MM-DD dayX
-Exercise: Bench press
-Set 1: 15 reps, weight ?, note: ok
-Set 2: 15 reps, weight ?, note: triceps fatigue
-Set 3: 15 reps, weight ?, note: last rep unstable
-Mood pre: 3/5
-Mood post: 4/5
-Energy pre: 3/5
-Energy post: 4/5
-Pain: none / shoulder / elbow / back
-```
-
-Paste this into AI later and ask it to normalize into repo files.
-
-## Workspace Rule
-
-`workspace/` is temporary scratch space only.
-
-Use it to drop local files for AI reading. Durable knowledge should be extracted into `knowledge/` or life logs, then treated from canonical folders only.
+Repo này chứa data cá nhân (mental health, body, routines). Không bao giờ public, không paste sang external services.

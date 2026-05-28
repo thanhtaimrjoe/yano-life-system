@@ -124,22 +124,196 @@ function recreateCharts() {
 // ==========================================
 // 1. TAB: OVERVIEW DASHBOARD
 // ==========================================
-function initDashboard() {
+// ==========================================
+// NEW FEATURES FOR REDESIGNED DASHBOARD
+// ==========================================
+
+// Predict next session type based on recent gym logs
+function predictNextSession() {
+  if (!appData || appData.gym.length === 0) {
+    return { type: 'Upper A', focus: 'Chest, Back, Shoulders', nutrition: '30-40g carb + protein, 45 phút trước tập' };
+  }
+  
+  const lastSession = appData.gym[0];
+  const lastFocus = lastSession.frontmatter.focus || [];
+  
+  // Determine next session based on pattern: Upper A → Lower A → Upper B → Lower B
+  let nextType = 'Upper A';
+  let nextFocus = 'Chest, Back, Shoulders';
+  let nutritionAdvice = '30-40g carb + protein, 45 phút trước tập';
+  
+  if (lastFocus.includes('upper-a')) {
+    nextType = 'Lower A';
+    nextFocus = 'Quads, Glutes, Calves';
+    nutritionAdvice = '40-50g carb + protein, 45 phút trước tập (Lower cần nhiều năng lượng hơn)';
+  } else if (lastFocus.includes('lower-a')) {
+    nextType = 'Upper B';
+    nextFocus = 'Back-dominant, Rear Delts, Biceps';
+    nutritionAdvice = '30-40g carb + protein, 45 phút trước tập';
+  } else if (lastFocus.includes('upper-b')) {
+    nextType = 'Lower B';
+    nextFocus = 'Hamstrings, Glutes, Posterior Chain';
+    nutritionAdvice = '40-50g carb + protein, 45 phút trước tập (Lower cần nhiều năng lượng hơn)';
+  } else if (lastFocus.includes('lower-b')) {
+    nextType = 'Upper A';
+    nextFocus = 'Chest, Back, Shoulders';
+    nutritionAdvice = '30-40g carb + protein, 45 phút trước tập';
+  }
+  
+  return { type: nextType, focus: nextFocus, nutrition: nutritionAdvice };
+}
+
+// Calculate MMC progress from gym logs
+function calculateMMCProgress() {
+  if (!appData || appData.gym.length === 0) return [];
+  
+  const mmcData = {};
+  
+  // Aggregate MMC wins by muscle group
+  appData.gym.forEach(session => {
+    const wins = session.frontmatter.key_mmc_wins || [];
+    const targetMuscles = session.frontmatter.target_muscles || [];
+    
+    targetMuscles.forEach(muscle => {
+      if (!mmcData[muscle]) {
+        mmcData[muscle] = { count: 0, total: 0 };
+      }
+      mmcData[muscle].total++;
+      
+      // Check if there's an MMC win for this muscle
+      const hasWin = wins.some(win => 
+        win.toLowerCase().includes(muscle.toLowerCase())
+      );
+      if (hasWin) {
+        mmcData[muscle].count++;
+      }
+    });
+  });
+  
+  // Convert to array and calculate percentage
+  const mmcProgress = Object.keys(mmcData).map(muscle => ({
+    muscle: muscle.charAt(0).toUpperCase() + muscle.slice(1),
+    progress: Math.round((mmcData[muscle].count / mmcData[muscle].total) * 100),
+    sessions: mmcData[muscle].total
+  }));
+  
+  // Sort by progress descending
+  mmcProgress.sort((a, b) => b.progress - a.progress);
+  
+  return mmcProgress.slice(0, 5); // Top 5
+}
+
+// Calculate recovery status from recent daily logs
+function calculateRecoveryStatus() {
+  if (!appData || appData.daily.length === 0) {
+    return {
+      energy: 'Stable',
+      doms: 'None',
+      sleepQuality: 'Good',
+      overall: 'good'
+    };
+  }
+  
+  const last7Days = appData.daily.slice(0, 7);
+  
+  // Energy trend
+  const energyValues = last7Days
+    .map(d => d.frontmatter.energy)
+    .filter(e => e);
+  
+  let energyTrend = 'Stable';
+  if (energyValues.length >= 3) {
+    const recent = energyValues.slice(0, 3);
+    const highCount = recent.filter(e => e === 'high').length;
+    const lowCount = recent.filter(e => e === 'low' || e === 'moderate').length;
+    
+    if (highCount >= 2) energyTrend = 'High ↑';
+    else if (lowCount >= 2) energyTrend = 'Low ↓';
+  }
+  
+  // DOMS from last gym session
+  const lastGym = appData.gym[0];
+  let domsStatus = 'None';
+  if (lastGym && lastGym.sections && lastGym.sections['Recovery & Expected DOMS']) {
+    const domsText = lastGym.sections['Recovery & Expected DOMS'];
+    if (domsText.includes('moderate') || domsText.includes('khá rõ')) {
+      domsStatus = 'Moderate';
+    } else if (domsText.includes('significant') || domsText.includes('rõ')) {
+      domsStatus = 'Mild-Moderate';
+    }
+  }
+  
+  // Sleep quality
+  const avgSleep = last7Days.reduce((sum, d) => {
+    const hrs = parseFloat(d.frontmatter.sleep_hours);
+    return sum + (isNaN(hrs) ? 0 : hrs);
+  }, 0) / last7Days.length;
+  
+  let sleepQuality = 'Good';
+  if (avgSleep < 6) sleepQuality = 'Poor';
+  else if (avgSleep < 7) sleepQuality = 'Fair';
+  else if (avgSleep >= 8) sleepQuality = 'Excellent';
+  
+  // Overall recovery
+  let overall = 'good';
+  if (energyTrend.includes('Low') || sleepQuality === 'Poor') {
+    overall = 'moderate';
+  }
+  if (energyTrend.includes('High') && sleepQuality === 'Excellent') {
+    overall = 'excellent';
+  }
+  
+  return {
+    energy: energyTrend,
+    doms: domsStatus,
+    sleepQuality: sleepQuality,
+    overall: overall
+  };
+}
+
+// Setup collapsible sections
+function setupCollapsibleSections() {
+  const collapsibleHeaders = document.querySelectorAll('.section-header.collapsible');
+  
+  collapsibleHeaders.forEach(header => {
+    header.addEventListener('click', () => {
+      const targetId = header.getAttribute('data-target');
+      const content = document.getElementById(targetId);
+      const icon = header.querySelector('i[data-lucide]');
+      
+      if (content) {
+        content.classList.toggle('collapsed');
+        
+        // Rotate icon
+        if (content.classList.contains('collapsed')) {
+          icon.setAttribute('data-lucide', 'chevron-right');
+        } else {
+          icon.setAttribute('data-lucide', 'chevron-down');
+        }
+        lucide.createIcons();
+      }
+    });
+  });
+}
+
+// Render new dashboard with all features
+function renderNewDashboard() {
   if (!appData) return;
   
-  // A. Total Gym Sessions
+  // 1. Next Session Prediction
+  const nextSession = predictNextSession();
+  document.getElementById('next-session-type').textContent = nextSession.type;
+  document.getElementById('next-session-focus').textContent = nextSession.focus;
+  document.getElementById('nutrition-suggestion').textContent = nextSession.nutrition;
+  
+  // 2. Quick Stats
   const totalGym = appData.gym.length;
   document.getElementById('stat-gym-sessions').textContent = totalGym;
-  document.getElementById('stat-gym-subtitle').textContent = totalGym > 0 
-    ? `Buổi gần nhất: ${appData.gym[0].date}`
-    : 'Chưa có buổi tập nào';
-  document.getElementById('gym-count-badge').querySelector('span').textContent = `${totalGym} Buổi tập`;
-    
-  // B. Average Sleep Hours
-  let totalSleep = 0;
-  let sleepDaysCount = 0;
-  const last10Daily = appData.daily.slice(0, 10);
   
+  const streak = calculateDailyStreak(appData.daily);
+  document.getElementById('stat-streak').textContent = streak;
+  
+  let totalSleep = 0, sleepDaysCount = 0;
   appData.daily.forEach(d => {
     const hrs = parseFloat(d.frontmatter.sleep_hours);
     if (!isNaN(hrs) && hrs > 0) {
@@ -147,49 +321,83 @@ function initDashboard() {
       sleepDaysCount++;
     }
   });
-  
   const avgSleep = sleepDaysCount > 0 ? (totalSleep / sleepDaysCount).toFixed(1) : 0;
-  document.getElementById('stat-sleep-hours').textContent = avgSleep > 0 ? `${avgSleep}h` : 'Chưa log';
-  document.getElementById('stat-sleep-subtitle').textContent = sleepDaysCount > 0 
-    ? `Tính trung bình trên ${sleepDaysCount} ngày`
-    : 'Chưa có dữ liệu giấc ngủ';
-
-  // C. Average Energy
-  const energyValues = appData.daily
-    .map(d => d.frontmatter.energy)
-    .filter(e => e);
+  document.getElementById('stat-sleep-hours').textContent = avgSleep > 0 ? `${avgSleep}h` : '0h';
   
-  let energyStr = 'Ổn định';
-  if (energyValues.length > 0) {
-    const counts = {};
-    let maxVal = energyValues[0], maxCount = 1;
-    energyValues.forEach(el => {
-      counts[el] = (counts[el] || 0) + 1;
-      if (counts[el] > maxCount) {
-        maxVal = el;
-        maxCount = counts[el];
-      }
+  // 3. Recovery Status
+  const recovery = calculateRecoveryStatus();
+  document.getElementById('stat-recovery').textContent = recovery.overall.charAt(0).toUpperCase() + recovery.overall.slice(1);
+  document.getElementById('energy-trend').textContent = recovery.energy;
+  document.getElementById('current-doms').textContent = recovery.doms;
+  document.getElementById('sleep-quality').textContent = recovery.sleepQuality;
+  
+  // Color code recovery card
+  const recoveryCard = document.getElementById('recovery-status-card');
+  recoveryCard.className = 'stat-card compact';
+  if (recovery.overall === 'excellent') recoveryCard.classList.add('status-excellent');
+  else if (recovery.overall === 'moderate') recoveryCard.classList.add('status-moderate');
+  
+  // 4. MMC Progress
+  const mmcProgress = calculateMMCProgress();
+  const mmcList = document.getElementById('mmc-progress-list');
+  mmcList.innerHTML = '';
+  
+  if (mmcProgress.length === 0) {
+    mmcList.innerHTML = '<p class="empty-state">Chưa có dữ liệu MMC</p>';
+  } else {
+    mmcProgress.forEach(item => {
+      const mmcItem = document.createElement('div');
+      mmcItem.className = 'mmc-item';
+      mmcItem.innerHTML = `
+        <span class="mmc-muscle">${item.muscle}</span>
+        <div class="mmc-bar">
+          <div class="mmc-fill" style="width: ${item.progress}%"></div>
+        </div>
+        <span class="mmc-percentage">${item.progress}%</span>
+      `;
+      mmcList.appendChild(mmcItem);
     });
-    energyStr = maxVal.charAt(0).toUpperCase() + maxVal.slice(1);
   }
-  document.getElementById('stat-energy').textContent = energyStr;
-  document.getElementById('stat-energy-subtitle').textContent = `Năng lượng gần nhất: ${appData.daily[0]?.frontmatter.energy || 'N/A'}`;
-
-  // D. Calculate Streaks (Consecutive days logged)
-  const streak = calculateDailyStreak(appData.daily);
-  document.getElementById('stat-streak').textContent = `${streak} ngày`;
-  document.getElementById('streak-counter').querySelector('span').textContent = `${streak} ngày liên tục`;
-
-  // E. Render Overview Charts
+  
+  // 5. Recent Activity (Compact)
+  const recentGymCompact = document.getElementById('recent-gym-compact');
+  recentGymCompact.innerHTML = '';
+  
+  const last3Gym = appData.gym.slice(0, 3);
+  last3Gym.forEach(session => {
+    const activityItem = document.createElement('div');
+    activityItem.className = 'activity-item';
+    
+    const focusText = (session.frontmatter.focus || []).join(', ');
+    const rating = session.frontmatter.session_rating || 'N/A';
+    
+    activityItem.innerHTML = `
+      <div class="activity-icon">
+        <i data-lucide="dumbbell"></i>
+      </div>
+      <div class="activity-content">
+        <h4>Day ${session.dayNumber || '?'} — ${focusText}</h4>
+        <p>${session.date} • ${session.frontmatter.duration_min || '?'} phút • Rating: ${rating}</p>
+      </div>
+    `;
+    recentGymCompact.appendChild(activityItem);
+  });
+  
+  lucide.createIcons();
+  
+  // 6. Setup collapsible sections
+  setupCollapsibleSections();
+}
+function initDashboard() {
+  if (!appData) return;
+  
+  // Call new dashboard renderer
+  renderNewDashboard();
+  
+  // Keep old chart rendering for analytics section
   renderSleepChart();
   renderGymWeeklyChart();
-
-  // F. Render Recent Logs List
-  renderRecentGymLogs();
-  renderRecentDailyLogs();
 }
-
-// Calculate logging streak based on daily log dates
 function calculateDailyStreak(dailyLogs) {
   if (dailyLogs.length === 0) return 0;
   

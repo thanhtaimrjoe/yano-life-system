@@ -102,103 +102,150 @@
       <div class="content-body">
         
         <!-- ================= TAB: DASHBOARD ================= -->
-        <section id="dashboard-tab" class="tab-pane active">
-          <div class="tab-header">
-            <h2>Tổng quan sức khỏe & thói quen</h2>
-            <p>Trực quan hóa nhịp điệu sinh hoạt và tiến trình tập luyện của Yano.</p>
+      <!-- DASHBOARD TAB: Clean & Actionable -->
+      <div class="tab-pane active" id="dashboard-tab">
+        
+        <!-- Hero Section: What's Next -->
+        <section class="hero-section">
+          <div class="hero-content">
+            <h2 class="hero-title">Chào Yano! 👋</h2>
+            <p class="hero-subtitle" id="hero-subtitle">Sẵn sàng cho buổi tập tiếp theo</p>
           </div>
-          
-          <!-- Key Metrics Grid -->
-          <div class="metrics-grid">
-            <div class="metric-card glass">
-              <div class="metric-icon gym-glow"><i data-lucide="dumbbell"></i></div>
-              <div class="metric-details">
-                <h3>Tổng buổi tập</h3>
-                <p class="metric-value" id="stat-gym-sessions">0</p>
-                <span class="metric-change sub-text" id="stat-gym-subtitle">Đang tải...</span>
-              </div>
+          <div class="next-session-card" id="next-session-card">
+            <div class="next-session-header">
+              <i data-lucide="calendar-check"></i>
+              <span>Buổi tập tiếp theo</span>
             </div>
-            
-            <div class="metric-card glass">
-              <div class="metric-icon sleep-glow"><i data-lucide="moon"></i></div>
-              <div class="metric-details">
-                <h3>Giờ ngủ TB</h3>
-                <p class="metric-value" id="stat-sleep-hours">0h</p>
-                <span class="metric-change" id="stat-sleep-subtitle">Đang tải...</span>
-              </div>
+            <div class="next-session-body">
+              <h3 id="next-session-type">Upper A</h3>
+              <p id="next-session-focus">Chest, Back, Shoulders</p>
             </div>
-            
-            <div class="metric-card glass">
-              <div class="metric-icon stress-glow"><i data-lucide="brain"></i></div>
-              <div class="metric-details">
-                <h3>Mức năng lượng TB</h3>
-                <p class="metric-value" id="stat-energy">Bình thường</p>
-                <span class="metric-change sub-text" id="stat-energy-subtitle">Đang tải...</span>
-              </div>
-            </div>
-            
-            <div class="metric-card glass">
-              <div class="metric-icon streak-glow"><i data-lucide="calendar-check"></i></div>
-              <div class="metric-details">
-                <h3>Ghi chép liên tục</h3>
-                <p class="metric-value" id="stat-streak">0 ngày</p>
-                <span class="metric-change sub-text">Đã ghi nhận dữ liệu</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Charts Layout -->
-          <div class="charts-layout">
-            <div class="chart-card glass large">
-              <div class="chart-header">
-                <h3>Theo dõi giấc ngủ & năng lượng</h3>
-                <span class="chart-subtitle">Giờ ngủ và chất lượng ngủ theo ngày</span>
-              </div>
-              <div class="chart-container">
-                <canvas id="sleepChart"></canvas>
-              </div>
-            </div>
-            
-            <div class="chart-card glass">
-              <div class="chart-header">
-                <h3>Tần suất tập Gym</h3>
-                <span class="chart-subtitle">Số buổi tập hoàn thành mỗi tuần</span>
-              </div>
-              <div class="chart-container">
-                <canvas id="gymWeeklyChart"></canvas>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Recent Split Cards -->
-          <div class="recent-split-grid">
-            <div class="recent-logs glass">
-              <div class="widget-header">
-                <h3>Nhật ký tập Gym gần đây</h3>
-                <button class="btn-text" id="go-to-gym-tab-btn">Xem tất cả</button>
-              </div>
-              <div class="widget-content" id="recent-gym-logs-list">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-            
-            <div class="recent-logs glass">
-              <div class="widget-header">
-                <h3>Nhật ký Daily gần đây</h3>
-                <button class="btn-text" id="go-to-daily-tab-btn">Xem tất cả</button>
-              </div>
-              <div class="widget-content" id="recent-daily-logs-list">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
+            <div class="nutrition-alert" id="nutrition-alert">
+              <i data-lucide="alert-circle"></i>
+              <div class="nutrition-alert-content">
+                <strong>Pre-workout nutrition:</strong>
+                <p id="nutrition-suggestion">30-40g carb + protein, 45 phút trước tập</p>
               </div>
             </div>
           </div>
         </section>
-        
-        <!-- ================= TAB: GYM ================= -->
+
+        <!-- Quick Stats Row -->
+        <section class="quick-stats">
+          <div class="stat-card compact">
+            <div class="stat-icon">
+              <i data-lucide="flame"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-value" id="stat-streak">0</span>
+              <span class="stat-label">Ngày liên tục</span>
+            </div>
+          </div>
+          
+          <div class="stat-card compact">
+            <div class="stat-icon">
+              <i data-lucide="dumbbell"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-value" id="stat-gym-sessions">0</span>
+              <span class="stat-label">Buổi tập</span>
+            </div>
+          </div>
+          
+          <div class="stat-card compact">
+            <div class="stat-icon">
+              <i data-lucide="moon"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-value" id="stat-sleep-hours">0h</span>
+              <span class="stat-label">Giấc ngủ TB</span>
+            </div>
+          </div>
+          
+          <div class="stat-card compact" id="recovery-status-card">
+            <div class="stat-icon">
+              <i data-lucide="heart-pulse"></i>
+            </div>
+            <div class="stat-content">
+              <span class="stat-value" id="stat-recovery">Good</span>
+              <span class="stat-label">Recovery</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Recovery & MMC Insights (Collapsible) -->
+        <section class="insights-section">
+          <div class="section-header collapsible" data-target="recovery-details">
+            <h3>Recovery & Progress</h3>
+            <i data-lucide="chevron-down"></i>
+          </div>
+          <div class="collapsible-content" id="recovery-details">
+            <div class="insights-grid">
+              <!-- Recovery Status -->
+              <div class="insight-card">
+                <h4><i data-lucide="activity"></i> Recovery Status</h4>
+                <div class="recovery-indicators">
+                  <div class="indicator">
+                    <span class="indicator-label">Energy (7 ngày):</span>
+                    <span class="indicator-value" id="energy-trend">Stable</span>
+                  </div>
+                  <div class="indicator">
+                    <span class="indicator-label">DOMS hiện tại:</span>
+                    <span class="indicator-value" id="current-doms">None</span>
+                  </div>
+                  <div class="indicator">
+                    <span class="indicator-label">Sleep quality:</span>
+                    <span class="indicator-value" id="sleep-quality">Good</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- MMC Progress -->
+              <div class="insight-card">
+                <h4><i data-lucide="brain"></i> MMC Progress</h4>
+                <div class="mmc-progress-list" id="mmc-progress-list">
+                  <div class="mmc-item">
+                    <span class="mmc-muscle">Loading...</span>
+                    <div class="mmc-bar"><div class="mmc-fill" style="width: 0%"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Recent Activity (Compact) -->
+        <section class="recent-activity">
+          <div class="section-header">
+            <h3>Hoạt động gần đây</h3>
+            <button class="btn-link" id="go-to-gym-tab-btn">Xem tất cả →</button>
+          </div>
+          <div class="activity-list" id="recent-gym-compact">
+            <!-- Populated by JS -->
+          </div>
+        </section>
+
+        <!-- Analytics (Collapsible) -->
+        <section class="analytics-section">
+          <div class="section-header collapsible" data-target="analytics-charts">
+            <h3>Analytics</h3>
+            <i data-lucide="chevron-down"></i>
+          </div>
+          <div class="collapsible-content collapsed" id="analytics-charts">
+            <div class="charts-grid">
+              <div class="chart-card">
+                <h4>Gym Frequency (7 ngày)</h4>
+                <canvas id="gymWeeklyChart"></canvas>
+              </div>
+              <div class="chart-card">
+                <h4>Sleep Pattern (10 ngày)</h4>
+                <canvas id="sleepChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
         <section id="gym-tab" class="tab-pane">
           <div class="tab-header">
             <h2>Tiến độ Tập luyện (Gym Progress)</h2>

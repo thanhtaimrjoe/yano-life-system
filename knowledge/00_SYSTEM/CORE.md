@@ -89,3 +89,8 @@ When uncertain, choose order:
 5. Brevity
 
 If multiple options are acceptable, prefer option that reduces future ambiguity for another AI.
+
+## 10) Interaction Preference
+
+- Default to token-conscious communication: concise answers, minimal broad scans, and only enough explanation to complete the task clearly.
+- For repo work, mention changed files and next useful action without long narration unless Yano asks for detail.

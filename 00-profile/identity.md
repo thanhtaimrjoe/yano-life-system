@@ -1,6 +1,6 @@
 ---
 type: profile
-updated: 2026-05-11
+updated: 2026-05-28
 tags: [identity, personal]
 ---
 
@@ -10,11 +10,15 @@ tags: [identity, personal]
 - Name: Huỳnh Thanh Tài (Yano)
 - Age: 27
 - Location: TP.HCM
-- Education: Đại học FPT - Chuyên ngành Kỹ thuật phần mềm
-- Roles & Experience:
-  - Java Developer (2 tháng thử việc, nửa năm 2022)
-  - IT Comtor (6 tháng onsite tại System-EXE, đầu 2025 - giữa 2025)
-  - IT Tester + IT Comtor (1 năm tại MOR, giữa 2025 - hiện tại)
+- Education: ĐH FPT — Kỹ thuật phần mềm (2017 – 2022)
+- Career Timeline:
+  - 2022/09 – 2022/12: Java Developer (thử việc, ~3 tháng) — chuyên FE, đọc tài liệu & sử dụng IM-LogicDesigner cho dự án Nhật
+  - 2023/01 – 2025/02: Career gap — điều trị bệnh dạ dày/tiêu hoá, về quê phục hồi, kết hợp tự học (Flutter, ReactJS, React Native, JP)
+  - 2025/03 – 2025/04: IT Comtor tại MOR (TP.HCM)
+  - 2025/05 – 2025/08: IT Comtor onsite tại System-EXE — 2 dự án song song:
+    - Maintain hệ thống thủ tục hành chính online (.NET + Ruby)
+    - Migration project (Spring Boot)
+  - 2025/09 – hiện tại: IT Tester + IT Comtor tại MOR — dự án KINKEN (quy mô lớn, đi từ Development → Release PROD)
 
 ## Japanese Skills
 - Certification: JLPT N2

@@ -1,5 +1,8 @@
 # 3-Week BrSE Fresher Prep Plan
 
+> ⚠️ **SUPERSEDED 2026-05-28:** Plan này đã bị thay thế bởi [`SPRINT-PLAN-2026-05-28.md`](./SPRINT-PLAN-2026-05-28.md) — sprint rút gọn 5 ngày (2026-05-28 → 2026-06-01). Yano skip Day 1-7 và cần nộp CV tuần 2026-06-01.  
+> File gốc giữ lại để tham khảo cấu trúc, KHÔNG follow.
+
 **Start Date:** 2026-05-21 (Wednesday)  
 **Target Date:** 2026-06-10 (Tuesday)  
 **Total Days:** 21 days (3 weeks)  

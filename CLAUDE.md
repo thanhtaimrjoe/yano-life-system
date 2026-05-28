@@ -274,3 +274,27 @@ This repo now features a lightweight, zero-dependency **Yano Life Dashboard** lo
   - Add styles to `dashboard/style.css` matching the Cyberpunk dark glassmorphism system variables.
   - Implement parsing & chart binding inside `dashboard/app.js`.
 
+## Global Workspace Configuration
+
+This repo is one part of Yano's larger Claude Code workspace. Global workspace config (agents, rules, workflow patterns) is managed separately in a private workspace repo.
+
+### Key Integration Points
+
+**BrSE Interview Prep** (via workspace agents):
+- Interview coach agent with STAR method framework
+- KINKEN case studies for mock interviews
+- Workspace path: `~/.claude/projects/kinken/05_interview/`
+
+**Japanese Language Study** (via workspace agents):
+- Technical vocabulary learning (furigana + Vietnamese translation)
+- SRS tracking (Mới gặp → Đang Học → Từng Nghe → Cần Review → Master)
+- Notion integration for vocabulary database
+- KINKEN domain vocabulary (見込み, 見付け, 商品, etc.)
+
+**Project Storage Rules** (workspace-wide):
+- KINKEN project: `~/.claude/projects/kinken/`
+- WORKLOG project: `~/.claude/projects/worklog/`
+- Global memory: Only for career facts, preferences, study progress — NOT project content
+
+**Important**: Do not replicate workspace config here. This repo (`yano-life-system`) focuses only on life tracking (gym, meals, daily logs). Interview prep notes go to `05-career-prep/`, not workspace config.
+

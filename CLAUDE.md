@@ -55,7 +55,9 @@ Rules:
 02-gym/              Gym session logs by year
 03-meals/            Meal logs by year
 04-weekly-review/   Weekly reviews
+05-career-prep/      Career / interview prep work by year
 99-templates/        Reusable templates
+knowledge/           Long-term AI-managed knowledge base
 ```
 
 ### 00-profile
@@ -128,6 +130,48 @@ File path:
 ```text
 04-weekly-review/YYYY-W##.md
 ```
+
+### 05-career-prep
+Use for time-boxed career/interview preparation work (BrSE prep, mock interviews, quizzes, CV materials, knowledge-base checklists).
+
+Top-level files inside `05-career-prep/YYYY/`:
+- `MASTER-PLAN.md` — plan that drives the prep cycle
+- `MOCK-INTERVIEW-SCHEDULE.md`, `IMPROVEMENT-AREAS.md`, `KINKEN-KNOWLEDGE-BASE-CHECKLIST.md`
+
+Subfolders:
+- `daily/YYYY-MM-DD.md` — daily prep log (separate from `01-daily/`)
+- `weekly/YYYY-MM-DD.md` — weekly prep review
+- `mock-interviews/YYYY-MM-DD-session-N-prep.md`
+- `quizzes/quiz-NN-<topic>.md` and `quiz-NN-answers.md`
+- `cv-materials/`
+
+Rules:
+- Career-prep daily logs go here, NOT in `01-daily/`.
+- Reusable knowledge extracted from prep (e.g. spec-reading techniques, JP grammar) should be moved to `knowledge/` once stable.
+- Use templates in `99-templates/career-prep-*`.
+
+### knowledge
+Long-term AI-managed knowledge base. Governed by its own system docs — read those first before reorganizing or adding durable notes:
+
+- `knowledge/00_SYSTEM/CORE.md` — operating principles for AI inside this repo
+- `knowledge/00_SYSTEM/Knowledge-Organization.md` — folder scope, naming, metadata, linking rules
+- `knowledge/00_SYSTEM/Workflows.md` — intake, normalization, retrieval, refactor procedures
+
+Domain folders (one canonical home per note):
+- `00_SYSTEM/` — AI governance, do not put topic notes here
+- `01_JAPANESE/` — Japanese learning (grammar, vocab, study methods)
+- `02_AI_TOOLS/` — prompting, models, agent patterns
+- `03_PRODUCTIVITY/` — habits, systems, focus
+- `04_SOFTWARE_DEVELOPMENT/` — durable engineering notes
+- `05_GYM/` — gym reference (form cues, glossary, machine reference)
+- `05_PERSONAL_DEVELOPMENT/` — personal growth notes
+- `06_PROJECTS/` — project-bound material (e.g. `kinken/`)
+- `99_ARCHIVE/` — obsolete-but-informative notes
+
+Rules:
+- Do not create new top-level domain folders without checking `Knowledge-Organization.md` first.
+- Ephemeral logs (daily/meals/gym) belong in `01-daily/`, `03-meals/`, `02-gym/`, NOT in `knowledge/`.
+- Career-prep working material lives in `05-career-prep/`; only graduate it to `knowledge/` when stable and reusable.
 
 ## Update Workflow
 

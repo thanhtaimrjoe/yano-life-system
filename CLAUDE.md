@@ -47,6 +47,19 @@ Rules:
 - Unknown fields should remain blank, not guessed.
 - Avoid creating new folders unless current structure cannot fit request.
 
+## Workflow Orchestration (token-efficient, multi-agent)
+
+For multi-step tasks (weekly review, analysis, batch generation, research), use the **model-tier orchestration pattern** documented in `workflows/`:
+
+- **Read `workflows/README.md` first** before designing any multi-step/multi-agent task.
+- Assign model tiers by task complexity:
+  - **Lightweight** (Haiku / Gemini Flash / GPT-3.5) → extraction, search, formatting
+  - **Reasoning** (Opus / Gemini Pro / GPT-4) → analysis, decisions, synthesis
+  - **Balanced** (Sonnet / GPT-4-turbo) → code/markdown generation
+- Pattern: Extract (light) → Analyze (reasoning) → Format (balanced). ~77% token savings vs all-heavyweight, while keeping quality on logic-heavy steps.
+- `workflows/weekly-gym-review.js` is the reference implementation.
+- Workflows are cross-AI portable: when adding/editing them, keep the adaptation notes for ChatGPT/Gemini/Codex/Antigravity.
+
 ## Folder Rules
 
 ```text
@@ -59,6 +72,7 @@ Rules:
 99-templates/        Reusable templates
 knowledge/           Long-term AI-managed knowledge base
 dashboard/           Local web dashboard (HTML/JS, build artifact: data.json)
+workflows/           Reusable multi-agent orchestration scripts (cross-AI portable)
 workspace/           Gitignored scratch/log dir (cron output, AI intake). Not source of truth.
 ```
 

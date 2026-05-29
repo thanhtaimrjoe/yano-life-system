@@ -50,6 +50,24 @@ Rules:
 - Prefer single source of truth over duplicate notes.
 - Keep structural changes logical and reversible where possible.
 
+## Workflow Orchestration (token-efficient, multi-agent)
+
+For multi-step tasks (weekly review, analysis, batch generation, research), this repo standardizes on a **model-tier orchestration pattern**. It cuts token cost ~77% vs using a heavyweight model for everything, while keeping quality on logic-heavy steps.
+
+**Read `workflows/README.md` first** before designing any multi-step/multi-agent task.
+
+**Assign models by task complexity (Extract → Analyze → Format):**
+
+| Tier        | Use for                       | Claude  | OpenAI / Codex | Gemini            |
+|-------------|-------------------------------|---------|----------------|-------------------|
+| Lightweight | extract, search, format       | Haiku   | GPT-3.5-turbo  | Gemini 1.5 Flash  |
+| Reasoning   | analyze, decisions, synthesis | Opus    | GPT-4 / o1     | Gemini 1.5 Pro    |
+| Balanced    | code/markdown generation      | Sonnet  | GPT-4-turbo    | Gemini 1.5 Flash  |
+
+- Reference implementation: `workflows/weekly-gym-review.js`
+- Full guide + per-AI adaptation code: `workflows/README.md`
+- When adding/editing a workflow, keep it **cross-AI portable** (include adaptation notes for ChatGPT/Gemini/Codex/Antigravity).
+
 ## Folder Rules
 
 ```text
@@ -62,6 +80,7 @@ Rules:
 99-templates/        Reusable templates (structure only)
 knowledge/           Durable AI-managed knowledge layer (canonical data & principles)
 dashboard/           Local web dashboard (HTML/JS + build artifact data.json)
+workflows/           Reusable multi-agent orchestration scripts (cross-AI portable)
 workspace/           Gitignored scratch / log dir (cron output, AI intake). Not source of truth.
 ```
 

@@ -72,10 +72,10 @@ function setupEventListeners() {
   });
   
   // Dashboard Widget Quick Buttons
-  document.getElementById('go-to-gym-tab-btn').addEventListener('click', () => {
+  document.getElementById('go-to-gym-tab-btn')?.addEventListener('click', () => {
     document.querySelector('.sidebar-nav [data-tab="gym-tab"]').click();
   });
-  document.getElementById('go-to-daily-tab-btn').addEventListener('click', () => {
+  document.getElementById('go-to-daily-tab-btn')?.addEventListener('click', () => {
     document.querySelector('.sidebar-nav [data-tab="daily-tab"]').click();
   });
 
@@ -105,14 +105,6 @@ function setupEventListeners() {
 
 // Recreate charts on theme change to ensure colors match
 function recreateCharts() {
-  if (currentCharts.sleepChart) {
-    currentCharts.sleepChart.destroy();
-    renderSleepChart();
-  }
-  if (currentCharts.gymChart) {
-    currentCharts.gymChart.destroy();
-    renderGymWeeklyChart();
-  }
   if (currentCharts.exerciseChart) {
     const activeEx = document.getElementById('exercise-select').value;
     if (activeEx) {
@@ -394,9 +386,6 @@ function initDashboard() {
   // Call new dashboard renderer
   renderNewDashboard();
   
-  // Keep old chart rendering for analytics section
-  renderSleepChart();
-  renderGymWeeklyChart();
 }
 function calculateDailyStreak(dailyLogs) {
   if (dailyLogs.length === 0) return 0;
@@ -437,7 +426,10 @@ function calculateDailyStreak(dailyLogs) {
 
 // Render Sleep Chart
 function renderSleepChart() {
-  const ctx = document.getElementById('sleepChart').getContext('2d');
+  const sleepCanvas = document.getElementById('sleepChart');
+  if (!sleepCanvas) return;
+
+  const ctx = sleepCanvas.getContext('2d');
   const isDark = document.body.classList.contains('dark-theme');
   
   // Take last 8 daily logs (reversed for chronological order)
@@ -533,7 +525,10 @@ function renderSleepChart() {
 
 // Render Gym Weekly completed sessions chart
 function renderGymWeeklyChart() {
-  const ctx = document.getElementById('gymWeeklyChart').getContext('2d');
+  const gymCanvas = document.getElementById('gymWeeklyChart');
+  if (!gymCanvas) return;
+
+  const ctx = gymCanvas.getContext('2d');
   const isDark = document.body.classList.contains('dark-theme');
   
   // Group gym sessions by week number (e.g. W20, W21)

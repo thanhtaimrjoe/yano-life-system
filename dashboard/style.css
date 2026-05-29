@@ -1216,8 +1216,7 @@ body.light-theme .list-item:hover {
 }
 
 /* Insights Section - Collapsible */
-.insights-section,
-.analytics-section {
+.insights-section {
   margin-bottom: 24px;
 }
 

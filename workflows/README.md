@@ -4,26 +4,29 @@ This folder contains reusable workflow scripts demonstrating **token-efficient m
 
 ## Philosophy
 
-**Token efficiency through model tier assignment:**
-- Use lightweight models (Haiku, GPT-3.5, Gemini Flash) for simple tasks (extraction, formatting)
-- Use reasoning models (Opus, GPT-4, Gemini Pro) for complex analysis
-- Use balanced models (Sonnet, GPT-4-turbo) for structured generation
+**Token efficiency through model tier assignment** — match each step to a *capability tier*, not a pinned model version:
+- **Lightweight tier** (fast, cheap) → simple tasks: extraction, search, formatting
+- **Reasoning tier** (deep, expensive) → complex analysis, decisions, synthesis
+- **Balanced tier** (mid-cost) → structured generation (code, markdown)
 
-**Typical savings: 60-80% token reduction** compared to using heavyweight models for everything.
+**Typical savings: 60-80% token reduction** compared to using a heavyweight model for everything.
+
+> ⚠️ **Pick models by tier, not by name. Self-select the best currently-available model.**
+> AI vendors ship new models constantly (e.g. Anthropic released Opus 4.8 shortly after 4.7; Google moved from Gemini 1.5 → 3.x quickly). Any specific model name in this doc goes stale fast. **At runtime, each AI should choose the best model its provider currently offers in each tier** — do not hardcode a version. Specific names below are illustrative examples only, not requirements.
 
 ## Pattern: 3-Phase Pipeline
 
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   EXTRACT   │────▶│   ANALYZE   │────▶│   FORMAT    │
-│  (Haiku)    │     │   (Opus)    │     │  (Sonnet)   │
-│  ~10-15k    │     │  ~40-50k    │     │  ~20-30k    │
-└─────────────┘     └─────────────┘     └─────────────┘
-     Fast              Deep              Balanced
-   extraction        reasoning         generation
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│   EXTRACT    │────▶│   ANALYZE    │────▶│   FORMAT     │
+│ Lightweight  │     │  Reasoning   │     │  Balanced    │
+│  ~10-15k     │     │  ~40-50k     │     │  ~20-30k     │
+└──────────────┘     └──────────────┘     └──────────────┘
+   Fast/cheap          Deep reasoning       Mid-cost gen
+   extraction          (quality matters)    structured out
 ```
 
-**Total: ~70-95k tokens** vs **~250k tokens** (all-Opus)
+**Total: ~70-95k tokens** vs **~250k tokens** (all-heavyweight)
 
 ## Available Workflows
 
@@ -31,9 +34,9 @@ This folder contains reusable workflow scripts demonstrating **token-efficient m
 **Purpose:** Generate weekly gym review with pattern analysis and recommendations.
 
 **Phases:**
-1. **Extract (Haiku)** — Parse gym session markdown files, extract structured data
-2. **Analyze (Opus)** — Analyze progressive overload, recovery, form issues, generate recommendations
-3. **Format (Sonnet)** — Generate markdown weekly review
+1. **Extract (lightweight tier)** — Parse gym session markdown files, extract structured data
+2. **Analyze (reasoning tier)** — Analyze progressive overload, recovery, form issues, generate recommendations
+3. **Format (balanced tier)** — Generate markdown weekly review
 
 **Usage (Claude Code):**
 ```javascript
@@ -50,55 +53,49 @@ Workflow({
 
 ## Adapting to Other AI Systems
 
-These workflows use **Claude Code syntax** (`agent()`, `phase()`, `log()`), but the **orchestration pattern** is portable:
+These workflows use **Claude Code syntax** (`agent()`, `phase()`, `log()`), but the **orchestration pattern** is portable. The key rule everywhere: **resolve each tier to the best model your provider currently offers** — don't pin a version.
 
-### For ChatGPT (OpenAI)
+### Self-selecting the model (recommended)
+Keep a small tier→model map you can update in one place, or query the provider's model list at runtime and pick by capability/cost. Pseudocode:
+
 ```python
-# Phase 1: Extract (GPT-3.5-turbo)
-gym_data = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[{"role": "user", "content": extract_prompt}]
-)
+# Define tiers by ROLE, resolve to whatever is best/newest right now.
+# Update this map (or fetch it dynamically) as new models ship.
+TIERS = {
+    "lightweight": pick_cheapest_fast_model(provider),   # extraction/format
+    "reasoning":   pick_strongest_model(provider),        # analysis/decisions
+    "balanced":    pick_mid_tier_model(provider),         # generation
+}
 
-# Phase 2: Analyze (GPT-4)
-analysis = openai.ChatCompletion.create(
-    model="gpt-4",
-    messages=[{"role": "user", "content": analyze_prompt}]
-)
-
-# Phase 3: Format (GPT-4-turbo)
-markdown = openai.ChatCompletion.create(
-    model="gpt-4-turbo",
-    messages=[{"role": "user", "content": format_prompt}]
-)
+gym_data = call(TIERS["lightweight"], extract_prompt)
+analysis = call(TIERS["reasoning"],   analyze_prompt)
+markdown = call(TIERS["balanced"],    format_prompt)
 ```
 
-### For Gemini (Google)
-```python
-# Phase 1: Extract (Gemini Flash)
-gym_data = genai.GenerativeModel('gemini-1.5-flash').generate_content(extract_prompt)
+### Per-provider notes (model names are EXAMPLES — verify the current best before using)
 
-# Phase 2: Analyze (Gemini Pro)
-analysis = genai.GenerativeModel('gemini-1.5-pro').generate_content(analyze_prompt)
+**OpenAI / ChatGPT / Codex**
+- Lightweight → current cheapest fast model (e.g. a "mini"/"nano"/turbo-class model)
+- Reasoning → current strongest reasoning model (e.g. a frontier GPT or `o`-series model)
+- Balanced → current mid-tier general model
 
-# Phase 3: Format (Gemini Flash)
-markdown = genai.GenerativeModel('gemini-1.5-flash').generate_content(format_prompt)
-```
+**Google / Gemini**
+- Lightweight → current "Flash"-class model
+- Reasoning → current "Pro"-class (or highest) model
+- Balanced → current Flash/mid-class model
 
-### For Custom AI Systems (Codex, Antigravity, etc.)
-1. **Identify your model tiers:**
-   - Lightweight: fast, cheap, good for extraction/formatting
-   - Reasoning: slow, expensive, good for analysis/decisions
-   - Balanced: middle ground for generation
+**Anthropic / Claude**
+- Lightweight → current Haiku-class model
+- Reasoning → current Opus-class model (latest Opus, whatever the newest version is)
+- Balanced → current Sonnet-class model
 
-2. **Map phases to tiers:**
-   - Extract → Lightweight
-   - Analyze → Reasoning
-   - Format → Balanced
+> Always check the provider's latest lineup at runtime. The names above rotate frequently; the **tier roles** do not.
 
-3. **Implement pipeline:**
-   - Sequential: Phase 1 → Phase 2 → Phase 3
-   - Parallel: Multiple Phase 1 agents → Single Phase 2 synthesis
+### For Custom AI Systems (Antigravity, etc.)
+1. **Identify your model tiers:** lightweight (fast/cheap), reasoning (slow/expensive/smart), balanced (mid).
+2. **Map phases to tiers:** Extract → Lightweight, Analyze → Reasoning, Format → Balanced.
+3. **Resolve tier → newest available model** at runtime; don't hardcode.
+4. **Implement pipeline:** Sequential (Phase 1→2→3) or parallel (many extractors → one synthesizer).
 
 ## Design Principles
 
@@ -178,18 +175,21 @@ log(`Spawning ${agentCount} agents based on budget`)
 ## Best Practices
 
 ### ✅ Do
-- Use Haiku/lightweight for extraction, search, formatting
-- Use Opus/reasoning for analysis, decisions, synthesis
-- Use Sonnet/balanced for code generation, structured output
+- Use the **lightweight tier** for extraction, search, formatting
+- Use the **reasoning tier** for analysis, decisions, synthesis
+- Use the **balanced tier** for code generation, structured output
 - Run independent extractions in parallel
-- Document model choice in workflow meta.phases
+- Document the *tier* (not a pinned version) in workflow `meta.phases`
 - Measure token usage to validate efficiency
 
+> **Claude Code note:** the `model: 'haiku' | 'sonnet' | 'opus'` aliases are *tier* aliases — they auto-resolve to the latest version of each tier. So `weekly-gym-review.js` already self-updates when Anthropic ships a new Opus/Sonnet/Haiku; no edit needed. Other providers: resolve the tier yourself (see "Self-selecting the model" above).
+
 ### ❌ Don't
-- Use Opus for simple file reading or grep tasks
-- Use Haiku for complex reasoning or critical decisions
+- Use the reasoning tier for simple file reading or grep tasks
+- Use the lightweight tier for complex reasoning or critical decisions
 - Run sequential tasks in parallel (creates race conditions)
-- Override model without clear reason
+- **Hardcode a specific model version** — pick by tier, resolve to newest available
+- Override the tier without a clear reason
 - Forget to handle agent errors (use `.filter(Boolean)` after parallel)
 
 ## Extending This Pattern

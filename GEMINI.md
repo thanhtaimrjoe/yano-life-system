@@ -16,9 +16,11 @@
 
 Before any multi-step task, **read `workflows/README.md`**. Use the model-tier pattern (Extract → Analyze → Format) to save ~77% tokens while preserving quality on reasoning steps.
 
-**Gemini tier mapping:**
-- Lightweight (extract/search/format) → **Gemini 1.5 Flash**
-- Reasoning (analyze/decisions/synthesis) → **Gemini 1.5 Pro**
-- Balanced (generation) → **Gemini 1.5 Flash**
+**Gemini tier mapping — pick the newest model in each class at runtime, don't hardcode:**
+- Lightweight (extract/search/format) → current **Flash-class** model
+- Reasoning (analyze/decisions/synthesis) → current **Pro / highest-class** model
+- Balanced (generation) → current **Flash/mid-class** model
 
-Reference: `workflows/weekly-gym-review.js` + `workflows/README.md` (has Gemini adaptation code).
+> ⚠️ Google ships new Gemini versions fast (1.5 → 3.x and beyond). Resolve each tier to whatever Gemini model is best available now — the doc pins *tiers*, not version numbers.
+
+Reference: `workflows/weekly-gym-review.js` + `workflows/README.md` (has self-selection pseudocode).

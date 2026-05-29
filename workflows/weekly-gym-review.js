@@ -19,8 +19,16 @@
  * This script uses Claude Code workflow syntax (agent(), phase(), log()).
  * Other AI systems (ChatGPT, Gemini, Codex, Antigravity) can adapt the PATTERN:
  * - Phase 1: Lightweight model for data extraction
- * - Phase 2: Heavyweight model for analysis
+ * - Phase 2: Reasoning model for analysis
  * - Phase 3: Balanced model for generation
+ *
+ * MODEL VERSIONS — DON'T HARDCODE:
+ * The 'haiku' | 'opus' | 'sonnet' values below are Claude Code TIER ALIASES,
+ * not pinned versions. They auto-resolve to the latest model in each tier, so
+ * this script keeps working unchanged when Anthropic ships a new Opus/Sonnet/Haiku.
+ * Other providers: resolve each tier to your newest available model at runtime
+ * (see workflows/README.md "Self-selecting the model"). Vendors ship fast — pin
+ * the ROLE/TIER, never a version string.
  *
  * USAGE (Claude Code):
  * Workflow({

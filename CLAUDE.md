@@ -52,13 +52,14 @@ Rules:
 For multi-step tasks (weekly review, analysis, batch generation, research), use the **model-tier orchestration pattern** documented in `workflows/`:
 
 - **Read `workflows/README.md` first** before designing any multi-step/multi-agent task.
-- Assign model tiers by task complexity:
-  - **Lightweight** (Haiku / Gemini Flash / GPT-3.5) → extraction, search, formatting
-  - **Reasoning** (Opus / Gemini Pro / GPT-4) → analysis, decisions, synthesis
-  - **Balanced** (Sonnet / GPT-4-turbo) → code/markdown generation
+- Assign model tiers by task complexity (pick by *tier*, resolve to the newest model available — don't hardcode versions):
+  - **Lightweight** (cheapest fast model) → extraction, search, formatting
+  - **Reasoning** (strongest model) → analysis, decisions, synthesis
+  - **Balanced** (mid-tier model) → code/markdown generation
+- In Claude Code, `model: 'haiku' | 'sonnet' | 'opus'` are *tier aliases* that auto-resolve to the latest version — so workflows self-update when a new Opus/Sonnet/Haiku ships.
 - Pattern: Extract (light) → Analyze (reasoning) → Format (balanced). ~77% token savings vs all-heavyweight, while keeping quality on logic-heavy steps.
 - `workflows/weekly-gym-review.js` is the reference implementation.
-- Workflows are cross-AI portable: when adding/editing them, keep the adaptation notes for ChatGPT/Gemini/Codex/Antigravity.
+- Workflows are cross-AI portable and version-agnostic: keep adaptation notes for ChatGPT/Gemini/Codex/Antigravity, describe tiers not model names.
 
 ## Folder Rules
 

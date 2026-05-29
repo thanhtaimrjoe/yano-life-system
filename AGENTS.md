@@ -56,17 +56,19 @@ For multi-step tasks (weekly review, analysis, batch generation, research), this
 
 **Read `workflows/README.md` first** before designing any multi-step/multi-agent task.
 
-**Assign models by task complexity (Extract → Analyze → Format):**
+**Assign models by capability TIER, not by pinned version (Extract → Analyze → Format):**
 
-| Tier        | Use for                       | Claude  | OpenAI / Codex | Gemini            |
-|-------------|-------------------------------|---------|----------------|-------------------|
-| Lightweight | extract, search, format       | Haiku   | GPT-3.5-turbo  | Gemini 1.5 Flash  |
-| Reasoning   | analyze, decisions, synthesis | Opus    | GPT-4 / o1     | Gemini 1.5 Pro    |
-| Balanced    | code/markdown generation      | Sonnet  | GPT-4-turbo    | Gemini 1.5 Flash  |
+| Tier        | Use for                       | How to pick the model                                  |
+|-------------|-------------------------------|--------------------------------------------------------|
+| Lightweight | extract, search, format       | cheapest fast model your provider currently offers     |
+| Reasoning   | analyze, decisions, synthesis | strongest reasoning model your provider currently offers |
+| Balanced    | code/markdown generation      | mid-tier general model your provider currently offers  |
+
+> ⚠️ **Self-select the newest model per tier at runtime. Do NOT hardcode versions.** AI vendors ship new models very fast (e.g. Anthropic released Opus 4.8 right after 4.7; Gemini moved 1.5 → 3.x quickly). Pin the *role/tier*, resolve to whatever is best right now. Examples — Claude: Haiku/Sonnet/Opus (the `model` aliases auto-resolve to latest); OpenAI: a mini/turbo-class → frontier reasoning model; Gemini: Flash-class → Pro/highest-class.
 
 - Reference implementation: `workflows/weekly-gym-review.js`
-- Full guide + per-AI adaptation code: `workflows/README.md`
-- When adding/editing a workflow, keep it **cross-AI portable** (include adaptation notes for ChatGPT/Gemini/Codex/Antigravity).
+- Full guide + self-selection pseudocode: `workflows/README.md`
+- When adding/editing a workflow, keep it **cross-AI portable** and **version-agnostic** (describe tiers, not model names).
 
 ## Folder Rules
 

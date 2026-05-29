@@ -2,11 +2,13 @@
 
 ## Nguyên tắc
 
-**Token-efficient orchestration**: Assign model tier dựa trên độ phức tạp của task, không phải default hết sang Opus.
+**Token-efficient orchestration**: Assign model tier dựa trên độ phức tạp của task, không phải default hết sang model mạnh nhất.
+
+> ⚠️ **Chọn theo TIER, không pin version.** Các hãng AI ra model mới rất nhanh (Anthropic ra Opus 4.8 ngay sau 4.7; Gemini nhảy 1.5 → 3.x). Tên model cụ thể trong doc này chỉ là **ví dụ minh hoạ** tại thời điểm viết — khi chạy, mỗi AI **tự chọn model tốt nhất hiện có** của tier tương ứng. Trong Claude Code, alias `haiku`/`sonnet`/`opus` tự resolve sang version mới nhất nên không cần sửa script.
 
 ## Model Tiers & Use Cases
 
-### Opus 4.8 (claude-opus-4-8)
+### Reasoning tier (mạnh nhất — ví dụ: Opus-class)
 **Khi nào dùng:**
 - Phân tích logic phức tạp, multi-step reasoning
 - Architectural decisions, system design
@@ -20,7 +22,7 @@
 - Synthesize weekly review từ 7 ngày daily logs
 - Design workflow orchestration strategy
 
-### Sonnet 4.6 (claude-sonnet-4-6)
+### Balanced tier (cân bằng cost/chất lượng — ví dụ: Sonnet-class)
 **Khi nào dùng:**
 - Code generation, editing, refactoring
 - Structured data extraction từ markdown/logs
@@ -34,7 +36,7 @@
 - Translate technical vocabulary
 - Search codebase và summarize findings
 
-### Haiku 4.5 (claude-haiku-4-5-20251001)
+### Lightweight tier (nhanh, rẻ — ví dụ: Haiku-class)
 **Khi nào dùng:**
 - Simple data extraction, formatting
 - File operations (copy, move, rename)
@@ -54,8 +56,8 @@
 ### Pattern 1: Agent Tool với Model Override
 
 ```javascript
-// Main session (Opus 4.8) orchestrates
-// Delegate simple task to Haiku
+// Main session (reasoning tier) orchestrates
+// Delegate simple task to lightweight tier
 Agent({
   description: "List gym sessions",
   prompt: "List all gym session files in 02-gym/2026/ with their dates",

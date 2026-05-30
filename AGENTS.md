@@ -70,6 +70,16 @@ For multi-step tasks (weekly review, analysis, batch generation, research), this
 - Full guide + self-selection pseudocode: `workflows/README.md`
 - When adding/editing a workflow, keep it **cross-AI portable** and **version-agnostic** (describe tiers, not model names).
 
+## Delegation (subagent-first for heavy work)
+
+Default to delegating heavy, context-hungry work to a subagent (or a multi-agent workflow) so the main agent keeps only the **conclusion**, not raw file dumps / search output / intermediate reasoning. This keeps the main context clean and token-efficient.
+
+**Delegate when (conservative — only clearly heavy work):** multi-source research, reading/editing many files, fan-out over many independent items, broad codebase search where only the answer matters.
+
+**Handle inline (don't delegate):** simple questions, single-file lookups, one-line edits, conversational turns — anything where spawning a subagent costs more than just doing it.
+
+The main agent relays what matters from the subagent's report; it does not re-run the work. (Each AI maps this to its own mechanism: Claude Code subagents/workflows, OpenAI/Codex sub-tasks, Gemini agent calls, etc.)
+
 ## Folder Rules
 
 ```text

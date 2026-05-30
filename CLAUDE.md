@@ -61,6 +61,24 @@ For multi-step tasks (weekly review, analysis, batch generation, research), use 
 - `workflows/weekly-gym-review.js` is the reference implementation.
 - Workflows are cross-AI portable and version-agnostic: keep adaptation notes for ChatGPT/Gemini/Codex/Antigravity, describe tiers not model names.
 
+## Delegation (subagent-first for heavy work)
+
+Default to delegating heavy, context-hungry work to a subagent so the main agent's context holds only the **conclusion**, not the raw file dumps / search output / intermediate reasoning.
+
+**Delegate when (conservative threshold — only clearly heavy work):**
+- Multi-source research or web investigation
+- Reading or editing across many files
+- Fan-out tasks (many independent items: per-file, per-session, per-candidate checks)
+- Broad codebase search where you only need the answer, not the matches
+
+**Do NOT delegate (handle inline):**
+- Simple questions, single-file lookups, one-line edits, conversational turns
+- Anything where spawning a subagent costs more tokens/latency than just doing it
+
+**How:** one subagent for a single heavy task; a multi-agent workflow (see above) for fan-out + the Extract→Analyze→Format tiering. The main agent relays what matters from the subagent's report — it does not re-run the work itself.
+
+> Rationale: subagent context is isolated and discarded after returning its result, keeping the main thread clean and token-efficient. But delegation has fixed overhead — for small tasks it's a net loss. Bias toward delegating *heavy* work, doing light work directly.
+
 ## Folder Rules
 
 ```text

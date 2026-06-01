@@ -16,11 +16,33 @@
 
 Before any multi-step task, **read `workflows/README.md`**. Use the model-tier pattern (Extract → Analyze → Format) to save ~77% tokens while preserving quality on reasoning steps.
 
-**Gemini tier mapping — pick the newest model in each class at runtime, don't hardcode:**
-- Lightweight (extract/search/format) → current **Flash-class** model
-- Reasoning (analyze/decisions/synthesis) → current **Pro / highest-class** model
-- Balanced (generation) → current **Flash/mid-class** model
+### Standalone GCP Gemini Workflow (Active)
+In this repository, the main weekly review workflow `workflows/weekly-gym-review.js` has been customized as a fully functional, zero-dependency Node.js script that runs locally on your machine and communicates directly with GCP Vertex AI's Gemini endpoints.
 
-> ⚠️ Google ships new Gemini versions fast (1.5 → 3.x and beyond). Resolve each tier to whatever Gemini model is best available now — the doc pins *tiers*, not version numbers.
+- **GCP Project:** `yano-brse-ai-api`
+- **Region:** `us-central1`
+- **Models Used:**
+  - **Lightweight (Extract/Format):** `gemini-2.5-flash`
+  - **Reasoning (Analyze):** `gemini-2.5-pro` (Provides deep progressive overload reasoning & adjustments)
 
-Reference: `workflows/weekly-gym-review.js` + `workflows/README.md` (has self-selection pseudocode).
+- **How to execute:**
+  Run the script directly using Node.js:
+  ```bash
+  # Run for the current week and year
+  node workflows/weekly-gym-review.js
+
+  # Run for a specific week and year (e.g., Week 22 of 2026)
+  node workflows/weekly-gym-review.js --week 22 --year 2026
+  ```
+
+- **Authentication:**
+  The script automatically uses your local `gcloud` CLI credentials. Ensure you have run:
+  ```bash
+  gcloud auth application-default login
+  # and/or
+  gcloud config set project yano-brse-ai-api
+  ```
+  The script retrieves the active access token via `gcloud auth print-access-token` dynamically.
+
+Reference: [weekly-gym-review.js](file:///Users/taiht/Documents/yano-life-system/workflows/weekly-gym-review.js) + [workflows/README.md](file:///Users/taiht/Documents/yano-life-system/workflows/README.md).
+

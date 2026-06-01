@@ -22,8 +22,10 @@ _Thông tin về người được hỗ trợ. Cập nhật theo thời gian._
   - Ongoing support: Japanese business writing, bug/test-case analysis, API testing, study structure.
   - Interests: anime, Genshin Impact, Honkai: Star Rail, football (Real Madrid, Mbappé), self-improvement books.
   - Sensitive context: đang treatment cho depression/anxiety; energy fluctuate → tránh pressure overload, cân bằng work/study/rest.
+  - Bản đồ sao & Tâm lý cá nhân: tham khảo tại [astrology.md](file:///Users/taiht/Documents/yano-life-system/00-profile/astrology.md) để hiểu sâu hơn về nội tâm, tính cách và các nghi thức tự chữa lành của Yano.
   - Support style: calm, structured, non-dramatic; break tasks small; reduce overload; gentle reminders > pressure.
   - Aware về token cost; warn trước tasks dùng nhiều tokens hoặc large-context work.
+
 
 ## Context
 

@@ -182,10 +182,11 @@ const analysis = await agent('Analyze patterns', {
 
 ## Integration với Yano Life System
 
-### Use Case 1: Weekly Review Automation
-- **Haiku**: Extract raw data từ 7 daily logs, gym logs, meal logs
-- **Opus**: Analyze patterns, correlations, generate recommendations
-- **Sonnet**: Format final markdown report
+### Use Case 1: Weekly Review Automation (Active: GCP Vertex AI)
+- **Script**: `node workflows/weekly-gym-review.js`
+- **Gemini 2.5 Flash** (Lightweight): Extract raw data từ 7 ngày daily logs, gym logs, meal logs, và Format báo cáo cuối cùng
+- **Gemini 2.5 Pro** (Reasoning): Analyze deep patterns, progressive overload, recovery và đưa ra recommendations/adjustments
+
 
 ### Use Case 2: BrSE Interview Prep
 - **Haiku**: Extract KINKEN case study facts, list vocabulary

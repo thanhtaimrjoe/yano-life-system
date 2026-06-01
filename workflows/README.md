@@ -31,27 +31,30 @@ This folder contains reusable workflow scripts demonstrating **token-efficient m
 ## Available Workflows
 
 ### `weekly-gym-review.js`
-**Purpose:** Generate weekly gym review with pattern analysis and recommendations.
+**Purpose:** Generate weekly gym review with pattern analysis and recommendations using Google Vertex AI's Gemini API (running locally with zero-dependencies).
 
 **Phases:**
-1. **Extract (lightweight tier)** — Parse gym session markdown files, extract structured data
-2. **Analyze (reasoning tier)** — Analyze progressive overload, recovery, form issues, generate recommendations
-3. **Format (balanced tier)** — Generate markdown weekly review
+1. **Extract (lightweight tier: `gemini-2.5-flash`)** — Parse gym session markdown files, extract structured data
+2. **Analyze (reasoning tier: `gemini-2.5-pro`)** — Analyze progressive overload, recovery, form issues, generate recommendations
+3. **Format (balanced tier: `gemini-2.5-flash`)** — Generate markdown weekly review and auto-sync to Dashboard.
 
-**Usage (Claude Code):**
-```javascript
-Workflow({
-  name: 'weekly-gym-review',
-  args: { week: 22, year: 2026 }
-})
+**Usage:**
+Run the script using native Node.js:
+```bash
+# Run for the current week and year
+node workflows/weekly-gym-review.js
+
+# Run for a specific week and year (e.g. Week 22 of 2026)
+node workflows/weekly-gym-review.js --week 22 --year 2026
 ```
 
 **Token efficiency:**
-- All-Opus: ~250k tokens
-- Mixed-tier: ~58k tokens
-- **Savings: 77%**
+- All-Reasoning: ~250k tokens
+- Mixed-tier GCP Pipeline: ~58k tokens
+- **Savings: ~77%**
 
 ## Adapting to Other AI Systems
+
 
 These workflows use **Claude Code syntax** (`agent()`, `phase()`, `log()`), but the **orchestration pattern** is portable. The key rule everywhere: **resolve each tier to the best model your provider currently offers** — don't pin a version.
 

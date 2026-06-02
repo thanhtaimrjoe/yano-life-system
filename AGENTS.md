@@ -68,6 +68,8 @@ For multi-step tasks (weekly review, analysis, batch generation, research), this
 
 - Reference implementation: `workflows/weekly-gym-review.js`
 - Full guide + self-selection pseudocode: `workflows/README.md`
+- Provider/runtime adapters: `workflows/adapters/` (Codex, Gemini/GCP, Claude Code, generic AI)
+- Shared workflow schemas: `workflows/schemas/`
 - When adding/editing a workflow, keep it **cross-AI portable** and **version-agnostic** (describe tiers, not model names).
 
 ## Delegation (subagent-first for heavy work)

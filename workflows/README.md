@@ -1,233 +1,129 @@
-# Workflows — Multi-Agent Orchestration Patterns
+# Workflows - Cross-AI Orchestration
 
-This folder contains reusable workflow scripts demonstrating **token-efficient multi-agent orchestration** patterns.
+This folder defines reusable workflow patterns for Yano Life System. The goal is to let Codex, Gemini/GCP, Claude Code, ChatGPT, and other AI tools follow the same workflow contract without pinning the repo to one vendor.
 
-## Philosophy
+## Core Rule
 
-**Token efficiency through model tier assignment** — match each step to a *capability tier*, not a pinned model version:
-- **Lightweight tier** (fast, cheap) → simple tasks: extraction, search, formatting
-- **Reasoning tier** (deep, expensive) → complex analysis, decisions, synthesis
-- **Balanced tier** (mid-cost) → structured generation (code, markdown)
+Configure workflows by capability tier, not by model version.
 
-**Typical savings: 60-80% token reduction** compared to using a heavyweight model for everything.
+| Tier | Use for | Runtime choice |
+| --- | --- | --- |
+| Lightweight | search, extraction, validation, simple formatting | cheapest fast model/tool available |
+| Balanced | markdown generation, code generation, structured rewriting | mid-tier general model |
+| Reasoning | analysis, decisions, synthesis, recommendations | strongest reasoning model available |
 
-> ⚠️ **Pick models by tier, not by name. Self-select the best currently-available model.**
-> AI vendors ship new models constantly (e.g. Anthropic released Opus 4.8 shortly after 4.7; Google moved from Gemini 1.5 → 3.x quickly). Any specific model name in this doc goes stale fast. **At runtime, each AI should choose the best model its provider currently offers in each tier** — do not hardcode a version. Specific names below are illustrative examples only, not requirements.
+Model names change quickly. Keep repo docs version-agnostic. Provider-specific adapters should resolve the current best model at runtime.
 
-## Pattern: 3-Phase Pipeline
+## Standard Pipeline
 
-```
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│   EXTRACT    │────▶│   ANALYZE    │────▶│   FORMAT     │
-│ Lightweight  │     │  Reasoning   │     │  Balanced    │
-│  ~10-15k     │     │  ~40-50k     │     │  ~20-30k     │
-└──────────────┘     └──────────────┘     └──────────────┘
-   Fast/cheap          Deep reasoning       Mid-cost gen
-   extraction          (quality matters)    structured out
+```text
+Extract -> Analyze -> Format
+   |          |          |
+   |          |          +-- Balanced tier
+   |          +------------- Reasoning tier
+   +------------------------ Lightweight tier
 ```
 
-**Total: ~70-95k tokens** vs **~250k tokens** (all-heavyweight)
+Typical use:
 
-## Available Workflows
+1. Extract raw facts from local markdown files.
+2. Analyze patterns only after the facts are structured.
+3. Format the final output using repo templates and folder rules.
+
+## Shared Contracts
+
+Provider implementations should share the same contracts:
+
+- Input source rules from `AGENTS.md`.
+- Output paths and frontmatter rules from repo templates.
+- Structured schemas in `workflows/schemas/`.
+- Provider notes in `workflows/adapters/`.
+- No invented personal, health, sleep, mood, or nutrition data.
+- Unknown fields must remain blank or be written as `(not logged)`.
+
+## Provider Adapters
+
+Read the adapter matching the AI/runtime being used:
+
+- [Codex adapter](adapters/codex.md)
+- [Gemini/GCP adapter](adapters/gemini-gcp.md)
+- [Claude Code adapter](adapters/claude-code.md)
+- [Generic AI adapter](adapters/generic-ai.md)
+
+Adapters explain how each provider maps the shared tiers to its own tools and model families. The workflow logic stays the same.
+
+## Available Implementations
 
 ### `weekly-gym-review.js`
-**Purpose:** Generate weekly gym review with pattern analysis and recommendations using Google Vertex AI's Gemini API (running locally with zero-dependencies).
 
-**Phases:**
-1. **Extract (lightweight tier: `gemini-2.5-flash`)** — Parse gym session markdown files, extract structured data
-2. **Analyze (reasoning tier: `gemini-2.5-pro`)** — Analyze progressive overload, recovery, form issues, generate recommendations
-3. **Format (balanced tier: `gemini-2.5-flash`)** — Generate markdown weekly review and auto-sync to Dashboard.
+Standalone Gemini Vertex AI implementation for weekly gym review.
 
-**Usage:**
-Run the script using native Node.js:
 ```bash
-# Run for the current week and year
 node workflows/weekly-gym-review.js
-
-# Run for a specific week and year (e.g. Week 22 of 2026)
 node workflows/weekly-gym-review.js --week 22 --year 2026
 ```
 
-**Token efficiency:**
-- All-Reasoning: ~250k tokens
-- Mixed-tier GCP Pipeline: ~58k tokens
-- **Savings: ~77%**
+Current behavior:
 
-## Adapting to Other AI Systems
+- Extract: Gemini Flash-class model
+- Analyze: Gemini Pro/highest-class model
+- Format: Gemini Flash/mid-class model
+- Writes a weekly review into `04-weekly-review/`
+- Runs `node build-data.js` after generation
 
+Important: this script is provider-specific. Other AIs should reuse the pattern and shared schemas, not the GCP auth/client code.
 
-These workflows use **Claude Code syntax** (`agent()`, `phase()`, `log()`), but the **orchestration pattern** is portable. The key rule everywhere: **resolve each tier to the best model your provider currently offers** — don't pin a version.
+## Weekly Gym Review Contract
 
-### Self-selecting the model (recommended)
-Keep a small tier→model map you can update in one place, or query the provider's model list at runtime and pick by capability/cost. Pseudocode:
+When any AI creates a weekly gym review:
 
-```python
-# Define tiers by ROLE, resolve to whatever is best/newest right now.
-# Update this map (or fetch it dynamically) as new models ship.
-TIERS = {
-    "lightweight": pick_cheapest_fast_model(provider),   # extraction/format
-    "reasoning":   pick_strongest_model(provider),        # analysis/decisions
-    "balanced":    pick_mid_tier_model(provider),         # generation
-}
+1. Read gym logs from `02-gym/YYYY/`.
+2. Read recovery, sleep, mood, and stress signals from `01-daily/YYYY/` when needed.
+3. Read meal logs from `03-meals/YYYY/` only if nutrition is part of the review.
+4. Preserve exercise names in English.
+5. Keep recommendations conservative because the user is in a beginner comeback phase.
+6. Do not estimate sleep, calories, protein, mood, or recovery if not logged.
+7. Search for an existing `04-weekly-review/YYYY-W##.md` before creating or overwriting.
+8. Use zero-padded ISO week numbers, for example `2026-W05.md`.
+9. Rebuild dashboard data with `node build-data.js` after successful changes.
 
-gym_data = call(TIERS["lightweight"], extract_prompt)
-analysis = call(TIERS["reasoning"],   analyze_prompt)
-markdown = call(TIERS["balanced"],    format_prompt)
-```
+Recommended schemas:
 
-### Per-provider notes (model names are EXAMPLES — verify the current best before using)
-
-**OpenAI / ChatGPT / Codex**
-- Lightweight → current cheapest fast model (e.g. a "mini"/"nano"/turbo-class model)
-- Reasoning → current strongest reasoning model (e.g. a frontier GPT or `o`-series model)
-- Balanced → current mid-tier general model
-
-**Google / Gemini**
-- Lightweight → current "Flash"-class model
-- Reasoning → current "Pro"-class (or highest) model
-- Balanced → current Flash/mid-class model
-
-**Anthropic / Claude**
-- Lightweight → current Haiku-class model
-- Reasoning → current Opus-class model (latest Opus, whatever the newest version is)
-- Balanced → current Sonnet-class model
-
-> Always check the provider's latest lineup at runtime. The names above rotate frequently; the **tier roles** do not.
-
-### For Custom AI Systems (Antigravity, etc.)
-1. **Identify your model tiers:** lightweight (fast/cheap), reasoning (slow/expensive/smart), balanced (mid).
-2. **Map phases to tiers:** Extract → Lightweight, Analyze → Reasoning, Format → Balanced.
-3. **Resolve tier → newest available model** at runtime; don't hardcode.
-4. **Implement pipeline:** Sequential (Phase 1→2→3) or parallel (many extractors → one synthesizer).
+- `workflows/schemas/gym-session.schema.json`
+- `workflows/schemas/weekly-analysis.schema.json`
 
 ## Design Principles
 
-### 1. Breadth-First with Lightweight Models
-Use cheap models to scan broadly, then expensive models to analyze deeply.
+### Breadth First, Depth Later
 
-**Example:**
-```javascript
-// Bad: Opus scans 100 files (expensive)
-const analysis = await agent('Analyze all gym files', {model: 'opus'})
+Use lightweight tools/models for broad file scanning. Use the reasoning tier only after the raw facts are compact.
 
-// Good: Haiku scans 100 files, Opus analyzes summary
-const files = await agent('List all gym files', {model: 'haiku'})
-const analysis = await agent(`Analyze: ${files}`, {model: 'opus'})
-```
+### Structured Data Before Advice
 
-### 2. Structured Output with Schemas
-Force structured output to avoid parsing errors and enable type-safe pipelines.
+Extraction should produce structured JSON or equivalent notes before analysis starts. This reduces hallucination and makes missing data visible.
 
-```javascript
-const data = await agent(prompt, {
-  schema: {
-    type: 'object',
-    properties: {
-      sessions: { type: 'array' },
-      totalCount: { type: 'number' }
-    }
-  }
-})
-// data is validated JSON, not free-form text
-```
+### Parallel Extraction, Sequential Analysis
 
-### 3. Parallel Extraction, Sequential Analysis
-Extract data in parallel (independent tasks), analyze sequentially (needs all data).
+Independent extraction tasks can run in parallel. Analysis should usually be sequential because it needs the full extracted picture.
 
-```javascript
-// Parallel: 3 Haiku agents run concurrently
-const [gym, meals, sleep] = await parallel([
-  () => agent('Extract gym', {model: 'haiku'}),
-  () => agent('Extract meals', {model: 'haiku'}),
-  () => agent('Extract sleep', {model: 'haiku'}),
-])
+### Local First
 
-// Sequential: 1 Opus agent analyzes combined data
-const analysis = await agent(`Analyze: ${gym}, ${meals}, ${sleep}`, {model: 'opus'})
-```
+This repo contains private life data. Prefer local file reads and local parsing before external APIs. Do not paste sensitive content to external services unless the user explicitly asks.
 
-### 4. Model Override Only When Confident
-Default to inheriting main session model. Override only when you're certain a different tier fits.
+## New Workflow Checklist
 
-```javascript
-// Default: inherit main session model (usually correct)
-await agent('Generate report')
-
-// Override: only when task clearly needs different tier
-await agent('Extract raw data', {model: 'haiku'})  // Simple extraction
-await agent('Analyze patterns', {model: 'opus'})   // Complex reasoning
-```
-
-## Token Budget Management
-
-When user sets token budget (e.g., `+500k`), use `budget` global:
-
-```javascript
-// Check remaining budget before expensive operation
-if (budget.remaining() < 50_000) {
-  log('⚠️ Low budget, skipping optional analysis')
-} else {
-  await agent('Deep analysis', {model: 'opus'})
-}
-
-// Dynamic scaling based on budget
-const agentCount = budget.total ? Math.floor(budget.total / 100_000) : 5
-log(`Spawning ${agentCount} agents based on budget`)
-```
-
-## Best Practices
-
-### ✅ Do
-- Use the **lightweight tier** for extraction, search, formatting
-- Use the **reasoning tier** for analysis, decisions, synthesis
-- Use the **balanced tier** for code generation, structured output
-- Run independent extractions in parallel
-- Document the *tier* (not a pinned version) in workflow `meta.phases`
-- Measure token usage to validate efficiency
-
-> **Claude Code note:** the `model: 'haiku' | 'sonnet' | 'opus'` aliases are *tier* aliases — they auto-resolve to the latest version of each tier. So `weekly-gym-review.js` already self-updates when Anthropic ships a new Opus/Sonnet/Haiku; no edit needed. Other providers: resolve the tier yourself (see "Self-selecting the model" above).
-
-### ❌ Don't
-- Use the reasoning tier for simple file reading or grep tasks
-- Use the lightweight tier for complex reasoning or critical decisions
-- Run sequential tasks in parallel (creates race conditions)
-- **Hardcode a specific model version** — pick by tier, resolve to newest available
-- Override the tier without a clear reason
-- Forget to handle agent errors (use `.filter(Boolean)` after parallel)
-
-## Extending This Pattern
-
-### New Workflow Checklist
-1. **Identify phases:** What are the distinct steps?
-2. **Assign models:** Which tier fits each phase?
-3. **Define schemas:** What structured output do you need?
-4. **Estimate tokens:** Calculate expected cost per phase
-5. **Test efficiency:** Compare mixed-tier vs all-heavyweight
-6. **Document:** Add to this README with usage example
-
-### Example: BrSE Interview Prep Workflow
-```javascript
-// Phase 1: Extract (Haiku) - List KINKEN case studies
-const cases = await agent('List case studies', {model: 'haiku'})
-
-// Phase 2: Analyze (Opus) - Generate STAR answers
-const answers = await agent('Generate STAR answers', {model: 'opus'})
-
-// Phase 3: Format (Sonnet) - Format mock interview script
-const script = await agent('Format interview script', {model: 'sonnet'})
-```
+1. Define the user-facing purpose.
+2. Define input folders and source-of-truth rules.
+3. Split work into Extract, Analyze, and Format phases.
+4. Assign each phase to a tier, not a model version.
+5. Add or reuse schemas under `workflows/schemas/`.
+6. Add provider-specific notes only under `workflows/adapters/`.
+7. Document output paths and overwrite/update behavior.
+8. Test with local files and verify `git status`.
 
 ## References
 
-- [sub-agent-model-strategy.md](../00-profile/sub-agent-model-strategy.md) — Detailed model assignment strategy
-- [CLAUDE.md](../CLAUDE.md) — Repo structure and workflow integration
-- [knowledge/00_SYSTEM/Workflows.md](../knowledge/00_SYSTEM/Workflows.md) — Knowledge base workflow patterns
-
-## Contributing
-
-When adding new workflows:
-1. Follow 3-phase pattern (Extract → Analyze → Format)
-2. Document token efficiency gains
-3. Add portability notes for other AI systems
-4. Include usage examples
-5. Update this README
+- `AGENTS.md` - repo operating rules
+- `CLAUDE.md` - Claude-oriented context
+- `00-profile/sub-agent-model-strategy.md` - model tier strategy
+- `knowledge/00_SYSTEM/Workflows.md` - durable workflow knowledge

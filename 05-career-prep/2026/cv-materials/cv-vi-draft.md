@@ -1,219 +1,128 @@
 ---
 title: CV Draft v1 — Vietnamese
-created: 2026-05-28
-day_in_sprint: 8
-task: Day 8 (a) — CV draft v1 (VI)
+created: 2026-06-02
+day_in_sprint: 13
+task: CV draft updated from latest TopCV PDF
 format: Modern 1-page A4
 target_role: Fresher BrSE
-status: draft-v1
+status: updated-v1
 tags: [career-prep, cv, vietnamese]
 ---
 
 # HUỲNH THANH TÀI (YANO)
 
-**Vị trí ứng tuyển:** Fresher Bridge System Engineer (BrSE)  
-**Email:** thanhtaimrjoe@gmail.com
-**Điện thoại:** 0847175067 
-**Địa chỉ:** TP. Hồ Chí Minh  
+**Vị trí ứng tuyển:** Bridge Software Engineer (BrSE)  
+**Email:** thanhtaimrjoe@gmail.com  
+**Điện thoại:** 0847175067  
+**Địa chỉ:** Trường Chinh, P. Tân Bình, Tp.HCM  
 **LinkedIn:** [optional]  
-**GitHub:** [optional]
+**GitHub:** [optional]  
 
 ---
 
-## SUMMARY
+## SUMMARY / OBJECTIVE
 
-Ứng viên BrSE Fresher với bằng N2, 1+ năm kinh nghiệm IT Comtor & QA tại dự án quy mô lớn (KINKEN). Đã giao tiếp trực tiếp với khách hàng Nhật trong vai trò Comtor onsite, thành thạo đọc spec tiếng Nhật và clarify requirement. Có nền tảng technical từ ĐH FPT (Kỹ thuật Phần mềm) và kinh nghiệm QA đầy đủ (test case design, execution, bug tracking, regression test). Mục tiêu: phát triển sự nghiệp BrSE để kết hợp tiếng Nhật, kỹ năng technical và communication.
+Ứng viên Bridge Software Engineer sở hữu chứng chỉ JLPT N2 với hơn 1 năm kinh nghiệm thực tế trong các dự án Nhật Bản ở vai trò IT Communicator và QA Engineer. Thành thạo đọc hiểu tài liệu đặc tả (specification), làm rõ yêu cầu (requirement clarification), báo cáo lỗi (defect reporting) và giao tiếp kỹ thuật hiệu quả giữa khách hàng Nhật Bản và đội ngũ phát triển Việt Nam.
+
+---
+
+## HIGHLIGHTS
+
+* Chứng chỉ JLPT N2
+* Hơn 1 năm kinh nghiệm thực tế ở vai trò QA Engineer & IT Communicator
+* Có kinh nghiệm làm việc và hợp tác trực tiếp với khách hàng và các bên liên quan phía Nhật Bản
+* Khả năng tốt trong việc làm rõ yêu cầu (requirements clarification), quản lý lỗi (defect management) và dịch thuật kỹ thuật (technical translation)
+* Nền tảng vững chắc về Vòng đời phát triển phần mềm (SDLC), API testing, SQL, AWS và Web Systems
 
 ---
 
 ## KINH NGHIỆM LÀM VIỆC
 
-### IT Tester & IT Communicator | MOR Software JSC
-**09/2025 – Hiện tại** | TP. Hồ Chí Minh
+### MOR Software JSC | Sep 2025 - Present
+**QA Engineer & IT Communicator**
 
-**Dự án:** KINKEN — Hệ thống tìm kiếm sản phẩm quy mô lớn cho LIXIL (công ty vật liệu xây dựng Nhật Bản)
-
-- Đọc và phân tích spec tiếng Nhật (仕様書), clarify requirement với team Nhật qua email/chat khi phát hiện mơ hồ
-- Thiết kế test case cho các tính năng phức tạp (Pickup mode, Limited mode, Normal mode search behavior)
-- Thực hiện test execution, regression test, và smoke test trên 3 môi trường (Dev, Staging, Production)
-- Log bug chi tiết bằng tiếng Nhật, communicate với dev team (VN) và client (JP) để confirm root cause
-- Tham gia daily meeting, báo cáo tiến độ test và block issue
-- Hỗ trợ dịch tài liệu kỹ thuật JP → VI cho team developer
-
-**Tech stack:** Python, Elasticsearch, FastAPI, React, PostgreSQL, Databricks (ETL pipeline)
+* **Tech stack:** Python, Elasticsearch, FastAPI, React, PostgreSQL, Databricks (ETL pipeline)
+* **Công việc chính:**
+  * Phân tích tài liệu đặc tả kỹ thuật (technical specifications) bằng tiếng Nhật và chủ động làm rõ các yêu cầu chưa rõ ràng với khách hàng Nhật.
+  * Thiết kế và thực thi test cases cho các tính năng tìm kiếm nâng cao trên nhiều môi trường (Dev, Staging, Production).
+  * Đóng vai trò là cầu nối giao tiếp giữa đội ngũ phát triển Việt Nam và khách hàng Nhật Bản để làm rõ vấn đề và giải quyết lỗi (defect resolution).
+  * Tạo các báo cáo lỗi (bug reports) chi tiết và bằng chứng kiểm thử (testing evidence) bằng tiếng Nhật, hỗ trợ theo dõi vấn đề hiệu quả và bàn giao dự án đúng hạn.
+  * Phối hợp các hoạt động QA và quy trình đóng ticket với khách hàng qua Monday.com.
 
 ---
 
-### IT Communicator (Onsite) | System-EXE Co., Ltd.
-**05/2025 – 08/2025** | TP. Hồ Chí Minh (onsite 4 tháng, 2 dự án song song)
+### MOR Software JSC | Jan 2026 - May 2026
+**QA Engineer & IT Communicator**
 
-**Dự án 1:** Hệ thống Nộp hồ sơ điện tử cho Giấy phép Kinh doanh Xây dựng & Thẩm định Năng lực Doanh nghiệp (建設業許可・経営事項審査の電子申請システム)
-- Dịch spec và QA document từ tiếng Nhật sang tiếng Việt cho team VN
-- Clarify requirement phức tạp với khách hàng Nhật (hệ thống hành chính công)
-- Tham gia test phase, tạo evidence chi tiết cho bug report
-- Hiểu kiến trúc hệ thống với nhiều external systems (gBizID, CIIS, Payment Gateway, R-Cloud, LGWAN)
-- **Tech:** .NET Core 3.1, C#, SQL Server 2019
-
-**Dự án 2:** Hệ thống Nghiệp vụ Bán hàng — Batch Processing (販売系業務システム)
-- Clarify V-Model development process và Batch Processing concepts (Chunk/Tasklet model) với team VN
-- Dịch spec kỹ thuật từ JP → VI cho Java developers
-- Ensure naming convention compliance
-- Tham gia test phase cho batch jobs (input/output validation, performance)
-- **Tech:** Java, Spring Boot, Spring Batch, MyBatis, MySQL (Azure), SMB file sharing
-
-**Kỹ năng phát triển:**
-- Hiểu V-Model process (tuần tự, chặt chẽ, khác Agile)
-- Hiểu Batch Processing architecture, Job scheduling
-- Hiểu integration với Azure services, file sharing qua SMB
+* **Tech stack:** AWS (Lambda, DynamoDB, SQS, CloudWatch), Salesforce TeamSpirit V5/EX, Windows & macOS, ReactJS
+* **Công việc chính:**
+  * Hợp tác với Senior BrSE để phân tích bản thiết kế logic chức năng tiếng Nhật (設計書) và nắm bắt business logic.
+  * Thiết kế và thực thi các kịch bản kiểm thử (test scenarios) trên môi trường Dev và Staging (STG) cho tính năng thu thập PC log và đồng bộ hóa thời gian thực (real-time synchronization).
+  * Đóng vai trò là người giao tiếp kỹ thuật (technical communicator) chính giữa đội ngũ nội bộ và khách hàng Nhật Bản để làm rõ yêu cầu và quản lý lỗi (defect management).
+  * Xác minh kết quả xử lý batch ở backend bằng cách sử dụng AWS DynamoDB và giám sát application logs qua AWS CloudWatch.
+  * Phối hợp kiểm chứng hàng đợi Amazon SQS để đảm bảo tính nhất quán của dữ liệu (data consistency) trong quá trình vận hành batch.
 
 ---
 
-### IT Communicator | MOR Software JSC
-**03/2025 – 04/2025** | TP. Hồ Chí Minh
+### System-EXE Co., Ltd | May 2025 - Aug 2025
+**IT Tester & IT Communicator**
 
-- Bắt đầu với vai trò IT Comtor, hỗ trợ communication giữa team VN và khách hàng Nhật
-- Dịch tài liệu kỹ thuật và requirement document
+* **Tech stack:** .NET Core 3.1, C#, SQL Server
+* **Công việc chính:**
+  * Phân tích tài liệu đặc tả hệ thống (system specifications) và quy trình nghiệp vụ (business workflows) tiếng Nhật để hỗ trợ các hoạt động kiểm thử và bảo trì.
+  * Dịch tài liệu kỹ thuật, trao đổi Q&A, ticket và test cases giữa đội ngũ Nhật Bản và Việt Nam.
+  * Điều phối giao tiếp giữa khách hàng Nhật Bản và đội ngũ phát triển liên quan đến cập nhật dự án và theo dõi vấn đề (issue tracking).
+  * Thực hiện manual testing, chuẩn bị bằng chứng kiểm thử (test evidence) chi tiết và báo cáo xác minh (verification reports) bằng tiếng Nhật.
 
 ---
 
-### Java Developer (Thử việc) | JVC Software
-**09/2022 – 12/2022** | TP. Hồ Chí Minh
+### System-EXE Co., Ltd | May 2025 - Aug 2025
+**IT Communicator**
 
-- Đọc technical documentation và research IM-LogicDesigner cho dự án Nhật Bản
-- Tham gia phát triển frontend với focus vào UI component
-- Nhận ra điểm mạnh thực sự là giao tiếp tiếng Nhật và muốn vai trò nhìn toàn cục product (requirement → delivery)
+* **Tech stack:** Java, Spring Boot, Spring Batch, MyBatis, MySQL on Azure, SMB file sharing
+* **Công việc chính:**
+  * Dịch và làm rõ tài liệu đặc tả kỹ thuật (technical specifications) tiếng Nhật cho Java developers.
+  * Hỗ trợ đội ngũ hiểu rõ quy trình phát triển V-Model và các khái niệm xử lý batch (batch processing).
+  * Hỗ trợ xác minh hành vi của batch job, kiểm chứng đầu vào/đầu ra (input/output validation) và bằng chứng kiểm thử (test evidence).
+
+---
+
+### FPT University | Jan 2022 - May 2022
+**Team Leader, Mobile Developer**
+
+* **Tech stack:** React Native, ReactJS, .NET
+* **Công việc chính:**
+  * Dẫn dắt đội ngũ 4 thành viên, điều phối phân chia công việc và tiến độ (timeline).
+  * Phát triển ứng dụng di động Android bằng React Native và hỗ trợ tích hợp API ở frontend.
+  * Điều phối công việc giữa các thành viên backend và frontend trong hệ thống dựa trên kiến trúc microservices.
 
 ---
 
 ## KỸ NĂNG
 
-### Tiếng Nhật
-- **JLPT N2** (có bằng chứng nhận)
-- Giao tiếp trực tiếp với khách hàng Nhật (onsite experience tại System-EXE)
-- Đọc hiểu spec kỹ thuật (仕様書, 設計書, QA資料)
-- Viết email business và bug report bằng tiếng Nhật
-- Speaking: business conversation OK, cần cải thiện fluency khi giải thích technical phức tạp
-
-### Technical Skills
-- **QA/Testing:** Test case design, test execution, regression test, smoke test, unit test, UAT, black-box testing, bug tracking, evidence creation
-- **Programming:** Java (basic), Python (đọc hiểu code), JavaScript/React (basic từ đồ án)
-- **Database:** SQL (JOIN, relationship 1-N/N-N, datatype), PostgreSQL, DynamoDB
-- **Cloud & Tools:** AWS (DynamoDB, SQS, CloudWatch), Jira, Backlog, Confluence, Git (commit/push/pull/merge)
-- **Development Process:** SDLC (Requirement → Design → Development → Testing → Migration → Release), 3 environments (Dev/Staging/Prod), V-Model process
-- **API & Integration:** Hiểu REST API, có kinh nghiệm test API, integrate FE với API, Salesforce integration (basic)
-- **Domain Knowledge:** Attendance Management System (勤怠), SaaS, batch processing, real-time data sync
-
-### Communication & Soft Skills
-- Clarify requirement với khách hàng Nhật (qua email/chat/meeting)
-- Dịch spec kỹ thuật JP → VI cho team dev/QA
-- Điều phối task cho developer khi tự log bug
-- Giải thích issue giữa dev team và client
-- Làm việc nhóm trong môi trường đa văn hóa (VN-JP)
-- Cross-timezone coordination (JST ↔ VN)
-
----
-
-## DỰ ÁN NỔI BẬT
-
-### KINKEN — Product Search System for LIXIL
-**09/2025 – Hiện tại** | Role: IT Tester & IT Communicator
-
-Hệ thống tìm kiếm sản phẩm quy mô lớn phục vụ khách hàng Nhật Bản (LIXIL — công ty vật liệu xây dựng). Tham gia từ phase Development đến Release Production.
-
-**Trách nhiệm chính:**
-- Đọc spec JP, thiết kế test case cho search behavior phức tạp (Pickup/Limited/Normal mode)
-- Thực hiện full QA process: test execution, regression, smoke test
-- Communicate với team Nhật để clarify requirement và confirm bug
-- Hỗ trợ dịch tài liệu kỹ thuật cho team VN
-
-**Tech stack:** Python, Elasticsearch, FastAPI, React, PostgreSQL, Databricks
-
-**Kết quả:**
-- Phát hiện và log [X] bugs critical trước khi release Production
-- Đảm bảo search accuracy và performance đạt yêu cầu khách hàng
-- Cải thiện communication flow giữa team VN và JP
-
----
-
-### WorkLog PC Connector (WPC) — Attendance Management System
-**01/2026 – 03/2026** | Role: QA Engineer & IT Communicator (0.5 effort parallel with KINKEN)
-
-Hệ thống quản lý chấm công (勤怠) dựa trên SaaS/Salesforce, tích hợp với Windows/macOS log collection và real-time attendance sync.
-
-**Trách nhiệm chính:**
-- Thiết kế và thực thi test case cho PC log collection, external API clock-in, OS log補完, real-time attendance sync
-- Dịch spec kỹ thuật tiếng Nhật (機能仕様書) thành test scenario cho team VN
-- Giao tiếp cầu nối giữa team VN và khách hàng Nhật (requirement clarification, bug triage, UAT)
-- Verify batch results qua AWS DynamoDB (`user_summary` table) và monitor logs trong CloudWatch
-- Log bug chi tiết với reproduction steps, evidence screenshot, JST/VN time conversion
-- Coordinate SQS queue checks giữa các batch run để tránh data conflict
-
-**Tech stack:** AWS (Lambda, DynamoDB, SQS, CloudWatch), Salesforce TeamSpirit V5/EX, Windows/macOS
-
-**Kỹ năng phát triển:**
-- Regression testing & unit testing từ test case của khách Nhật
-- Requirements analysis từ JP specs
-- Cross-timezone coordination (JST ↔ VN)
-- Attendance management domain knowledge (clock-in/clock-out, overtime tracking, real-time sync)
-**2022** | Role: Team Leader
-
-Ứng dụng mobile và web với kiến trúc microservices (2 backend services + web frontend + mobile app).
-
-**Trách nhiệm:**
-- Lead team 4 người, phân chia task và quản lý timeline
-- Phát triển mobile app Android với React Native
-- Áp dụng kiến thức ReactJS để tích hợp API với backend
-- Coordinate giữa 2 BE developers (.NET) và FE developer (ReactJS)
-
-**Tech stack:** React Native (Android), ReactJS, .NET (Backend × 2)
+* **Languages:** JLPT N2 - Business communication, spec reading
+* **QA & Testing:** Test Case Design, Execution, Regression Testing, Smoke Testing, Bug Tracking
+* **Tech & Cloud:** Java, Python (reading), ReactJS, SQL (PostgreSQL, MySQL), AWS (Lambda, DynamoDB, SQS, CloudWatch)
+* **Process & Tools:** SDLC, V-Model, Jira, Backlog, Monday.com, Git
+* **Soft Skills:** Requirements Clarification, Technical Translation, Team Coordination
 
 ---
 
 ## HỌC VẤN
 
 **Đại học FPT** | Chuyên ngành: Kỹ thuật Phần mềm  
-**2017 – 2022** | TP. Hồ Chí Minh
+**10/2017 – 03/2022** | TP. Hồ Chí Minh  
+* **GPA:** 7.13  
 
 ---
 
 ## CHỨNG CHỈ
 
-- **JLPT N2** (Japanese Language Proficiency Test) — 12/2025
+* **JLPT N3** (Japanese Language Proficiency Test) — 2019
+* **JLPT N2** (Japanese Language Proficiency Test) — 2025
 
 ---
 
-## THÔNG TIN BỔ SUNG
+## THÔNG TIN BỔ SUNG / SỞ THÍCH
 
-- **Gap 2023-2025:** Phục hồi sức khoẻ kết hợp tự học (nâng tiếng Nhật từ N3 lên N2, video editing)
-- **Sẵn sàng:** Đi công tác ngắn hạn, làm việc onsite khi cần
-- **Mục tiêu ngắn hạn:** Tích lũy kinh nghiệm BrSE, học hỏi từ senior
-- **Mục tiêu dài hạn:** Phát triển thành Senior BrSE
-
----
-
-## GHI CHÚ CHO NGƯỜI VIẾT (XOÁ TRƯỚC KHI GỬI)
-
-**Cần điền:**
-- [ ] Email thật
-- [ ] Số điện thoại thật
-- [ ] LinkedIn/GitHub (nếu có)
-- [ ] Tên công ty Java dev (hoặc để [Company Name] nếu không muốn reveal)
-- [ ] Năm đạt N2
-- [ ] Số bugs phát hiện trong KINKEN (nếu nhớ con số cụ thể) — nếu không nhớ, xoá dòng này
-
-**Đã điền:**
-- [x] Tên đồ án: AnService
-- [x] Tech stack đồ án: React Native (Android), ReactJS, .NET × 2
-- [x] Mô tả đồ án: microservices architecture với 4 thành viên team
-
-**Cần review:**
-- [ ] Timeline có đúng với identity.md không
-- [ ] Có từ nào quá technical mà không giải thích được khi phỏng vấn không
-- [ ] Summary có nổi bật điểm mạnh N2 + QA + Comtor không
-- [ ] Format có vừa 1 trang A4 không (khi export PDF)
-
-**Lưu ý khi translate sang JP (Day 9):**
-- Summary → 職務経歴書の冒頭
-- Experience → 職務経歴 (format theo 会社名 → 期間 → 業務内容)
-- Skills → スキル (分けて: 日本語能力 / 技術スキル / コミュニケーション)
-- Projects → プロジェクト経験
+* **Sở thích:** Đọc sách, tập GYM, nghiên cứu AI agent

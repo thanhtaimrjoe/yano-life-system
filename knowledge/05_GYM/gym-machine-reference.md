@@ -4,6 +4,21 @@
 
 ---
 
+## Available Cable Attachments
+
+Use these attachment names when generating gym plans so the user can pick the correct handle/bar quickly.
+
+| Attachment | Primary Use | Planning Notes |
+|------------|-------------|----------------|
+| Wide Mag Grip / Ergonomic Lat Bar (Wide Grip) | Lat Pulldown, wide-grip back work | Good for wider pulldown setup and inner/upper-back MMC exploration. Keep load moderate and avoid biceps takeover. |
+| Mag Grip / Ergonomic Lat Bar (Medium Grip) | Lat Pulldown, controlled lats/upper-back work | Default ergonomic option when user needs a stable medium grip for MMC. |
+| Lat Pulldown Bar | Standard Lat Pulldown | General-purpose pulldown bar; use when plan calls for standard pronated grip. |
+| Tricep Rope | Cable Tricep Extensions / Rope Pushdown | Preferred for triceps because it allows wrist pronation and better squeeze at the bottom. |
+| Single D-Handle / Stirrup Handle | Single-arm cable work | Use for unilateral cable row, cable lateral raise, single-arm pulldown, or cable fly variations. |
+| Nylon D-Handle | Single-arm cable work | Alternative D-handle for unilateral cable movements; choose based on comfort and availability. |
+
+---
+
 ## 1. Nhóm Cơ Ngực (Chest)
 
 ### Pec Deck / Chest Fly Machine (Ép ngực & Vai sau)

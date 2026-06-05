@@ -47,6 +47,8 @@ Preferred protein sources:
 
 - Do not let meals be mostly carbs with no clear protein source.
 - After morning gym, prioritize breakfast with stronger protein.
+- Before morning gym, eat enough to support the session, especially on pull/lower days.
+- Current pre-workout watch item: rice + small protein may feel less effective than sweet potato for stable gym energy; track this as observation before treating it as a fixed rule.
 - If no whey, increase protein from meat, eggs, tofu, and dairy where possible.
 - Keep fat loss flexible; no extreme restriction needed.
 - Gym-first approach is preferred over hard cardio.

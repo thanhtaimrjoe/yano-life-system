@@ -51,8 +51,12 @@ tags: [identity, personal]
 - **Areas to Improve**: Đọc hiểu spec/requirement sâu hơn, giải thích các issue kỹ thuật phức tạp (như migration, infra), phản xạ nghe nói tiếng Nhật khi khách hàng nói quá nhanh.
 
 ## Mental Health (Private)
-- Has been in treatment for depression/anxiety for over 1 year as of 2026-05-13
-- Current medication: Fluvoxamine (Fluvo) 1.5 tablets nightly before sleep
+- Depression started around 2025-04; ongoing treatment continues as of 2026-06-05
+- Current medication: Fluvoxamine (Fluvox) 150mg nightly before sleep
+- Dose detail: 1 tablet = 100mg; current dose = 1.5 tablets
+- Current 150mg dose has been stable for more than 2 months as of 2026-06-05
+- Continues periodic follow-up with doctor after finishing each medication cycle
 - Quetiapine was discontinued earlier because there was no ongoing insomnia issue
 - Current state: much improved, mood stronger, less fear of crowds, using gym and movement as healthy support
 - Still benefits from low-chaos routines and stress-aware pacing
+- Detailed private health context: `00-profile/health-context.md`

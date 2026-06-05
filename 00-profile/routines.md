@@ -35,9 +35,15 @@ tags: [routines]
 - Calm discipline over emotional hype
 - Avoid “no pain no gain” framing
 - Do not glorify injury, exhaustion, or pushing through sharp pain
+- Treat rest timing as a safety variable, especially on pull days
+- Enforce 90-120s rest between hard pull sets after the 2026-06-05 dizziness event
+- If sleep, food, hydration, or stress are not ideal, keep first compound/pull exercises at RPE 6-7
+- Avoid high-density stacking of multiple pulldown variations when dizziness risk is present
+- Prefer no Bluetooth headphones, one-ear use, or ambient mode if headphones increase inward attention/body scanning
 
 ## Recovery
 - Drink water after workout
+- Drink some water before leaving home for gym, not only after starting the session
 - Eat post-workout meals
 - Watch DOMS for 24-72h
 - Sleep earlier after gym when possible

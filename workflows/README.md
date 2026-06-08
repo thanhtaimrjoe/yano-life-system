@@ -54,6 +54,17 @@ Adapters explain how each provider maps the shared tiers to its own tools and mo
 
 ## Available Implementations
 
+### `gym-notion-migration.md`
+
+Connector workflow for keeping `02-gym/YYYY/` markdown logs synced into the Notion database `Gym Sessions 2026`.
+
+Use after creating or updating any gym log, including rest days:
+
+- verify local day numbering and source file paths first
+- run `node build-data.js`
+- upsert Notion by `Source File` and `Date`
+- map only to properties that exist in the fetched Notion database schema
+
 ### `weekly-gym-review.js`
 
 Standalone Gemini Vertex AI implementation for weekly gym review.

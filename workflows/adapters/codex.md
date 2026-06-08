@@ -53,3 +53,16 @@ Recommended implementation:
 
 Codex should not call Gemini/GCP scripts unless the user specifically wants that provider pipeline.
 
+## Gym Notion Migration in Codex
+
+After editing `02-gym/YYYY/` logs, use `workflows/gym-notion-migration.md` when Notion access is available or the user asks to sync Notion.
+
+Recommended implementation:
+
+1. Verify the local source files and day numbering with shell tools.
+2. Run `node build-data.js`.
+3. Use the Notion connector to search/fetch `Gym Sessions 2026`.
+4. Fetch the database/data source schema before creating or updating pages.
+5. Search inside the data source by `Source File` first, then by `Date`.
+6. Update existing pages when found; create only when no matching page exists.
+7. Keep rest days as valid gym-session records with `duration_min: 0`, no exercises, and `focus: rest`.

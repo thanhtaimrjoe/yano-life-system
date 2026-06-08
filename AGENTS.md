@@ -247,6 +247,7 @@ When user asks to add logs from chat text:
 5. Preserve facts exactly.
 6. Put uncertainty as `(not logged)` or `Ambiguous:`.
 7. Do not estimate health/nutrition numbers unless user provides them.
+8. For gym logs in `02-gym/`, run the Gym Notion Migration Workflow after local files are updated when the Notion connector is available or the user asks for Notion sync.
 
 When user asks to add or reorganize knowledge:
 
@@ -305,6 +306,7 @@ When giving training recommendations:
 - Track trends: consistency, MMC development, recovery quality.
 - Connect with `04-weekly-review` for gym progress synthesis.
 - When machine database exists, generate realistic plans based on available equipment.
+- Keep Notion `Gym Sessions 2026` synced with `02-gym/` using `workflows/gym-notion-migration.md` when the user logs a gym session or rest day and Notion access is available.
 
 **Safety & Mindset Principles:**
 - Always maintain the spirit: enjoyable, form-first, sustainable, "understand which muscle is working".
@@ -379,4 +381,3 @@ This repo now features a lightweight, zero-dependency **Yano Life Dashboard** lo
   - Update `dashboard/index.html` to add new tabs or widgets.
   - Add styles to `dashboard/style.css` matching the Cyberpunk dark glassmorphism system variables.
   - Implement parsing & chart binding inside `dashboard/app.js`.
-

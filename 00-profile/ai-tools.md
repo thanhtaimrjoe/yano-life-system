@@ -77,3 +77,31 @@ Preferred order khi read hoặc edit `.xlsx` trong workspace này:
 - Python không available by default on this machine.
 - Stable no-install path: PowerShell/.NET XML parsing của zipped XLSX structure.
 - If using COM, always close workbook và quit Excel explicitly.
+
+## Local Machine Hardware
+
+Last checked: 2026-06-05
+
+- Device: MacBook Pro (`MacBookPro17,1`, model number `MYD92LL/A`)
+- Chip: Apple M1
+- CPU: 8 cores total (4 performance + 4 efficiency)
+- GPU: Apple M1 integrated GPU, 8 cores, Metal 4 support
+- Memory: 8 GB LPDDR4 unified memory
+- Architecture: `arm64`
+- macOS: 26.5.1 (`25F80`)
+- Internal display: 2560 x 1600 Retina
+- Storage snapshot: root volume size ~460 GiB, available ~236 GiB
+
+Privacy note:
+- Serial number, Hardware UUID, and Provisioning UDID were intentionally not stored.
+
+## Local AI / LM Studio Guidance
+
+This machine can run local LLMs, but RAM is the main limit. Prefer small or moderate models and conservative settings.
+
+- Best first choices: `Qwen3 4B`, `Llama 3.2 3B Instruct`, `Mistral 7B Instruct` if quantized.
+- On Apple Silicon, prefer `MLX` models when available.
+- For `GGUF`, prefer `Q4_K_M` or similarly light quantization.
+- Start with context length `4096`; only increase to `8192` when needed.
+- If LM Studio shows compute errors, disable `Vision` / `Think`, lower GPU offload, or test with GPU offload `0`.
+- Avoid large 14B+ models by default on this 8 GB RAM setup.

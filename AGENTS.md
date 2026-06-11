@@ -93,7 +93,6 @@ The main agent relays what matters from the subagent's report; it does not re-ru
 05-career-prep/      Career / interview prep work by year
 99-templates/        Reusable templates (structure only)
 knowledge/           Durable AI-managed knowledge layer (canonical data & principles)
-dashboard/           Local web dashboard (HTML/JS + build artifact data.json)
 workflows/           Reusable multi-agent orchestration scripts (cross-AI portable)
 workspace/           Gitignored scratch / log dir (cron output, AI intake). Not source of truth.
 ```
@@ -359,25 +358,8 @@ Current templates:
 - Commit messages should be concise.
 - Do not push unless user asks.
 
-## Yano Life Dashboard Development Guidelines
+## Markdown Log Formatting Rules
 
-This repo now features a lightweight, zero-dependency **Yano Life Dashboard** located in `dashboard/` to visualize the tracking data.
-
-### Architecture & Data Flow
-1. **Source Data**: Markdown files in `00-profile/`, `01-daily/`, `02-gym/`, `03-meals/`, `04-weekly-review/`, and `knowledge/`.
-2. **Compilation**: `build-data.js` scans these folders recursively, parses YAML frontmatter using a custom regex parser, groups markdown sections, extracts tabular gym sets/reps/weights, and compiles everything into a single, unified JSON file: `dashboard/data.json`.
-3. **Local Server**: `server.js` is a native Node.js HTTP server. It listens on port `3000` and automatically runs `build-data.js` every time a client requests `/data.json` or `/dashboard/data.json` (providing real-time "hot-reload" when F5 is pressed).
-4. **Frontend View**: `dashboard/index.html`, `style.css`, and `app.js` form a Single Page Application (SPA) displaying interactive charts (Chart.js), formatting markdown articles (Marked.js), and showing clean timelines.
-
-### Commands for AI & Developers
-* **Start local server**: `node server.js` (starts server on `http://localhost:3000` and triggers initial build).
-* **Compile data manually**: `node build-data.js` (compiles and writes `dashboard/data.json`).
-
-### Rules for Future AI Maintainers
-- **Zero-Dependency Constraint**: Do NOT install or introduce any external NPM packages (like `express`, `js-yaml`, etc.) to the project root. Keep the server native and clean to avoid bloated `node_modules` and ensure instant zero-setup start for the user.
-- **Frontmatter Preservation**: Always ensure any generated or updated markdown files adhere strictly to the YAML-like frontmatter block style (delimited by `---` at lines 1-11) so that `build-data.js` can parse it reliably.
-- **Gym Table Format**: Gym logs MUST keep the Markdown table headers (`Exercise | Set x Rep | Weight | RPE | Notes`) consistent to preserve progressive overload tracking in the analytics view. Extra columns (Machine/Setup, Tempo, Form Cue, Key Learning) are optional — add them per-row khi cần, không reorder core 5.
-- **Extending the Web View**:
-  - Update `dashboard/index.html` to add new tabs or widgets.
-  - Add styles to `dashboard/style.css` matching the Cyberpunk dark glassmorphism system variables.
-  - Implement parsing & chart binding inside `dashboard/app.js`.
+- Keep generated or updated markdown files structured with YAML-like frontmatter delimited by `---`.
+- Gym logs should keep a scannable exercise table with core columns: `Exercise | Sets x Reps | Weight | RPE | Notes`.
+- Extra columns such as Machine/Setup, Tempo, Form Cue, and Key Learning are optional when useful, but do not reorder the core exercise data.

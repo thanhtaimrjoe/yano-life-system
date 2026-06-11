@@ -31,7 +31,7 @@
 - Most general-purpose tasks
 
 **Ví dụ:**
-- Parse gym logs và compile vào data.json
+- Normalize gym logs into repo markdown format
 - Generate mock interview questions từ KINKEN case study
 - Translate technical vocabulary
 - Search codebase và summarize findings
@@ -193,10 +193,10 @@ const analysis = await agent('Analyze patterns', {
 - **Opus**: Generate STAR-method answers, analyze gap narrative
 - **Sonnet**: Format mock interview questions, translate technical terms
 
-### Use Case 3: Dashboard Data Pipeline
-- **Haiku**: Parse markdown frontmatter, extract gym tables
-- **Sonnet**: Compile data.json, handle edge cases
-- **Opus**: (not needed for this pipeline)
+### Use Case 3: Gym Notion Sync
+- **Haiku**: Verify filenames, frontmatter, and day sequence
+- **Sonnet**: Format Notion-ready summaries and map schema fields
+- **Opus**: (not needed for routine sync)
 
 ## Rules for AI Maintainers
 

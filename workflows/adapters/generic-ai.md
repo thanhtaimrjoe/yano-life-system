@@ -28,7 +28,7 @@ Use provider docs or runtime model lists to resolve the actual model. Do not edi
 1. Extract: gather facts into the shared schema.
 2. Analyze: reason from the compact facts.
 3. Format: write the final markdown in the target repo template.
-4. Verify: check file paths, frontmatter, and dashboard build when relevant.
+4. Verify: check file paths, frontmatter, and required sync targets.
 
 ## Safety Rules
 
@@ -36,4 +36,3 @@ Use provider docs or runtime model lists to resolve the actual model. Do not edi
 - Do not upload sensitive raw logs unless the user selected that provider.
 - Never infer health, sleep, nutrition, or mood data that is not logged.
 - Preserve uncertainty explicitly.
-

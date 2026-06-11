@@ -49,7 +49,6 @@ Recommended implementation:
 4. Extract into the shared schemas or an equivalent compact JSON object.
 5. Analyze conservatively.
 6. Update or create `04-weekly-review/YYYY-W##.md`.
-7. Run `node build-data.js`.
 
 Codex should not call Gemini/GCP scripts unless the user specifically wants that provider pipeline.
 
@@ -60,9 +59,8 @@ After editing `02-gym/YYYY/` logs, use `workflows/gym-notion-migration.md` when 
 Recommended implementation:
 
 1. Verify the local source files and day numbering with shell tools.
-2. Run `node build-data.js`.
-3. Use the Notion connector to search/fetch `Gym Sessions 2026`.
-4. Fetch the database/data source schema before creating or updating pages.
-5. Search inside the data source by `Source File` first, then by `Date`.
-6. Update existing pages when found; create only when no matching page exists.
-7. Keep rest days as valid gym-session records with `duration_min: 0`, no exercises, and `focus: rest`.
+2. Use the Notion connector to search/fetch `Gym Sessions 2026`.
+3. Fetch the database/data source schema before creating or updating pages.
+4. Search inside the data source by `Source File` first, then by `Date`.
+5. Update existing pages when found; create only when no matching page exists.
+6. Keep rest days as valid gym-session records with `duration_min: 0`, no exercises, and `focus: rest`.

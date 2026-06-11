@@ -406,15 +406,6 @@ async function main() {
 
   console.log(`\n🎉 \x1b[32mBáo cáo tuần hoàn tất thành công!\x1b[0m`);
   console.log(`📂 Kết quả lưu tại: \x1b[36m${outputPath}\x1b[0m\n`);
-
-  // Run build-data.js to update dashboard
-  try {
-    console.log(`⚙️  Đang chạy build-data.js để cập nhật Dashboard...`);
-    execSync('node build-data.js');
-    console.log(`📊 Dashboard đã được đồng bộ hóa thành công!`);
-  } catch (err) {
-    console.warn(`⚠️  Cảnh báo: Không thể tự động chạy build-data.js. Bạn hãy chạy thủ công nha.`);
-  }
 }
 
 main().catch(error => {

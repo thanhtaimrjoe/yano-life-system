@@ -25,7 +25,6 @@ Private markdown second-brain cho Yano. Dùng 2 layers:
 05-career-prep/      Time-boxed BrSE/interview prep (YYYY/...)
 99-templates/        Reusable markdown templates
 knowledge/           Durable knowledge layer (governed by 00_SYSTEM/)
-dashboard/           Local web dashboard (run via `node server.js`)
 workspace/           Gitignored scratch / cron logs (not source of truth)
 ```
 
@@ -41,10 +40,6 @@ workspace/           Gitignored scratch / cron logs (not source of truth)
 | Mock interview prep          | `05-career-prep/YYYY/mock-interviews/` + `mock-interview-template.md` |
 | Durable knowledge note       | `knowledge/<domain>/` — đọc `knowledge/00_SYSTEM/Knowledge-Organization.md` trước |
 | Project working notes        | `knowledge/06_PROJECTS/<project>/working-notes.md`     |
-
-## Dashboard
-
-Run `node server.js` → `http://localhost:3000`. Zero-dependency Node server compiles markdown vào `dashboard/data.json` mỗi lần F5.
 
 ## Privacy
 

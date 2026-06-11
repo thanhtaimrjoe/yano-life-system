@@ -61,7 +61,6 @@ Connector workflow for keeping `02-gym/YYYY/` markdown logs synced into the Noti
 Use after creating or updating any gym log, including rest days:
 
 - verify local day numbering and source file paths first
-- run `node build-data.js`
 - upsert Notion by `Source File` and `Date`
 - map only to properties that exist in the fetched Notion database schema
 
@@ -80,7 +79,6 @@ Current behavior:
 - Analyze: Gemini Pro/highest-class model
 - Format: Gemini Flash/mid-class model
 - Writes a weekly review into `04-weekly-review/`
-- Runs `node build-data.js` after generation
 
 Important: this script is provider-specific. Other AIs should reuse the pattern and shared schemas, not the GCP auth/client code.
 
@@ -96,7 +94,6 @@ When any AI creates a weekly gym review:
 6. Do not estimate sleep, calories, protein, mood, or recovery if not logged.
 7. Search for an existing `04-weekly-review/YYYY-W##.md` before creating or overwriting.
 8. Use zero-padded ISO week numbers, for example `2026-W05.md`.
-9. Rebuild dashboard data with `node build-data.js` after successful changes.
 
 Recommended schemas:
 

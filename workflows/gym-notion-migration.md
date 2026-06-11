@@ -18,7 +18,6 @@ Use lightweight local tools:
 1. Identify changed `02-gym/` files.
 2. Verify filename, frontmatter `date`, and frontmatter `day` agree.
 3. Verify day sequence around the edited dates.
-4. Run `node build-data.js` before migration.
 
 For rest days:
 

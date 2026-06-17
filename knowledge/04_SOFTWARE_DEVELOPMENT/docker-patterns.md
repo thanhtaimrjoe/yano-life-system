@@ -69,8 +69,8 @@ Cùng 1 image deploy nhiều lần với `BATCH_TYPE` khác nhau → tái dùng 
 2. Có DB + migration → bắt buộc pattern 2 (entrypoint).
 3. Job xử lý dữ liệu → pattern 3.
 4. Muốn sau này lên Cloud Run dễ → luôn theo pattern 4 ngay từ đầu.
-5. Secret: **không hardcode** — đọc từ env (`.env` local, Secret Manager khi lên cloud). Xem [[cloud-deployment-targets]].
+5. Secret: **không hardcode** — đọc từ env (`.env` local, Secret Manager khi lên cloud). Xem [cloud-deployment-targets](cloud-deployment-targets.md).
 
 ## Related Notes
-- [[cloud-deployment-targets]] — đẩy image này lên đâu
-- [[system-architecture-patterns]] — chia service thế nào trước khi dockerize
+- [cloud-deployment-targets](cloud-deployment-targets.md) — đẩy image này lên đâu
+- [system-architecture-patterns](system-architecture-patterns.md) — chia service thế nào trước khi dockerize

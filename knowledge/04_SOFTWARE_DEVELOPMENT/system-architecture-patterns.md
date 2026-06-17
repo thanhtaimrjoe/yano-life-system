@@ -78,6 +78,6 @@ Một dấu hiệu chia service tốt: **tần suất chạy khác nhau thì tá
 - **BrSE**: dùng sơ đồ trên để giải thích "vì sao hệ chia nhiều service", "data chảy thế nào từ nguồn tới màn hình search". Đây là câu chuyện kiến trúc rất mạnh khi trao đổi với khách/dev.
 
 ## Related Notes
-- [[cloud-deployment-targets]] — mỗi pattern deploy ở đâu
-- [[docker-patterns]] — đóng gói từng service
+- [cloud-deployment-targets](cloud-deployment-targets.md) — mỗi pattern deploy ở đâu
+- [docker-patterns](docker-patterns.md) — đóng gói từng service
 - chi tiết KINKEN: `../06_PROJECTS/kinken/02_architecture/`

@@ -51,7 +51,7 @@ mini-kinken mô phỏng **đúng *hình dạng* kiến trúc** KINKEN (rất t�
 ### Bước 1 — Cloud Run (dễ nhất, thấy URL ngay)
 - Viết Dockerfile cho **backend**, bind `uvicorn --host 0.0.0.0 --port $PORT`.
 - Deploy lên Cloud Run bằng **GCP project của chính Yano**.
-- Học: build image → Artifact Registry → `gcloud run deploy`. Tham khảo [[docker-patterns]] pattern 1+2+4.
+- Học: build image → Artifact Registry → `gcloud run deploy`. Tham khảo [docker-patterns](../../04_SOFTWARE_DEVELOPMENT/docker-patterns.md) pattern 1+2+4.
 
 ### Bước 2 — Managed ES (Elastic Cloud free trial)
 - Trỏ `ELASTICSEARCH_URL` sang Elastic Cloud + API key (bỏ `verify_certs=False`).

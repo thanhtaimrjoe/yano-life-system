@@ -52,11 +52,11 @@ Github push code → trigger pipeline tương ứng môi trường.
 - Lưu ý: secret inject lúc **build** (frontend) → đổi secret phải build+deploy lại; inject lúc **runtime** (backend) → linh hoạt hơn.
 
 ## Practical Use (mini-kinken)
-1. App web/API → Cloud Run. Viết Dockerfile theo [[docker-patterns]] pattern 4.
+1. App web/API → Cloud Run. Viết Dockerfile theo [docker-patterns](docker-patterns.md) pattern 4.
 2. Local: secret trong `.env` (gitignore). Cloud: Secret Manager.
 3. Muốn cron/event nhỏ → Cloud Functions, khỏi Docker.
 4. Tách dev/stg/prod ngay từ đầu, đừng để chung 1 môi trường.
 
 ## Related Notes
-- [[docker-patterns]] — đóng gói trước khi deploy
-- [[system-architecture-patterns]] — chia service để biết cái nào deploy đâu
+- [docker-patterns](docker-patterns.md) — đóng gói trước khi deploy
+- [system-architecture-patterns](system-architecture-patterns.md) — chia service để biết cái nào deploy đâu

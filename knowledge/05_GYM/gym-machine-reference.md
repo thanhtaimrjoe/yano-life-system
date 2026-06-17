@@ -21,6 +21,30 @@ Use these attachment names when generating gym plans so the user can pick the co
 
 ## 1. Nhóm Cơ Ngực (Chest)
 
+### Incline Chest Press Machine
+- **Target:** Upper chest.
+- **Current best-fit load:** 5kg gives strong upper-chest stimulus; manage RPE carefully.
+- **Execution & MMC Cues:**
+  - Use the seat height that keeps tension in upper chest.
+  - Do not lower too deep past nipple level.
+  - Best current ROM: lower until upper chest stretch is enough and shoulder stays quiet, then push.
+  - Drive through elbows, keep shoulders down, avoid letting shoulder take over.
+- **My Failure Log & Warnings:**
+  - Lowering the seat too much previously shifted tension into shoulder.
+  - Too-deep ROM can irritate shoulder and reduce clean upper-chest MMC.
+
+### Chest Press Machine
+- **Target:** Mid-chest.
+- **Current status:** Form-learning / pattern practice.
+- **Setup & Settings:** No weight currently gives useful chest burn and cleaner practice; adding 5kg after Incline + Pec Fly can jump to RPE 9.
+- **Execution & MMC Cues:**
+  - Use no weight or very light load when training technique.
+  - Keep shoulders down and drive through elbows.
+  - If using Chest Press as a form-learning priority, place it before Pec Fly.
+- **My Failure Log & Warnings:**
+  - If rear shoulder or shoulder support appears, stop the exercise and do not add extra cable chest work.
+  - Avoid 5kg late-session top sets until the pattern feels stable.
+
 ### Pec Deck / Chest Fly Machine (Ép ngực & Vai sau)
 - **Target:** Chest (Ép ngực), Rear Delts & Upper Back (Ép vai sau)
 - **Setup & Settings:** 
@@ -28,10 +52,23 @@ Use these attachment names when generating gym plans so the user can pick the co
   - Vai sau (Reverse Pec Deck): Ngồi úp ngực vào đệm, chest firmly against pad.
 - **Execution & MMC Cues:**
   - Ép ngực: Khớp khuỷu tay cong nhẹ giữ nguyên góc độ, ép chặt ngực ở điểm hai tay chạm nhau (peak contraction), kiểm soát lúc mở tay tránh để giật ngược tay ra sau.
+  - Current best chest cue: open only until chest stretch is enough, do not force excessive ROM, and do not let shoulder brace.
   - Vai sau: Hạ vai, dùng khuỷu tay dẫn đường kéo ra ngoài và ra sau, ép chặt vai sau ở cuối biên độ.
 - **My Failure Log & Warnings:**
   - Ép ngực: Mở tay quá rộng gây áp lực lên khớp vai. Chú ý mở ngực cảm nhận độ căng nhưng không kéo quá sâu khớp vai ra sau.
+  - 15kg x15 can create strong chest burn at RPE 8, but if neck/trap tightness appears near the end, do not add another set.
   - Vai sau: Cầu vai (traps) bị gồng nhiều thay vì vai sau. Cần thư giãn vùng cổ/cầu vai và hạ vai xuống trước khi kéo.
+
+### Cable Lateral Raise
+- **Target:** Side delts.
+- **Current status:** Form-learning / cautious volume.
+- **Setup & Settings:** Prefer 2.5-3kg when available. If only 5kg is available, use max 2 sets and no partial/burnout reps.
+- **Execution & MMC Cues:**
+  - Shoulder down, elbow leads, no shrug.
+  - Stop when neck/trap starts helping.
+- **My Failure Log & Warnings:**
+  - 5kg makes RPE jump quickly and can reach RPE 10 by set 3.
+  - Side-delt endurance is still developing; do not treat 5kg as normal volume yet.
 
 ---
 
@@ -72,6 +109,31 @@ Use these attachment names when generating gym plans so the user can pick the co
 - **My Failure Log & Warnings:**
   - Cài đặt tay cầm V-handle sai hướng làm tăng gánh nặng lên cơ cẳng tay (brachialis/brachioradialis) và mỏi tay trước.
   - *Nếu không cảm nhận được cơ lưng sau vài set điều chỉnh, hãy chủ động bỏ bài để chuyển sang các bài tựa ngực (Chest-supported row) nhằm tránh mỏi tay trước vô ích.*
+
+### Chest Supported Row Machine
+- **Target:** Mid-back, inner-back, lats.
+- **Current best-fit load:** 10kg for clean MMC work; 5kg works well as primer/calibration.
+- **Execution & MMC Cues:**
+  - Chest glued to pad, shoulders relaxed, elbows lead the pull.
+  - Pull elbows toward pockets, but avoid yanking too deep at the end range.
+  - Keep elbow angle stable so triceps do not take over.
+  - For left-side MMC, train left side first and use slightly reduced end-ROM.
+- **My Failure Log & Warnings:**
+  - Pulling too deep at the end of the rep can shift effort into triceps, especially on the left side.
+  - Letting the shoulder drift too far forward at the stretch can break clean back tension.
+  - Best current cue: ROM vừa đủ = lưng burn sạch, triceps/trap im.
+
+### Straight-arm Pulldown
+- **Target:** Lats.
+- **Current status:** Form-learning exercise.
+- **Setup & Settings:** 15kg can create light lat stretch, but triceps may take over late set; 20kg currently tends to shift too much into triceps.
+- **Execution & MMC Cues:**
+  - Keep arms long but not locked hard.
+  - Pull from lats by driving upper arms down, not by pressing with triceps.
+  - Consider trying rope attachment or an intermediate load when available.
+- **My Failure Log & Warnings:**
+  - If triceps takeover appears near the end of the set, stop the exercise instead of forcing reps.
+  - Do not use this as a volume exercise yet; use it for setup practice until lat MMC becomes reliable.
 
 ### Assisted Pull-up / Chin Assist Machine (Hỗ trợ kéo xà)
 - **Target:** Upper Back (Lưng trên), Lats (Cơ xô), Biceps (Tay trước)
@@ -136,6 +198,17 @@ Use these attachment names when generating gym plans so the user can pick the co
   - Đá chân ra sau và siết chặt cơ mông, không dùng thắt lưng để đung đưa người.
 - **My Failure Log & Warnings:**
   - Xu hướng dùng quán tính và đung đưa thân người khi mỏi cơ mông. Hạ khối lượng tạ và gồng chắc core để cô lập vùng mông.
+
+### Hip Abduction Machine
+- **Target:** Upper/outer glute (mông trên/mông ngoài), glute medius.
+- **Current best-fit load:** 20kg gives clear outer-glute MMC; 15kg works well as a primer.
+- **Execution & MMC Cues:**
+  - Setup kỹ before working sets; small setup changes can strongly improve outer-glute feel.
+  - Lean forward lightly only if it improves glute feel; avoid folding too deep.
+  - Hold peak squeeze briefly, but do not over-hold if RPE jumps too fast.
+- **My Failure Log & Warnings:**
+  - 20kg can jump from easy to hard quickly if peak squeeze is held too long.
+  - Treat strong burn/gold reps as enough stimulus; do not keep adding intensity after RPE 8.
 
 ### Standing Calf Raise (Nhón bắp chuối đứng)
 - **Target:** Calves (Cơ bắp chuối)

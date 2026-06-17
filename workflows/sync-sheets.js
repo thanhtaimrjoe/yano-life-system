@@ -158,7 +158,6 @@ async function runSync() {
       console.log('   }');
       console.log('======================================================\n');
       
-      // Initialize an empty config template for user convenience
       if (!spreadsheetId) {
         saveConfig({ spreadsheetId: "YOUR_SPREADSHEET_ID_HERE" });
         console.log('📝 Khởi tạo sẵn file sheets-config.json trống cho bạn rồi nhé!');
@@ -180,69 +179,95 @@ async function runSync() {
     console.log('🔑 Authenticating with Google Sheets API...');
     const token = getAccessToken();
 
-    // Try checking/updating the sheet
-    console.log(`🚀 Checking Google Spreadsheet ID: ${spreadsheetId}...`);
+    console.log(`🚀 Checking Google Spreadsheet: ${spreadsheetId}...`);
     
-    // First, verify if we can access the sheet, and check if Gym Logs sheet exists
-    const sheetInfoResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}`, {
+    // 1. Fetch initial spreadsheet metadata
+    let metaResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
-    const sheetInfo = await sheetInfoResponse.json();
-    if (!sheetInfoResponse.ok) {
-      if (sheetInfo.error && sheetInfo.error.status === 'PERMISSION_DENIED') {
-        throw new Error(`Permission Denied: ${sheetInfo.error.message}\nBạn đã Share Google Sheet với email Robot "${clientEmail}" chưa?`);
+    let spreadsheet = await metaResponse.json();
+    if (!metaResponse.ok) {
+      if (spreadsheet.error && spreadsheet.error.status === 'PERMISSION_DENIED') {
+        throw new Error(`Permission Denied: ${spreadsheet.error.message}\nBạn đã Share Google Sheet với email Robot "${clientEmail}" chưa?`);
       }
-      throw new Error(`Failed to access spreadsheet: ${JSON.stringify(sheetInfo)}`);
+      throw new Error(`Failed to access spreadsheet: ${JSON.stringify(spreadsheet)}`);
     }
 
-    const sheets = sheetInfo.sheets || [];
-    const hasGymLogsSheet = sheets.some(s => s.properties.title === 'Gym Logs');
+    let sheets = spreadsheet.sheets || [];
+    let gymLogsSheetId = null;
+    let dashboardSheetId = null;
 
-    if (!hasGymLogsSheet) {
-      console.log('🆕 Creating "Gym Logs" tab inside the spreadsheet...');
-      const addSheetResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`, {
+    for (const s of sheets) {
+      if (s.properties.title === 'Gym Logs') gymLogsSheetId = s.properties.sheetId;
+      if (s.properties.title === 'Dashboard') dashboardSheetId = s.properties.sheetId;
+    }
+
+    // 2. Create missing tabs if needed
+    const initialRequests = [];
+    if (gymLogsSheetId === null) {
+      console.log('🆕 Creating "Gym Logs" tab...');
+      gymLogsSheetId = 111922024; // Use a fixed sheetId for predictability
+      initialRequests.push({
+        addSheet: {
+          properties: {
+            sheetId: gymLogsSheetId,
+            title: 'Gym Logs',
+            index: 1,
+            gridProperties: { frozenRowCount: 1 }
+          }
+        }
+      });
+    }
+
+    if (dashboardSheetId === null) {
+      console.log('🆕 Creating "Dashboard" tab...');
+      dashboardSheetId = 88888888; // Use a fixed sheetId for predictability
+      initialRequests.push({
+        addSheet: {
+          properties: {
+            sheetId: dashboardSheetId,
+            title: 'Dashboard',
+            index: 0, // Dashboard will be the first tab
+            gridProperties: { rowCount: 100, columnCount: 15 }
+          }
+        }
+      });
+    }
+
+    if (initialRequests.length > 0) {
+      console.log('🚀 Setting up sheet tabs...');
+      const createRes = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          requests: [
-            {
-              addSheet: {
-                properties: {
-                  title: 'Gym Logs',
-                  gridProperties: { frozenRowCount: 1 }
-                }
-              }
-            }
-          ]
-        })
+        body: JSON.stringify({ requests: initialRequests })
       });
-
-      const addSheetResult = await addSheetResponse.json();
-      if (!addSheetResponse.ok) {
-        throw new Error(`Failed to create "Gym Logs" tab: ${JSON.stringify(addSheetResult)}`);
+      if (!createRes.ok) {
+        throw new Error(`Failed to initialize tabs: ${JSON.stringify(await createRes.json())}`);
       }
-
-      // Initialize headers
-      console.log('✍️ Initializing headers...');
-      await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Gym%20Logs!A1:G1?valueInputOption=USER_ENTERED`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          values: [
-            ['Date', 'Focus Area', 'Exercise', 'Sets x Reps', 'Weight', 'RPE', 'Notes / MMC Wins']
-          ]
-        })
-      });
+      
+      // If we just created Gym Logs, initialize headers
+      if (sheets.every(s => s.properties.title !== 'Gym Logs')) {
+        console.log('✍️ Initializing Gym Logs headers...');
+        await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Gym%20Logs!A1:G1?valueInputOption=USER_ENTERED`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            values: [
+              ['Date', 'Focus Area', 'Exercise', 'Sets x Reps', 'Weight', 'RPE', 'Notes / MMC Wins']
+            ]
+          })
+        });
+      }
     }
 
-    // Append the rows
+    // 3. Append the rows to "Gym Logs"
     console.log(`🚀 Appending workout data...`);
     const valuesToAppend = parsedRows.map(row => [
       row.date,
@@ -265,13 +290,420 @@ async function runSync() {
       })
     });
 
-    const appendResult = await appendResponse.json();
     if (!appendResponse.ok) {
-      throw new Error(`Failed to append rows: ${JSON.stringify(appendResult)}`);
+      throw new Error(`Failed to append rows: ${JSON.stringify(await appendResponse.json())}`);
+    }
+
+    // 4. Re-fetch sheet metadata to inspect charts (avoid duplicates)
+    metaResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    spreadsheet = await metaResponse.json();
+    const dashboardSheet = (spreadsheet.sheets || []).find(s => s.properties.title === 'Dashboard');
+    const hasChart = dashboardSheet && dashboardSheet.charts && dashboardSheet.charts.length > 0;
+
+    // 5. Build massive styling and layout batch update
+    console.log('🎨 Applying premium theme, styling, and Dashboard content...');
+    const formattingRequests = [];
+
+    // --- AESTHETICS FOR "GYM LOGS" SHEET ---
+    formattingRequests.push({
+      repeatCell: {
+        range: { sheetId: gymLogsSheetId },
+        cell: { userEnteredFormat: { textFormat: { fontFamily: 'Inter' } } },
+        fields: 'userEnteredFormat.textFormat.fontFamily'
+      }
+    });
+
+    formattingRequests.push({
+      repeatCell: {
+        range: { sheetId: gymLogsSheetId, startRowIndex: 0, endRowIndex: 1 },
+        cell: {
+          userEnteredFormat: {
+            backgroundColor: { red: 15/255, green: 23/255, blue: 42/255 }, // Dark Slate
+            textFormat: { foregroundColor: { red: 1, green: 1, blue: 1 }, bold: true, fontSize: 10, fontFamily: 'Inter' },
+            horizontalAlignment: 'CENTER',
+            verticalAlignment: 'MIDDLE'
+          }
+        },
+        fields: 'userEnteredFormat(backgroundColor,textFormat,horizontalAlignment,verticalAlignment)'
+      }
+    });
+
+    const centerAlignColumns = [0, 1, 3, 4, 5];
+    for (const colIndex of centerAlignColumns) {
+      formattingRequests.push({
+        repeatCell: {
+          range: { sheetId: gymLogsSheetId, startColumnIndex: colIndex, endColumnIndex: colIndex + 1, startRowIndex: 1 },
+          cell: { userEnteredFormat: { horizontalAlignment: 'CENTER' } },
+          fields: 'userEnteredFormat.horizontalAlignment'
+        }
+      });
+    }
+
+    const leftAlignColumns = [2, 6];
+    for (const colIndex of leftAlignColumns) {
+      formattingRequests.push({
+        repeatCell: {
+          range: { sheetId: gymLogsSheetId, startColumnIndex: colIndex, endColumnIndex: colIndex + 1, startRowIndex: 1 },
+          cell: { userEnteredFormat: { horizontalAlignment: 'LEFT' } },
+          fields: 'userEnteredFormat.horizontalAlignment'
+        }
+      });
+    }
+
+    const colWidths = [
+      { start: 0, end: 1, size: 90 },   // Date
+      { start: 1, end: 2, size: 160 },  // Focus Area
+      { start: 2, end: 3, size: 220 },  // Exercise
+      { start: 3, end: 4, size: 100 },  // Sets x Reps
+      { start: 4, end: 5, size: 80 },   // Weight
+      { start: 5, end: 6, size: 70 },   // RPE
+      { start: 6, end: 7, size: 450 }   // Notes
+    ];
+    for (const cw of colWidths) {
+      formattingRequests.push({
+        updateDimensionProperties: {
+          range: { sheetId: gymLogsSheetId, dimension: 'COLUMNS', startIndex: cw.start, endIndex: cw.end },
+          properties: { pixelSize: cw.size },
+          fields: 'pixelSize'
+        }
+      });
+    }
+
+    // Soft color scale: RPE 1-5 (Green-Yellow), RPE 6-10 (Yellow-Red)
+    formattingRequests.push({
+      addConditionalFormatRule: {
+        rule: {
+          ranges: [{ sheetId: gymLogsSheetId, startColumnIndex: 5, endColumnIndex: 6, startRowIndex: 1 }],
+          gradientRule: {
+            minpoint: { color: { red: 209/255, green: 250/255, blue: 229/255 }, type: 'NUMBER', value: '1' }, // Soft Emerald
+            midpoint: { color: { red: 254/255, green: 243/255, blue: 199/255 }, type: 'NUMBER', value: '6' }, // Soft Amber
+            maxpoint: { color: { red: 254/255, green: 226/255, blue: 226/255 }, type: 'NUMBER', value: '10' } // Soft Red
+          }
+        },
+        index: 0
+      }
+    });
+
+    // --- DASHBOARD CREATION & FORMULAS ---
+    formattingRequests.push({
+      repeatCell: {
+        range: { sheetId: dashboardSheetId },
+        cell: { userEnteredFormat: { textFormat: { fontFamily: 'Inter' } } },
+        fields: 'userEnteredFormat.textFormat.fontFamily'
+      }
+    });
+
+    const dashWidths = [
+      { start: 0, end: 1, size: 120 }, // Date
+      { start: 1, end: 2, size: 120 }, // Exercises count
+      { start: 2, end: 3, size: 40 },  // Gap
+      { start: 3, end: 4, size: 150 }, // KPI Side
+      { start: 4, end: 5, size: 150 },
+      { start: 5, end: 6, size: 150 },
+      { start: 6, end: 7, size: 150 }
+    ];
+    for (const dw of dashWidths) {
+      formattingRequests.push({
+        updateDimensionProperties: {
+          range: { sheetId: dashboardSheetId, dimension: 'COLUMNS', startIndex: dw.start, endIndex: dw.end },
+          properties: { pixelSize: dw.size },
+          fields: 'pixelSize'
+        }
+      });
+    }
+
+    const merges = [
+      { sheetId: dashboardSheetId, startRowIndex: 0, endRowIndex: 1, startColumnIndex: 0, endColumnIndex: 7 }, // Title A1:G1
+      { sheetId: dashboardSheetId, startRowIndex: 2, endRowIndex: 3, startColumnIndex: 0, endColumnIndex: 2 }, // KPI 1 A3:B3
+      { sheetId: dashboardSheetId, startRowIndex: 3, endRowIndex: 4, startColumnIndex: 0, endColumnIndex: 2 }, // KPI 1 Value A4:B4
+      { sheetId: dashboardSheetId, startRowIndex: 2, endRowIndex: 3, startColumnIndex: 3, endColumnIndex: 5 }, // KPI 2 D3:E3
+      { sheetId: dashboardSheetId, startRowIndex: 3, endRowIndex: 4, startColumnIndex: 3, endColumnIndex: 5 }, // KPI 2 Value D4:E4
+      { sheetId: dashboardSheetId, startRowIndex: 2, endRowIndex: 3, startColumnIndex: 5, endColumnIndex: 7 }, // KPI 3 F3:G3
+      { sheetId: dashboardSheetId, startRowIndex: 3, endRowIndex: 4, startColumnIndex: 5, endColumnIndex: 7 }, // KPI 3 Value F4:G4
+      { sheetId: dashboardSheetId, startRowIndex: 5, endRowIndex: 6, startColumnIndex: 0, endColumnIndex: 7 }  // Title A6:G6
+    ];
+    for (const m of merges) {
+      formattingRequests.push({ mergeCells: { range: m, mergeType: 'MERGE_ALL' } });
+    }
+
+    // Title banner
+    formattingRequests.push({
+      updateCells: {
+        range: { sheetId: dashboardSheetId, startRowIndex: 0, endRowIndex: 1, startColumnIndex: 0, endColumnIndex: 7 },
+        rows: [{
+          values: [{
+            userEnteredValue: { stringValue: 'YANO LIFE SYSTEM - PROGRESS DASHBOARD' },
+            userEnteredFormat: {
+              backgroundColor: { red: 30/255, green: 27/255, blue: 75/255 }, // Dark Indigo
+              textFormat: { foregroundColor: { red: 1, green: 1, blue: 1 }, bold: true, fontSize: 13, fontFamily: 'Inter' },
+              horizontalAlignment: 'CENTER',
+              verticalAlignment: 'MIDDLE'
+            }
+          }]
+        }],
+        fields: 'userEnteredValue,userEnteredFormat'
+      }
+    });
+
+    // KPI 1: Tổng buổi tập
+    formattingRequests.push({
+      updateCells: {
+        range: { sheetId: dashboardSheetId, startRowIndex: 2, endRowIndex: 4, startColumnIndex: 0, endColumnIndex: 2 },
+        rows: [
+          {
+            values: [{
+              userEnteredValue: { stringValue: '👟 TỔNG SỐ BUỔI TẬP' },
+              userEnteredFormat: {
+                backgroundColor: { red: 241/255, green: 245/255, blue: 249/255 },
+                textFormat: { foregroundColor: { red: 71/255, green: 85/255, blue: 105/255 }, bold: true, fontSize: 9, fontFamily: 'Inter' },
+                horizontalAlignment: 'CENTER',
+                verticalAlignment: 'MIDDLE'
+              }
+            }]
+          },
+          {
+            values: [{
+              userEnteredValue: { formulaValue: "=COUNTA(UNIQUE('Gym Logs'!A2:A))" },
+              userEnteredFormat: {
+                backgroundColor: { red: 248/255, green: 250/255, blue: 252/255 },
+                textFormat: { foregroundColor: { red: 15/255, green: 23/255, blue: 42/255 }, bold: true, fontSize: 18, fontFamily: 'Inter' },
+                horizontalAlignment: 'CENTER',
+                verticalAlignment: 'MIDDLE'
+              }
+            }]
+          }
+        ],
+        fields: 'userEnteredValue,userEnteredFormat'
+      }
+    });
+
+    // KPI 2: Tổng số set tập
+    formattingRequests.push({
+      updateCells: {
+        range: { sheetId: dashboardSheetId, startRowIndex: 2, endRowIndex: 4, startColumnIndex: 3, endColumnIndex: 5 },
+        rows: [
+          {
+            values: [{
+              userEnteredValue: { stringValue: '🔥 TỔNG SỐ SET TẬP' },
+              userEnteredFormat: {
+                backgroundColor: { red: 241/255, green: 245/255, blue: 249/255 },
+                textFormat: { foregroundColor: { red: 71/255, green: 85/255, blue: 105/255 }, bold: true, fontSize: 9, fontFamily: 'Inter' },
+                horizontalAlignment: 'CENTER',
+                verticalAlignment: 'MIDDLE'
+              }
+            }]
+          },
+          {
+            values: [{
+              userEnteredValue: { formulaValue: "=COUNTA('Gym Logs'!C2:C)" },
+              userEnteredFormat: {
+                backgroundColor: { red: 248/255, green: 250/255, blue: 252/255 },
+                textFormat: { foregroundColor: { red: 15/255, green: 23/255, blue: 42/255 }, bold: true, fontSize: 18, fontFamily: 'Inter' },
+                horizontalAlignment: 'CENTER',
+                verticalAlignment: 'MIDDLE'
+              }
+            }]
+          }
+        ],
+        fields: 'userEnteredValue,userEnteredFormat'
+      }
+    });
+
+    // KPI 3: Bài tập chăm nhất
+    formattingRequests.push({
+      updateCells: {
+        range: { sheetId: dashboardSheetId, startRowIndex: 2, endRowIndex: 4, startColumnIndex: 5, endColumnIndex: 7 },
+        rows: [
+          {
+            values: [{
+              userEnteredValue: { stringValue: '🏆 BÀI TẬP CHĂM NHẤT' },
+              userEnteredFormat: {
+                backgroundColor: { red: 241/255, green: 245/255, blue: 249/255 },
+                textFormat: { foregroundColor: { red: 71/255, green: 85/255, blue: 105/255 }, bold: true, fontSize: 9, fontFamily: 'Inter' },
+                horizontalAlignment: 'CENTER',
+                verticalAlignment: 'MIDDLE'
+              }
+            }]
+          },
+          {
+            values: [{
+              userEnteredValue: { formulaValue: "=INDEX(QUERY('Gym Logs'!C2:G, \"SELECT C, COUNT(C) GROUP BY C ORDER BY COUNT(C) DESC LIMIT 1 LABEL COUNT(C) ''\"), 1, 1)" },
+              userEnteredFormat: {
+                backgroundColor: { red: 248/255, green: 250/255, blue: 252/255 },
+                textFormat: { foregroundColor: { red: 15/255, green: 23/255, blue: 42/255 }, bold: true, fontSize: 11, fontFamily: 'Inter' },
+                horizontalAlignment: 'CENTER',
+                verticalAlignment: 'MIDDLE'
+              }
+            }]
+          }
+        ],
+        fields: 'userEnteredValue,userEnteredFormat'
+      }
+    });
+
+    // Section header
+    formattingRequests.push({
+      updateCells: {
+        range: { sheetId: dashboardSheetId, startRowIndex: 5, endRowIndex: 6, startColumnIndex: 0, endColumnIndex: 7 },
+        rows: [{
+          values: [{
+            userEnteredValue: { stringValue: '📈 XU HƯỚNG TẬP LUYỆN (SỐ BÀI TẬP THEO NGÀY)' },
+            userEnteredFormat: {
+              textFormat: { foregroundColor: { red: 30/255, green: 27/255, blue: 75/255 }, bold: true, fontSize: 11, fontFamily: 'Inter' },
+              verticalAlignment: 'MIDDLE'
+            }
+          }]
+        }],
+        fields: 'userEnteredValue,userEnteredFormat'
+      }
+    });
+
+    // Table headers (A8:B8)
+    formattingRequests.push({
+      updateCells: {
+        range: { sheetId: dashboardSheetId, startRowIndex: 7, endRowIndex: 8, startColumnIndex: 0, endColumnIndex: 2 },
+        rows: [{
+          values: [
+            {
+              userEnteredValue: { stringValue: 'Ngày' },
+              userEnteredFormat: {
+                backgroundColor: { red: 79/255, green: 70/255, blue: 229/255 },
+                textFormat: { foregroundColor: { red: 1, green: 1, blue: 1 }, bold: true, fontSize: 10, fontFamily: 'Inter' },
+                horizontalAlignment: 'CENTER',
+                verticalAlignment: 'MIDDLE'
+              }
+            },
+            {
+              userEnteredValue: { stringValue: 'Số bài tập' },
+              userEnteredFormat: {
+                backgroundColor: { red: 79/255, green: 70/255, blue: 229/255 },
+                textFormat: { foregroundColor: { red: 1, green: 1, blue: 1 }, bold: true, fontSize: 10, fontFamily: 'Inter' },
+                horizontalAlignment: 'CENTER',
+                verticalAlignment: 'MIDDLE'
+              }
+            }
+          ]
+        }],
+        fields: 'userEnteredValue,userEnteredFormat'
+      }
+    });
+
+    // Table dynamic Query formula in A9
+    formattingRequests.push({
+      updateCells: {
+        range: { sheetId: dashboardSheetId, startRowIndex: 8, endRowIndex: 9, startColumnIndex: 0, endColumnIndex: 1 },
+        rows: [{
+          values: [{
+            userEnteredValue: { formulaValue: "=QUERY('Gym Logs'!A2:C, \"SELECT A, COUNT(C) WHERE A IS NOT NULL GROUP BY A ORDER BY A LABEL A '', COUNT(C) '' \")" },
+            userEnteredFormat: { horizontalAlignment: 'CENTER', verticalAlignment: 'MIDDLE', textFormat: { fontFamily: 'Inter' } }
+          }]
+        }],
+        fields: 'userEnteredValue,userEnteredFormat'
+      }
+    });
+
+    // Align formatting for A9:B100
+    formattingRequests.push({
+      repeatCell: {
+        range: { sheetId: dashboardSheetId, startRowIndex: 8, endRowIndex: 100, startColumnIndex: 0, endColumnIndex: 2 },
+        cell: {
+          userEnteredFormat: { horizontalAlignment: 'CENTER', verticalAlignment: 'MIDDLE', textFormat: { fontFamily: 'Inter' } }
+        },
+        fields: 'userEnteredFormat.horizontalAlignment,userEnteredFormat.verticalAlignment,userEnteredFormat.textFormat.fontFamily'
+      }
+    });
+
+    // Append Chart ONLY if it's missing (prevent chart duplication)
+    if (!hasChart) {
+      console.log('📊 Chart is missing. Adding chart generation to batch update...');
+      formattingRequests.push({
+        addChart: {
+          chart: {
+            spec: {
+              title: 'Số Bài Tập Đã Hoàn Thành Qua Các Ngày',
+              titleTextFormat: {
+                fontFamily: 'Inter',
+                fontSize: 11,
+                bold: true,
+                foregroundColor: { red: 15/255, green: 23/255, blue: 42/255 }
+              },
+              basicChart: {
+                chartType: 'COLUMN',
+                legendPosition: 'NO_LEGEND',
+                axis: [
+                  { position: 'BOTTOM_AXIS', title: 'Ngày' },
+                  { position: 'LEFT_AXIS', title: 'Số lượng bài tập' }
+                ],
+                domains: [
+                  {
+                    domain: {
+                      sourceRange: {
+                        sources: [{
+                          sheetId: dashboardSheetId,
+                          startRowIndex: 8,
+                          endRowIndex: 100,
+                          startColumnIndex: 0,
+                          endColumnIndex: 1
+                        }]
+                      }
+                    }
+                  }
+                ],
+                series: [{
+                  series: {
+                    sourceRange: {
+                      sources: [{
+                        sheetId: dashboardSheetId,
+                        startRowIndex: 8,
+                        endRowIndex: 100,
+                        startColumnIndex: 1,
+                        endColumnIndex: 2
+                      }]
+                    }
+                  },
+                  targetAxis: 'LEFT_AXIS',
+                  colorStyle: {
+                    rgbColor: { red: 79/255, green: 70/255, blue: 229/255 } // Indigo-600
+                  }
+                }]
+              }
+            },
+            position: {
+              overlayPosition: {
+                anchorCell: {
+                  sheetId: dashboardSheetId,
+                  rowIndex: 7, // Row 8
+                  columnIndex: 3 // Column D
+                },
+                offsetXPixels: 15,
+                offsetYPixels: 0,
+                widthPixels: 450,
+                heightPixels: 280
+              }
+            }
+          }
+        }
+      });
+    }
+
+    console.log(`🚀 Sending batchUpdate for premium layout, conditional formatting, and dashboard...`);
+    const updateRes = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ requests: formattingRequests })
+    });
+
+    if (!updateRes.ok) {
+      throw new Error(`Failed to apply styling: ${JSON.stringify(await updateRes.json())}`);
     }
 
     console.log('\n======================================================');
-    console.log('🎉  ĐỒNG BỘ DỮ LIỆU THÀNH CÔNG RỒI NHA!');
+    console.log('🎉  ĐỒNG BỘ & THIẾT KẾ DỰ LIỆU THÀNH CÔNG RỒI NHA!');
     console.log('======================================================');
     console.log(`🔗  Mở Google Sheet của bạn ở đây:`);
     console.log(`\x1b[32mhttps://docs.google.com/spreadsheets/d/${spreadsheetId}/edit\x1b[0m`);

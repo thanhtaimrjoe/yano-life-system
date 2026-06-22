@@ -1,10 +1,12 @@
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 
-const REPO_ROOT = '/Users/taiht/Documents/yano-life-system';
+const REPO_ROOT = process.env.YANO_REPO_ROOT || path.resolve(__dirname, '..');
 const CONFIG_PATH = path.join(REPO_ROOT, 'workspace', 'sheets-config.json');
 const CRED_PATH = path.join(REPO_ROOT, 'workspace', 'credentials.json');
+const args = process.argv.slice(2);
+const SHOULD_FORMAT = args.includes('--format') || args.includes('--init-format');
 
 // Get Service Account Email if credentials exist
 function getServiceAccountEmail() {
@@ -19,13 +21,42 @@ function getServiceAccountEmail() {
   return null;
 }
 
+function normalizeSheetDate(value) {
+  if (value == null || value === '') return '';
+  if (typeof value === 'number') {
+    const epoch = Date.UTC(1899, 11, 30);
+    const date = new Date(epoch + value * 24 * 60 * 60 * 1000);
+    return date.toISOString().slice(0, 10);
+  }
+  const text = String(value).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+  const parsed = new Date(text);
+  if (!Number.isNaN(parsed.getTime())) return parsed.toISOString().slice(0, 10);
+  return text;
+}
+
+function rowKey(values) {
+  const normalized = values.map((value, index) => {
+    if (index === 0) return normalizeSheetDate(value);
+    return value == null ? '' : String(value).trim();
+  });
+  return normalized.join('||');
+}
+
 // Get active access token
 function getAccessToken() {
   try {
     if (fs.existsSync(CRED_PATH)) {
       console.log('🤖 Detected Service Account credentials.json. Activating Robot Mode!');
       // Get token for Service Account using GOOGLE_APPLICATION_CREDENTIALS
-      return execSync(`GOOGLE_APPLICATION_CREDENTIALS="${CRED_PATH}" gcloud auth application-default print-access-token --scopes=https://www.googleapis.com/auth/spreadsheets`, { encoding: 'utf8' }).trim();
+      return execFileSync(
+        'gcloud',
+        ['auth', 'application-default', 'print-access-token', '--scopes=https://www.googleapis.com/auth/spreadsheets'],
+        {
+          encoding: 'utf8',
+          env: { ...process.env, GOOGLE_APPLICATION_CREDENTIALS: CRED_PATH }
+        }
+      ).trim();
     } else {
       console.log('👤 No Service Account found. Falling back to User Credentials...');
       return execSync('gcloud auth application-default print-access-token --scopes=openid,https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/spreadsheets', { encoding: 'utf8' }).trim();
@@ -37,7 +68,8 @@ function getAccessToken() {
 
 // Find the latest gym log file
 function getLatestGymLog() {
-  const gymDir = path.join(REPO_ROOT, '02-gym', '2026');
+  const currentYear = String(new Date().getFullYear());
+  const gymDir = path.join(REPO_ROOT, '02-gym', currentYear);
   if (!fs.existsSync(gymDir)) {
     throw new Error(`Gym directory not found at: ${gymDir}`);
   }
@@ -48,7 +80,7 @@ function getLatestGymLog() {
     .reverse();
 
   if (files.length === 0) {
-    throw new Error('No gym logs found in 02-gym/2026');
+    throw new Error(`No gym logs found in ${path.relative(REPO_ROOT, gymDir)}`);
   }
 
   return path.join(gymDir, files[0]);
@@ -197,6 +229,8 @@ async function runSync() {
     let sheets = spreadsheet.sheets || [];
     let gymLogsSheetId = null;
     let dashboardSheetId = null;
+    let createdGymLogsSheet = false;
+    let createdDashboardSheet = false;
 
     for (const s of sheets) {
       if (s.properties.title === 'Gym Logs') gymLogsSheetId = s.properties.sheetId;
@@ -207,6 +241,7 @@ async function runSync() {
     const initialRequests = [];
     if (gymLogsSheetId === null) {
       console.log('🆕 Creating "Gym Logs" tab...');
+      createdGymLogsSheet = true;
       gymLogsSheetId = 111922024; // Use a fixed sheetId for predictability
       initialRequests.push({
         addSheet: {
@@ -222,6 +257,7 @@ async function runSync() {
 
     if (dashboardSheetId === null) {
       console.log('🆕 Creating "Dashboard" tab...');
+      createdDashboardSheet = true;
       dashboardSheetId = 88888888; // Use a fixed sheetId for predictability
       initialRequests.push({
         addSheet: {
@@ -252,7 +288,7 @@ async function runSync() {
       // If we just created Gym Logs, initialize headers
       if (sheets.every(s => s.properties.title !== 'Gym Logs')) {
         console.log('✍️ Initializing Gym Logs headers...');
-        await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Gym%20Logs!A1:G1?valueInputOption=USER_ENTERED`, {
+        const headerRes = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Gym%20Logs!A1:G1?valueInputOption=USER_ENTERED`, {
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -264,12 +300,14 @@ async function runSync() {
             ]
           })
         });
+        if (!headerRes.ok) {
+          throw new Error(`Failed to initialize headers: ${JSON.stringify(await headerRes.json())}`);
+        }
       }
     }
 
-    // 3. Append the rows to "Gym Logs"
-    console.log(`🚀 Appending workout data...`);
-    const valuesToAppend = parsedRows.map(row => [
+    // 3. Append only missing rows to "Gym Logs" (idempotent by row content)
+    const parsedValues = parsedRows.map(row => [
       row.date,
       row.focus,
       row.exercise,
@@ -279,19 +317,35 @@ async function runSync() {
       row.notes
     ]);
 
-    const appendResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Gym%20Logs!A1:G1:append?valueInputOption=USER_ENTERED`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        values: valuesToAppend
-      })
+    const existingRowsRes = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Gym%20Logs!A2:G?valueRenderOption=UNFORMATTED_VALUE`, {
+      headers: { 'Authorization': `Bearer ${token}` }
     });
+    if (!existingRowsRes.ok) {
+      throw new Error(`Failed to read existing Gym Logs rows: ${JSON.stringify(await existingRowsRes.json())}`);
+    }
 
-    if (!appendResponse.ok) {
-      throw new Error(`Failed to append rows: ${JSON.stringify(await appendResponse.json())}`);
+    const existingRows = (await existingRowsRes.json()).values || [];
+    const existingKeys = new Set(existingRows.map(row => rowKey(row.slice(0, 7))));
+    const valuesToAppend = parsedValues.filter(row => !existingKeys.has(rowKey(row)));
+
+    if (valuesToAppend.length === 0) {
+      console.log('✅ Latest workout rows already exist in Google Sheet. Nothing to append.');
+    } else {
+      console.log(`🚀 Appending ${valuesToAppend.length}/${parsedValues.length} new workout rows...`);
+      const appendResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/Gym%20Logs!A:G:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          values: valuesToAppend
+        })
+      });
+
+      if (!appendResponse.ok) {
+        throw new Error(`Failed to append rows: ${JSON.stringify(await appendResponse.json())}`);
+      }
     }
 
     // 4. Re-fetch sheet metadata to inspect charts (avoid duplicates)
@@ -299,10 +353,23 @@ async function runSync() {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     spreadsheet = await metaResponse.json();
+    if (!metaResponse.ok) {
+      throw new Error(`Failed to re-fetch spreadsheet metadata: ${JSON.stringify(spreadsheet)}`);
+    }
     const dashboardSheet = (spreadsheet.sheets || []).find(s => s.properties.title === 'Dashboard');
     const hasChart = dashboardSheet && dashboardSheet.charts && dashboardSheet.charts.length > 0;
+    const shouldFormat = SHOULD_FORMAT || createdDashboardSheet;
 
-    // 5. Build massive styling and layout batch update
+    // 5. Build styling/layout updates only on first setup or explicit --format.
+    if (!shouldFormat) {
+      console.log('🎨 Formatting skipped (already initialized). Run with --format to re-apply dashboard styling.');
+      console.log('======================================================\n');
+      console.log('🎉  ĐỒNG BỘ DỮ LIỆU THÀNH CÔNG RỒI NHA!');
+      console.log(`🔗  https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`);
+      console.log('======================================================\n');
+      return;
+    }
+
     console.log('🎨 Applying premium theme, styling, and Dashboard content...');
     const formattingRequests = [];
 
@@ -371,20 +438,23 @@ async function runSync() {
       });
     }
 
-    // Soft color scale: RPE 1-5 (Green-Yellow), RPE 6-10 (Yellow-Red)
-    formattingRequests.push({
-      addConditionalFormatRule: {
-        rule: {
-          ranges: [{ sheetId: gymLogsSheetId, startColumnIndex: 5, endColumnIndex: 6, startRowIndex: 1 }],
-          gradientRule: {
-            minpoint: { color: { red: 209/255, green: 250/255, blue: 229/255 }, type: 'NUMBER', value: '1' }, // Soft Emerald
-            midpoint: { color: { red: 254/255, green: 243/255, blue: 199/255 }, type: 'NUMBER', value: '6' }, // Soft Amber
-            maxpoint: { color: { red: 254/255, green: 226/255, blue: 226/255 }, type: 'NUMBER', value: '10' } // Soft Red
-          }
-        },
-        index: 0
-      }
-    });
+    // Soft color scale: RPE 1-5 (Green-Yellow), RPE 6-10 (Yellow-Red).
+    // Add this rule only when the Gym Logs tab is new so repeated --format runs do not duplicate rules.
+    if (createdGymLogsSheet) {
+      formattingRequests.push({
+        addConditionalFormatRule: {
+          rule: {
+            ranges: [{ sheetId: gymLogsSheetId, startColumnIndex: 5, endColumnIndex: 6, startRowIndex: 1 }],
+            gradientRule: {
+              minpoint: { color: { red: 209/255, green: 250/255, blue: 229/255 }, type: 'NUMBER', value: '1' }, // Soft Emerald
+              midpoint: { color: { red: 254/255, green: 243/255, blue: 199/255 }, type: 'NUMBER', value: '6' }, // Soft Amber
+              maxpoint: { color: { red: 254/255, green: 226/255, blue: 226/255 }, type: 'NUMBER', value: '10' } // Soft Red
+            }
+          },
+          index: 0
+        }
+      });
+    }
 
     // --- DASHBOARD CREATION & FORMULAS ---
     formattingRequests.push({
@@ -425,6 +495,7 @@ async function runSync() {
       { sheetId: dashboardSheetId, startRowIndex: 5, endRowIndex: 6, startColumnIndex: 0, endColumnIndex: 7 }  // Title A6:G6
     ];
     for (const m of merges) {
+      formattingRequests.push({ unmergeCells: { range: m } });
       formattingRequests.push({ mergeCells: { range: m, mergeType: 'MERGE_ALL' } });
     }
 
@@ -712,6 +783,7 @@ async function runSync() {
   } catch (error) {
     console.error('\n❌ ERROR DURING SYNC PROCESS:');
     console.error(error.message);
+    process.exitCode = 1;
   }
 }
 

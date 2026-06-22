@@ -1,4 +1,7 @@
 workspace/
+tmp/
+
+# macOS
 .DS_Store
 **/.DS_Store
 .AppleDouble
@@ -7,4 +10,30 @@ Icon?
 ._*
 .Spotlight-V100
 .Trashes
+
+# Local dashboards / generated data
 dashboard/data.json
+
+# Local secrets / credentials (defense-in-depth)
+.env
+.env.*
+*.env
+credentials.json
+credentials*.json
+*credentials*.json
+service-account*.json
+*service-account*.json
+token.json
+*token*.json
+client_secret*.json
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Local caches / logs
+.cache/
+*.log

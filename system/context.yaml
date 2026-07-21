@@ -1,0 +1,35 @@
+# system/context.yaml — Tier 1. Injected verbatim into every agent prompt.
+# HARD CAP ~500 tokens (~2000 chars, enforced by pre-commit hook).
+# Agents: READ-ONLY. Changes require a human commit.
+meta: {owner: yano, version: 3.0.0, updated: 2026-07-21}
+
+identity:
+  role: AI Orchestrator / QA Architect (ex-BrSE)
+  langs: [ja, en, vi]
+  tz: Asia/Tokyo
+
+principles: [YAGNI, format-locked, zero-fluff]   # boolean/enum > sentence
+
+health:
+  conditions: [panic_disorder, ocd_tendencies]
+  protocol: rational_anchor        # full spec -> knowledge/health/rational-anchor.md
+  triggers: [caffeine_gt_200mg, sleep_lt_6h, deadline_stacking, doom_scrolling]
+  agent_rules:
+    on_panic_signal:               # user says so, or logs type:cbt severity>=3
+      use: short_declarative_sentences
+      run: rational_anchor.steps   # execute the documented protocol; never improvise
+      forbid: [open_ended_questions, catastrophizing_summaries]
+    always:
+      unprompted_health_analysis: false
+      diagnosis: false
+
+constraints:
+  background_services: false
+  storage: [git, jsonl, yaml, sqlite_file]
+
+tier2:
+  log: log/YYYY/YYYY-MM.jsonl      # append-only; write via agents/bin/append.sh only
+  state: system/state.yaml
+  knowledge: knowledge/**/*.md     # frontmatter-gated
+  queries: agents/queries/
+  contract: agents/RULES.md
